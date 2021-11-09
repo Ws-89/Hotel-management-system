@@ -1,9 +1,12 @@
 package pl.siuda.hotel.hotel;
 
+import org.springframework.data.relational.core.mapping.Column;
+
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public class OpeningTimes {
+    @Column("day_of_week")
     private DayOfWeek dayOfWeek;
     private LocalTime from;
     private LocalTime to;

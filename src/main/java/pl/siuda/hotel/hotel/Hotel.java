@@ -1,6 +1,7 @@
 package pl.siuda.hotel.hotel;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
@@ -15,7 +16,9 @@ public class Hotel {
     @Id
     private Long id;
     private String name;
+    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private Address address;
+    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private Contact contact;
     private Grade grade;
     @MappedCollection(idColumn = "HOTEL_ID")
@@ -24,6 +27,13 @@ public class Hotel {
     private Set<Room> rooms = new HashSet<>();
 
     public Hotel() {
+    }
+
+    public void updateDetails(Hotel hotel){
+        this.name = hotel.name;
+        this.address = hotel.address;
+        this.contact = hotel.contact;
+        this.grade = hotel.grade;
     }
 
     public Long getId() {
@@ -125,7 +135,7 @@ public class Hotel {
         return rooms;
     }
 
-    public void addRooms(Room room) {
+    public void addRoom(Room room) {
         this.rooms.add(room);
     }
 
@@ -148,4 +158,5 @@ public class Hotel {
                 ", rooms=" + rooms +
                 '}';
     }
+
 }

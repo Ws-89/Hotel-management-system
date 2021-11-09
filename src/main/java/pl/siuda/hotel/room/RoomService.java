@@ -1,7 +1,9 @@
 package pl.siuda.hotel.room;
 
 import org.springframework.stereotype.Service;
+import pl.siuda.hotel.dao.HotelRepo;
 import pl.siuda.hotel.exception.NotFoundException;
+import pl.siuda.hotel.hotel.Hotel;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +12,12 @@ import java.util.Optional;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final HotelRepo hotelRepository;
 
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, HotelRepo hotelRepository) {
         this.roomRepository = roomRepository;
+
+        this.hotelRepository = hotelRepository;
     }
 
     public List<Room> getAllRooms(){
@@ -54,8 +59,8 @@ public class RoomService {
     }
 
     public void deleteRoom(Long id){
-        Optional<Room> rooms = roomRepository.findById(id);
-        rooms.ifPresentOrElse(room -> {
+        Optional<Room> room = roomRepository.findById(id);
+        room.ifPresentOrElse(arg -> {
             int result = roomRepository.delete(id);
             if(result != 1){
                 throw new IllegalStateException("could not delete room");
@@ -65,3 +70,4 @@ public class RoomService {
                 });
     }
 }
+

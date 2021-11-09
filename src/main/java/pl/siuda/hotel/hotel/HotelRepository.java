@@ -81,8 +81,10 @@ public class HotelRepository implements DAO<Hotel> {
         return jdbcTemplate.update(sql, id);
     }
 
-    public void addRoom(Room room, Long hotelId){
-
+    public void addRoom(Long hotelId){
+//        var sql = """
+//                UPDATE hotel SET
+//                """
     }
 
     public void deleteRoom(Long hotelId, Long roomId){

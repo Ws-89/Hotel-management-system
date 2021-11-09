@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.siuda.hotel.dao.HotelRepo;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
@@ -24,7 +25,7 @@ import java.util.Optional;
 class HotelApplicationTests {
 
 	@Autowired
-	HotelRepository hotelRepository;
+	HotelRepo hotelRepository;
 
 	@Test
 	void contextLoads() {
@@ -48,9 +49,9 @@ class HotelApplicationTests {
 		c1.setPhoneNumber("999999999");
 		h1.setContact(c1);
 		h1.setGrade(Grade.TWOSTARS);
-		h1.addRooms(r1);
-		h1.addRooms(r2);
-		System.out.println(hotelRepository.create(h1));
+		h1.addRoom(r1);
+		h1.addRoom(r2);
+		System.out.println(hotelRepository.save(h1));
 
 	}
 
@@ -59,7 +60,7 @@ class HotelApplicationTests {
 		Hotel h1 = hotelRepository.findById(2L).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", 2L)));
 		h1.setPhoneNumber("123");
 		h1.setEmail("asdf@gmail.com");
-		System.out.println(hotelRepository.update(h1, 2L));
+		System.out.println(hotelRepository.save(h1));
 	}
 
 
