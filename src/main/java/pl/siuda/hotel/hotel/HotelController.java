@@ -9,7 +9,7 @@ import java.util.List;
 @RequestMapping("api/v1/hotel")
 public class HotelController {
 
-    private final HotelService hotelService;
+    private final HotelCreationInterface hotelService;
 
     public HotelController(HotelService hotelService) {
         this.hotelService = hotelService;
@@ -26,13 +26,13 @@ public class HotelController {
     }
 
     @PostMapping
-    public void createHotel(@RequestBody Hotel hotel){
-        hotelService.createHotel(hotel);
+    public Hotel createHotel(@RequestBody Hotel hotel){
+        return hotelService.createHotel(hotel);
     }
 
     @PutMapping("{id}")
-    public void updateHotel(@PathVariable("id")Long id, @RequestBody Hotel hotel){
-        hotelService.updateHotel(id, hotel);
+    public Hotel updateHotel(@PathVariable("id")Long id, @RequestBody Hotel hotel){
+        return hotelService.updateHotel(id, hotel);
     }
 
     @DeleteMapping("{id}")

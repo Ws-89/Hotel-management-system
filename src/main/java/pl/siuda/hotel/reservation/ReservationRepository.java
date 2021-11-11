@@ -1,4 +1,8 @@
 package pl.siuda.hotel.reservation;
 
-public interface ReservationRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface ReservationRepository extends CrudRepository<Reservation, Long> {
+
+
 }

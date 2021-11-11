@@ -2,18 +2,22 @@ package pl.siuda.hotel.hotel;
 
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.dao.HotelRepo;
+import pl.siuda.hotel.dao.RoomRepo;
 import pl.siuda.hotel.exception.NotFoundException;
+import pl.siuda.hotel.room.Room;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class HotelService {
+public class HotelService implements HotelCreationInterface {
 
     private final HotelRepo hotelRepo;
+    private final RoomRepo roomRepo;
 
-    public HotelService(HotelRepo hotelRepo) {
+    public HotelService(HotelRepo hotelRepo, RoomRepo roomRepo) {
         this.hotelRepo = hotelRepo;
+        this.roomRepo = roomRepo;
     }
 
 
@@ -26,15 +30,15 @@ public class HotelService {
                 .orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
     }
 
-    public void createHotel(Hotel hotel){
+    public Hotel createHotel(Hotel hotel){
         Optional<Hotel> ifExists = hotelRepo.findByName(hotel.getName());
         if(ifExists.isPresent()) {
             throw new IllegalStateException("Hotel already exists");
         }
-        Hotel result = hotelRepo.save(hotel);
-        if(result == null){
-            throw new IllegalStateException("Something went wrong");
-        }
+        return hotelRepo.save(hotel);
+//        if(result == null){
+//            throw new IllegalStateException("Something went wrong");
+//        }
     }
 
     public Hotel updateHotel(Long id, Hotel hotelDetails){
@@ -52,6 +56,9 @@ public class HotelService {
 
             }
 
-        };
-    }
+        }
+
+
+
+}
 

@@ -15,20 +15,9 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-
     @GetMapping
     public List<Room> listRooms(){
         return roomService.getAllRooms();
-    }
-
-    @GetMapping("/roomReservations")
-    public List<Room> listRoomsWR() {
-        return roomService.getAllRoomsWithReservation();
-    }
-
-    @GetMapping("/hotel/{id}")
-    public List<Room> roomFromTheHotel(@PathVariable("id")Long id){
-        return roomService.getAllRoomsInTheHotel(id);
     }
 
     @GetMapping("{id}")
@@ -56,5 +45,12 @@ public class RoomController {
         roomService.updateRoom(id, room);
     }
 
+    @GetMapping("/hotel/{id}")
+    public List<Room> roomList(@PathVariable("id")Long id){ return roomService.findByHotelId(id); }
+
+    @PostMapping("/{id}")
+    public void createRoomAtSpecifiedHotel(@PathVariable("id") Long id, @RequestBody Room room){
+        roomService.createRoomAtSpecifiedHotel(id, room);
+    }
 
 }

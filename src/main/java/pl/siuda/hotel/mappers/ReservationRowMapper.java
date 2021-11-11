@@ -10,7 +10,7 @@ public class ReservationRowMapper implements RowMapper<Reservation> {
     @Override
     public Reservation mapRow(ResultSet rs, int rowNum) throws SQLException {
         Reservation reservation = new Reservation();
-        reservation.setReservationNo(rs.getLong("RESERVATION_NO"));
+        reservation.setId(rs.getLong("RESERVATION_NO"));
 
         return reservation;
     }

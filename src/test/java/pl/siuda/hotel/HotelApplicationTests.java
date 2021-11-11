@@ -2,22 +2,26 @@ package pl.siuda.hotel;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.siuda.hotel.dao.HotelRepo;
+import pl.siuda.hotel.dao.RoomRepo;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.exception.NotFoundException;
+import pl.siuda.hotel.guest.Guest;
+import pl.siuda.hotel.guest.GuestRepo;
 import pl.siuda.hotel.hotel.Hotel;
-import pl.siuda.hotel.hotel.HotelRepository;
+import pl.siuda.hotel.hotel.HotelService;
 import pl.siuda.hotel.reservation.Reservation;
+import pl.siuda.hotel.reservation.ReservationArrangement;
+import pl.siuda.hotel.reservation.ReservationRepository;
 import pl.siuda.hotel.room.Room;
 import pl.siuda.hotel.enums.RoomType;
 import pl.siuda.hotel.room.RoomService;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 
 @SpringBootTest
@@ -26,6 +30,21 @@ class HotelApplicationTests {
 
 	@Autowired
 	HotelRepo hotelRepository;
+
+	@Autowired
+	HotelService hotelService;
+
+	@Autowired
+	RoomRepo roomRepo;
+
+	@Autowired
+	RoomService roomService;
+
+	@Autowired
+	ReservationRepository reservationRepository;
+
+	@Autowired
+	GuestRepo guestRepo;
 
 	@Test
 	void contextLoads() {
@@ -63,6 +82,46 @@ class HotelApplicationTests {
 		System.out.println(hotelRepository.save(h1));
 	}
 
+	@Test
+	void addRoomAtSpecifiedHotel(){
+		Room room = new Room();
+		room.setNumber(201);
+		room.setRoomType(RoomType.SINGLE);
+		roomService.createRoomAtSpecifiedHotel(14L, room);
+	}
+
+	@Test
+	void addReservationToRoom(){
+		Reservation reservation = new Reservation();
+		reservationRepository.save(reservation);
+
+		Room room = new Room();
+		room.setNumber(202);
+		room.setRoomType(RoomType.DOUBLE);
+		room.addReservation(reservation);
+
+		for (Room r: roomRepo.findAll()){
+			System.out.println(reservationRepository.findAllById(r.getReservationIds()));
+		}
+
+
+
+	}
+
+	@Test
+	void reservationPersistanceTest(){
+		Guest guest = new Guest();
+
+		Reservation reservation = new Reservation();
+		reservation.setFrom(LocalDateTime.of(2021, 05, 15, 02,01,1));
+		reservation.setTo(LocalDateTime.of(2021, 05, 15, 02,01,2));
+		guest.addReservation(reservation);
+		guestRepo.save(guest);
+
+		Room room = roomRepo.findById(27L).get();
+		room.addReservation(reservation);
+		roomRepo.save(room);
+	}
 
 
 }

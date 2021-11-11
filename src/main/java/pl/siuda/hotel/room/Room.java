@@ -4,9 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.enums.RoomType;
 import pl.siuda.hotel.reservation.Reservation;
+import pl.siuda.hotel.reservation.ReservationArrangement;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Room {
 
@@ -14,12 +16,18 @@ public class Room {
     private Long id;
     private Integer number;
 
-    @MappedCollection(idColumn = "room_id")
-    private Set<Reservation> reservations = new HashSet<>();
+    @MappedCollection(keyColumn = "id", idColumn = "id")
+    private Set<ReservationArrangement> reservations = new HashSet<>();
 
     private RoomType roomType;
 
     public Room() {
+    }
+
+    public void updateDetails(Room room){
+        this.number = room.number;
+        this.roomType = room.roomType;
+        this.reservations = room.reservations;
     }
 
     public Long getId() {
@@ -38,12 +46,22 @@ public class Room {
         this.number = number;
     }
 
-    public Set<Reservation> getReservations() {
+    public Set<ReservationArrangement> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Set<Reservation> reservations) {
+    public void setReservations(Set<ReservationArrangement> reservations) {
         this.reservations = reservations;
+    }
+
+    public void addReservation(Reservation reservation){
+        this.reservations.add(new ReservationArrangement(reservation.getId()));
+    }
+
+    public Set<Long> getReservationIds(){
+        return this.reservations.stream()
+                .map(ReservationArrangement::getReservation)
+                .collect(Collectors.toSet());
     }
 
     public RoomType getRoomType() {

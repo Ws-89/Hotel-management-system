@@ -2,6 +2,7 @@ package pl.siuda.hotel.room;
 
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.dao.HotelRepo;
+import pl.siuda.hotel.dao.RoomRepo;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.hotel.Hotel;
 
@@ -11,25 +12,17 @@ import java.util.Optional;
 @Service
 public class RoomService {
 
-    private final RoomRepository roomRepository;
+    private final RoomRepo roomRepository;
     private final HotelRepo hotelRepository;
 
-    public RoomService(RoomRepository roomRepository, HotelRepo hotelRepository) {
+    public RoomService(RoomRepo roomRepository, HotelRepo hotelRepository) {
         this.roomRepository = roomRepository;
 
         this.hotelRepository = hotelRepository;
     }
 
     public List<Room> getAllRooms(){
-        return roomRepository.findAll();
-    }
-
-    public List<Room> getAllRoomsInTheHotel(Long id){
-        return roomRepository.findAllRoomsByHotelId(id);
-    }
-
-    public List<Room> getAllRoomsWithReservation(){
-        return roomRepository.findAllWithReservation();
+        return (List<Room>) roomRepository.findAll();
     }
 
     public Room getRoomById(Long id){
@@ -46,28 +39,41 @@ public class RoomService {
         if(roomRepository.findByNumber(room.getNumber()).isPresent()){
             throw new IllegalStateException("Room already exists");
         }
-        int result = roomRepository.create(room);
-        if(result != 1){
+        Room result = roomRepository.save(room);
+        if(result == null){
             throw new IllegalStateException("Something went wrong");
         }
     }
 
-    public int updateRoom(Long id, Room roomDetails){
+    public Room updateRoom(Long id, Room roomDetails){
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Room with id %s not found", id)));
-        return roomRepository.update(roomDetails, id);
+        room.updateDetails(roomDetails);
+        return roomRepository.save(room);
     }
 
     public void deleteRoom(Long id){
         Optional<Room> room = roomRepository.findById(id);
         room.ifPresentOrElse(arg -> {
-            int result = roomRepository.delete(id);
-            if(result != 1){
-                throw new IllegalStateException("could not delete room");
-            }
+            Room roomToDelete = room.get();
+            roomRepository.delete(roomToDelete);
         }, () -> {
                 throw new NotFoundException(String.format("Room with id %s not found", id));
                 });
     }
+
+    public List<Room> findByHotelId(Long id){
+        return roomRepository.findByHotelId(id);
+    }
+
+    public void createRoomAtSpecifiedHotel(Long id, Room room){
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
+        if(roomRepository.findByHotelId(id).stream().anyMatch(t -> t.getNumber().equals(room.getNumber()))){
+            throw new IllegalStateException("Room already exists");
+        }
+        hotel.addRoom(room);
+        hotelRepository.save(hotel);
+    }
+
 }
 
