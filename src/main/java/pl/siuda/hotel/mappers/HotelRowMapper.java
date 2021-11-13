@@ -13,7 +13,7 @@ public class HotelRowMapper implements RowMapper<Hotel> {
     @Override
     public Hotel mapRow(ResultSet rs, int rowNum) throws SQLException {
         Hotel hotel = new Hotel();
-        hotel.setId(rs.getLong("id"));
+        hotel.setHotel_id(rs.getLong("id"));
         hotel.setName(rs.getString("name"));
         Address address = new Address();
         address.setStreet(rs.getString("street"));

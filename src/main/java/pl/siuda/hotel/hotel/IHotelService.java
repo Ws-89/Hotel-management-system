@@ -4,18 +4,17 @@ import org.springframework.stereotype.Service;
 import pl.siuda.hotel.dao.HotelRepo;
 import pl.siuda.hotel.dao.RoomRepo;
 import pl.siuda.hotel.exception.NotFoundException;
-import pl.siuda.hotel.room.Room;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class HotelService implements HotelCreationInterface {
+public class IHotelService implements IHotelWrite, IHotelRead {
 
     private final HotelRepo hotelRepo;
     private final RoomRepo roomRepo;
 
-    public HotelService(HotelRepo hotelRepo, RoomRepo roomRepo) {
+    public IHotelService(HotelRepo hotelRepo, RoomRepo roomRepo) {
         this.hotelRepo = hotelRepo;
         this.roomRepo = roomRepo;
     }

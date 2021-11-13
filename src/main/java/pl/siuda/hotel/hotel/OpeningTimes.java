@@ -8,13 +8,13 @@ import java.time.LocalTime;
 public class OpeningTimes {
     @Column("day_of_week")
     private DayOfWeek dayOfWeek;
-    private LocalTime from;
-    private LocalTime to;
+    private LocalTime from_data;
+    private LocalTime to_data;
 
-    public OpeningTimes(DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
+    public OpeningTimes(DayOfWeek dayOfWeek, LocalTime from_data, LocalTime to_data) {
         this.dayOfWeek = dayOfWeek;
-        this.from = from;
-        this.to = to;
+        this.from_data = from_data;
+        this.to_data = to_data;
     }
 
     public DayOfWeek getDayOfWeek() {
@@ -25,19 +25,19 @@ public class OpeningTimes {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public LocalTime getFrom() {
-        return from;
+    public LocalTime getFrom_data() {
+        return from_data;
     }
 
-    public void setFrom(LocalTime from) {
-        this.from = from;
+    public void setFrom_data(LocalTime from_data) {
+        this.from_data = from_data;
     }
 
-    public LocalTime getTo() {
-        return to;
+    public LocalTime getTo_data() {
+        return to_data;
     }
 
-    public void setTo(LocalTime to) {
-        this.to = to;
+    public void setTo_data(LocalTime to_data) {
+        this.to_data = to_data;
     }
 }

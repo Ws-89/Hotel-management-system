@@ -9,35 +9,37 @@ import java.util.List;
 @RequestMapping("api/v1/hotel")
 public class HotelController {
 
-    private final HotelCreationInterface hotelService;
+    private final IHotelWrite hotelWriteService;
+    private final IHotelRead hotelReadService;
 
-    public HotelController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    public HotelController(IHotelService hotelWriteService, IHotelRead hotelReadService) {
+        this.hotelWriteService = hotelWriteService;
+        this.hotelReadService = hotelReadService;
     }
 
     @GetMapping
     public List<Hotel> listHotel(){
-        return hotelService.getAllHotels();
+        return hotelReadService.getAllHotels();
     }
 
     @GetMapping("{id}")
     public Hotel getHotelById(@PathVariable("id")Long id){
-        return hotelService.getHotelById(id);
+        return hotelReadService.getHotelById(id);
     }
 
     @PostMapping
     public Hotel createHotel(@RequestBody Hotel hotel){
-        return hotelService.createHotel(hotel);
+        return hotelWriteService.createHotel(hotel);
     }
 
     @PutMapping("{id}")
     public Hotel updateHotel(@PathVariable("id")Long id, @RequestBody Hotel hotel){
-        return hotelService.updateHotel(id, hotel);
+        return hotelWriteService.updateHotel(id, hotel);
     }
 
     @DeleteMapping("{id}")
     public void deleteHotel(@PathVariable("id")Long id){
-        hotelService.deleteHotel(id);
+        hotelWriteService.deleteHotel(id);
     }
 
 

@@ -2,43 +2,42 @@ package pl.siuda.hotel.reservation;
 
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Reservation {
 
     @Id
-    private Long reservationId;
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private Long reservation_id;
+    private LocalDateTime from_data;
+    private LocalDateTime to_data;
     private Integer partySize;
 
 
     public Reservation() {
     }
 
-    public LocalDateTime getFrom() {
-        return from;
+    public LocalDateTime getFrom_data() {
+        return from_data;
     }
 
-    public void setFrom(LocalDateTime from) {
-        this.from = from;
+    public void setFrom_data(LocalDateTime from_data) {
+        this.from_data = from_data;
     }
 
-    public LocalDateTime getTo() {
-        return to;
+    public LocalDateTime getTo_data() {
+        return to_data;
     }
 
-    public void setTo(LocalDateTime to) {
-        this.to = to;
+    public void setTo_data(LocalDateTime to_data) {
+        this.to_data = to_data;
     }
 
-    public Long getReservationId() {
-        return reservationId;
+    public Long getReservation_id() {
+        return reservation_id;
     }
 
-    public void setReservationId(Long reservationId) {
-        this.reservationId = reservationId;
+    public void setReservation_id(Long reservation_id) {
+        this.reservation_id = reservation_id;
     }
 
 
@@ -51,11 +50,11 @@ public class Reservation {
     }
 
     public Long getId() {
-        return reservationId;
+        return reservation_id;
     }
 
     public void setId(Long id) {
-        this.reservationId = id;
+        this.reservation_id = id;
     }
 
     @Override

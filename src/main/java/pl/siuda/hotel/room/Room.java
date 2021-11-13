@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 public class Room {
 
     @Id
-    private Long id;
+    private Long room_id;
     private Integer number;
 
-    @MappedCollection(keyColumn = "id", idColumn = "id")
+    @MappedCollection(keyColumn = "ROOM_ID", idColumn = "ROOM_ID")
     private Set<ReservationArrangement> reservations = new HashSet<>();
 
     private RoomType roomType;
@@ -30,12 +30,12 @@ public class Room {
         this.reservations = room.reservations;
     }
 
-    public Long getId() {
-        return id;
+    public Long getRoom_id() {
+        return room_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
     }
 
     public Integer getNumber() {
@@ -60,7 +60,7 @@ public class Room {
 
     public Set<Long> getReservationIds(){
         return this.reservations.stream()
-                .map(ReservationArrangement::getReservation)
+                .map(ReservationArrangement::getReservation_id)
                 .collect(Collectors.toSet());
     }
 
@@ -75,7 +75,7 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "id=" + id +
+                "id=" + room_id +
                 ", number=" + number +
                 ", reservations=" + reservations +
                 ", roomType=" + roomType +

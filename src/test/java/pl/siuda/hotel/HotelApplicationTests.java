@@ -13,9 +13,8 @@ import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestRepo;
 import pl.siuda.hotel.hotel.Hotel;
-import pl.siuda.hotel.hotel.HotelService;
+import pl.siuda.hotel.hotel.IHotelService;
 import pl.siuda.hotel.reservation.Reservation;
-import pl.siuda.hotel.reservation.ReservationArrangement;
 import pl.siuda.hotel.reservation.ReservationRepository;
 import pl.siuda.hotel.room.Room;
 import pl.siuda.hotel.enums.RoomType;
@@ -32,7 +31,7 @@ class HotelApplicationTests {
 	HotelRepo hotelRepository;
 
 	@Autowired
-	HotelService hotelService;
+    IHotelService hotelService;
 
 	@Autowired
 	RoomRepo roomRepo;
@@ -76,7 +75,7 @@ class HotelApplicationTests {
 
 	@Test
 	void updateTest(){
-		Hotel h1 = hotelRepository.findById(2L).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", 2L)));
+		Hotel h1 = hotelRepository.findById(1L).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", 2L)));
 		h1.setPhoneNumber("123");
 		h1.setEmail("asdf@gmail.com");
 		System.out.println(hotelRepository.save(h1));
@@ -87,40 +86,28 @@ class HotelApplicationTests {
 		Room room = new Room();
 		room.setNumber(201);
 		room.setRoomType(RoomType.SINGLE);
-		roomService.createRoomAtSpecifiedHotel(14L, room);
+		roomService.createRoomAtSpecifiedHotel(1L, room);
 	}
 
 	@Test
 	void addReservationToRoom(){
+		Guest guest = new Guest();
+
 		Reservation reservation = new Reservation();
-		reservationRepository.save(reservation);
+		reservation.setFrom_data(LocalDateTime.of(2021, 05, 15, 02,01,1));
+		reservation.setTo_data(LocalDateTime.of(2021, 05, 15, 02,01,2));
+		guest.addReservation(reservation);
+		guestRepo.save(guest);
 
 		Room room = new Room();
 		room.setNumber(202);
 		room.setRoomType(RoomType.DOUBLE);
 		room.addReservation(reservation);
+		roomService.createRoomAtSpecifiedHotel(1L, room);
 
 		for (Room r: roomRepo.findAll()){
 			System.out.println(reservationRepository.findAllById(r.getReservationIds()));
 		}
-
-
-
-	}
-
-	@Test
-	void reservationPersistanceTest(){
-		Guest guest = new Guest();
-
-		Reservation reservation = new Reservation();
-		reservation.setFrom(LocalDateTime.of(2021, 05, 15, 02,01,1));
-		reservation.setTo(LocalDateTime.of(2021, 05, 15, 02,01,2));
-		guest.addReservation(reservation);
-		guestRepo.save(guest);
-
-		Room room = roomRepo.findById(27L).get();
-		room.addReservation(reservation);
-		roomRepo.save(room);
 	}
 
 

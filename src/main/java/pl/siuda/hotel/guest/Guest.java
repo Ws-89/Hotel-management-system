@@ -2,10 +2,7 @@ package pl.siuda.hotel.guest;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
-import pl.siuda.hotel.embeddeClasses.Address;
-import pl.siuda.hotel.embeddeClasses.Contact;
 import pl.siuda.hotel.reservation.Reservation;
 
 import java.util.HashSet;
@@ -14,17 +11,17 @@ import java.util.Set;
 public class Guest {
 
     @Id
-    @Column("ID")
-    private Long guestId;
-    @MappedCollection(keyColumn = "guestid", idColumn = "guestid")
+    @Column("GUEST_ID")
+    private Long guest_id;
+    @MappedCollection(keyColumn = "GUEST_ID", idColumn = "GUEST_ID")
     private Set<Reservation> reservations = new HashSet<>();
 
     public void addReservation(Reservation reservation){
         this.reservations.add(reservation);
     }
 
-    public Long getGuestId() {
-        return guestId;
+    public Long getGuest_id() {
+        return guest_id;
     }
 
     public Set<Reservation> getReservations() {

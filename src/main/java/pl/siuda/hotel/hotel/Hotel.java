@@ -14,7 +14,7 @@ import java.util.Set;
 public class Hotel {
 
     @Id
-    private Long id;
+    private Long hotel_id;
     private String name;
     @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private Address address;
@@ -36,12 +36,12 @@ public class Hotel {
         this.grade = hotel.grade;
     }
 
-    public Long getId() {
-        return id;
+    public Long getHotel_id() {
+        return hotel_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setHotel_id(Long hotel_id) {
+        this.hotel_id = hotel_id;
     }
 
     public String getName() {
@@ -150,7 +150,7 @@ public class Hotel {
     @Override
     public String toString() {
         return "Hotel{" +
-                "id=" + id +
+                "id=" + hotel_id +
                 ", name='" + name + '\'' +
                 ", address=" + address +
                 ", grade=" + grade +
