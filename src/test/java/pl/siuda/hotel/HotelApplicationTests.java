@@ -13,7 +13,7 @@ import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestRepo;
 import pl.siuda.hotel.hotel.Hotel;
-import pl.siuda.hotel.hotel.IHotelService;
+import pl.siuda.hotel.hotel.HotelService;
 import pl.siuda.hotel.reservation.Reservation;
 import pl.siuda.hotel.reservation.ReservationRepository;
 import pl.siuda.hotel.room.Room;
@@ -21,6 +21,7 @@ import pl.siuda.hotel.enums.RoomType;
 import pl.siuda.hotel.room.RoomService;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @SpringBootTest
@@ -31,7 +32,7 @@ class HotelApplicationTests {
 	HotelRepo hotelRepository;
 
 	@Autowired
-    IHotelService hotelService;
+    HotelService hotelService;
 
 	@Autowired
 	RoomRepo roomRepo;
@@ -108,6 +109,11 @@ class HotelApplicationTests {
 		for (Room r: roomRepo.findAll()){
 			System.out.println(reservationRepository.findAllById(r.getReservationIds()));
 		}
+	}
+
+	@Test
+	void checkTime(){
+		System.out.println(LocalDateTime.now());
 	}
 
 

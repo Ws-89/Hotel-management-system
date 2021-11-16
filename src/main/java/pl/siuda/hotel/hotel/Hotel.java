@@ -3,8 +3,10 @@ package pl.siuda.hotel.hotel;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
+import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
+import pl.siuda.hotel.employee.Employee;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.room.Room;
 
@@ -25,6 +27,8 @@ public class Hotel {
     private Set<OpeningTimes> openingTimes = new HashSet<>();
     @MappedCollection(idColumn = "HOTEL_ID")
     private Set<Room> rooms = new HashSet<>();
+    @MappedCollection(idColumn = "HOTEL_ID")
+    private Set<Employee> employees = new HashSet<>();
 
     public Hotel() {
     }
@@ -55,45 +59,6 @@ public class Hotel {
     public Address getAddress() {
         return address;
     }
-    public String getStreet() {
-        return address.getStreet();
-    }
-
-    public void setStreet(String street) {
-        address.setStreet(street);
-    }
-
-    public String getState() {
-        return address.getState();
-    }
-
-    public void setState(String state) {
-        address.setState(state);
-    }
-
-    public String getCity() {
-        return address.getCity();
-    }
-
-    public void setCity(String city) {
-        address.setCity(city);
-    }
-
-    public String getCountry() {
-        return address.getCountry();
-    }
-
-    public void setCountry(String country) {
-        address.setCountry(country);
-    }
-
-    public String getZipcode() {
-        return address.getZipcode();
-    }
-
-    public void setZipcode(String zipcode) {
-        address.setZipcode(zipcode);
-    }
 
     public Contact getContact() {
         return contact;
@@ -101,14 +66,6 @@ public class Hotel {
 
     public void setContact(Contact contact) {
         this.contact = contact;
-    }
-
-    public String getPhoneNumber(){
-        return contact.getPhoneNumber();
-    }
-
-    public String getEmail(){
-        return contact.getEmail();
     }
 
     public void setPhoneNumber(String phoneNumber){
@@ -147,16 +104,25 @@ public class Hotel {
         this.grade = grade;
     }
 
+    public void addEmployee(Employee employee){
+        this.employees.add(employee);
+    }
+
+    public Set<Employee> employeesList(){
+        return this.employees;
+    }
+
+
     @Override
     public String toString() {
         return "Hotel{" +
-                "id=" + hotel_id +
+                "hotel_id=" + hotel_id +
                 ", name='" + name + '\'' +
                 ", address=" + address +
+                ", contact=" + contact +
                 ", grade=" + grade +
                 ", openingTimes=" + openingTimes +
                 ", rooms=" + rooms +
                 '}';
     }
-
 }

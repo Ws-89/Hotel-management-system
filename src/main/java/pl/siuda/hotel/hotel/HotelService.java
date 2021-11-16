@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IHotelService implements IHotelWrite, IHotelRead {
+public class HotelService implements IHotelWrite, IHotelRead {
 
     private final HotelRepo hotelRepo;
     private final RoomRepo roomRepo;
 
-    public IHotelService(HotelRepo hotelRepo, RoomRepo roomRepo) {
+    public HotelService(HotelRepo hotelRepo, RoomRepo roomRepo) {
         this.hotelRepo = hotelRepo;
         this.roomRepo = roomRepo;
     }

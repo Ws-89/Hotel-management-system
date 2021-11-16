@@ -12,7 +12,7 @@ public class HotelController {
     private final IHotelWrite hotelWriteService;
     private final IHotelRead hotelReadService;
 
-    public HotelController(IHotelService hotelWriteService, IHotelRead hotelReadService) {
+    public HotelController(HotelService hotelWriteService, IHotelRead hotelReadService) {
         this.hotelWriteService = hotelWriteService;
         this.hotelReadService = hotelReadService;
     }
