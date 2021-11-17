@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,21 +12,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.siuda.hotel.guest.GuestService;
+import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.util.concurrent.TimeUnit;
 
-import static pl.siuda.hotel.security.ApplicationUserPermission.HOTEL_READ;
-import static pl.siuda.hotel.security.ApplicationUserPermission.HOTEL_WRITE;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 @EnableWebSecurity
 public class RegularUserSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final GuestService guestService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public RegularUserSecurityConfig(GuestService guestService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.guestService = guestService;
+    public RegularUserSecurityConfig(GuestService guestService, CustomUserDetailsService customUserDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.customUserDetailsService = customUserDetailsService;
+
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -73,7 +72,7 @@ public class RegularUserSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(guestService);
+        provider.setUserDetailsService(customUserDetailsService);
         return provider;
     }
 
