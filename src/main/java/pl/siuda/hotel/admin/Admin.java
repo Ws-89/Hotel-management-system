@@ -1,11 +1,15 @@
 package pl.siuda.hotel.admin;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class Admin implements UserDetails {
 

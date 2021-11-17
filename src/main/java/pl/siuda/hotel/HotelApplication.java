@@ -5,12 +5,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import pl.siuda.hotel.admin.Admin;
-import pl.siuda.hotel.admin.AdminRepository;
+import pl.siuda.hotel.admin.AdminRequest;
+import pl.siuda.hotel.admin.AdminService;
 import pl.siuda.hotel.security.ApplicationUserRole;
+import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
@@ -20,7 +23,10 @@ import java.util.Arrays;
 public class HotelApplication {
 
 	@Autowired
-	AdminRepository adminRepository;
+	CustomUserDetailsService customUserDetailsService;
+
+	@Autowired
+	AdminService adminService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HotelApplication.class, args);
@@ -52,16 +58,15 @@ public class HotelApplication {
 
 	private void buildSuperAdmin() {
 
-		boolean adminExists = adminRepository.findByEmail("wiktorsiuda@gmail.com").isPresent();
-		if (!adminExists) {
-			Admin admin = new Admin(
+		boolean adminExists = customUserDetailsService.userNotExists("wiktorsiuda@gmail.com");
+		if (adminExists) {
+			AdminRequest admin = new AdminRequest(
 					"Wiktor",
 					"Siuda",
 					"wiktorsiuda@gmail.com",
-					"password123",
-					ApplicationUserRole.ADMIN
+					"password123"
 			);
-			adminRepository.save(admin);
+			adminService.save(admin);
 		}
 
 

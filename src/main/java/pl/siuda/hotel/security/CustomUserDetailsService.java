@@ -3,13 +3,13 @@ package pl.siuda.hotel.security;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestRepo;
 
-import java.util.Optional;
-
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
 
@@ -21,15 +21,25 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.guestRepo = guestRepo;
     }
 
+    public boolean userNotExists(String email){
+        Admin admin = adminRepository.findByEmail(email);
+        Guest guest = guestRepo.findByEmail(email);
+        if(admin == null && guest == null){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Admin> admin = adminRepository.findByEmail(email);
-        Optional<Guest> guest = guestRepo.findByEmail(email);
+        Admin admin = adminRepository.findByEmail(email);
+        Guest guest = guestRepo.findByEmail(email);
 
-        if(admin.isEmpty() && guest.isEmpty()){
+        if(admin == null && guest == null){
             throw new UsernameNotFoundException(String.format("Username %s not found", email));
-        }else if(admin.isPresent() && guest.isEmpty()){
+        }else if(admin != null && guest == null){
             return new CustomUserDetails(admin);
         }else {
             return new CustomUserDetails(guest);

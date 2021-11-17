@@ -1,39 +1,33 @@
 package pl.siuda.hotel.guest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.registration.token.ConfirmationToken;
+import pl.siuda.hotel.security.CustomUserDetails;
+import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
-public class GuestService implements UserDetailsService {
+public class GuestService {
 
-    Logger LOGGER = LoggerFactory.getLogger(GuestService.class);
     private final GuestRepo guestRepo;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public GuestService(GuestRepo guestRepo, BCryptPasswordEncoder passwordEncoder) {
+    public GuestService(GuestRepo guestRepo, BCryptPasswordEncoder passwordEncoder, CustomUserDetailsService customUserDetailsService) {
         this.guestRepo = guestRepo;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return guestRepo.findByEmail(email)
-                .orElseThrow(()-> new UsernameNotFoundException(String.format("Username %s not found", email)));
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     public String signUpGuest(Guest guest){
-        boolean userExists = guestRepo.findByEmail(guest.getEmail()).isPresent();
-        if(userExists){
-            throw new IllegalStateException("email already in use");
+        boolean userNotExists = customUserDetailsService.userNotExists(guest.getEmail());
+        if(!userNotExists){
+            throw new NotFoundException("email already in use");
         }
 
         String encodedPassword = passwordEncoder.encode(guest.getPassword());
@@ -41,7 +35,6 @@ public class GuestService implements UserDetailsService {
         guest.setPassword(encodedPassword);
 
         String token = UUID.randomUUID().toString();
-        LOGGER.info(String.valueOf(LocalDateTime.now()));
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),

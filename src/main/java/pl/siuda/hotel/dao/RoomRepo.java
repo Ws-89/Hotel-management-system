@@ -16,4 +16,6 @@ public interface RoomRepo extends CrudRepository<Room, Long> {
     @Query("SELECT * FROM room WHERE hotel_id = :id")
     public List<Room> findByHotelId(Long id);
 
+
+
 }

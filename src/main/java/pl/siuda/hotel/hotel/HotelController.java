@@ -6,7 +6,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("api/v1/hotel")
+@RequestMapping("management/api/hotels")
 public class HotelController {
 
     private final IHotelWrite hotelWriteService;

@@ -6,7 +6,6 @@ import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
-import pl.siuda.hotel.employee.Employee;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.room.Room;
 
@@ -27,8 +26,6 @@ public class Hotel {
     private Set<OpeningTimes> openingTimes = new HashSet<>();
     @MappedCollection(idColumn = "HOTEL_ID")
     private Set<Room> rooms = new HashSet<>();
-    @MappedCollection(idColumn = "HOTEL_ID")
-    private Set<Employee> employees = new HashSet<>();
 
     public Hotel() {
     }
@@ -103,15 +100,6 @@ public class Hotel {
     public void setGrade(Grade grade) {
         this.grade = grade;
     }
-
-    public void addEmployee(Employee employee){
-        this.employees.add(employee);
-    }
-
-    public Set<Employee> employeesList(){
-        return this.employees;
-    }
-
 
     @Override
     public String toString() {

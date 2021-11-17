@@ -6,34 +6,47 @@ import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.guest.Guest;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
 
     private Admin admin;
     private Guest guest;
 
-    public CustomUserDetails(Optional<Admin> admin) {
+    public CustomUserDetails(Admin admin) {
         this.admin = admin;
     }
 
-    public CustomUserDetails(Optional<Guest> guest) {
+    public CustomUserDetails(Guest guest) {
         this.guest = guest;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if(admin != null & guest == null){
+            return admin.getAuthorities();
+        } else {
+            return guest.getAuthorities();
+        }
+
     }
 
     @Override
     public String getPassword() {
-        return null;
+        if(admin != null & guest == null){
+            return admin.getPassword();
+        } else {
+            return guest.getPassword();
+        }
     }
 
     @Override
     public String getUsername() {
-        return null;
+        if(admin != null & guest == null){
+            return admin.getUsername();
+        } else {
+            return guest.getUsername();
+        }
     }
 
     @Override
@@ -43,7 +56,11 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        if(admin != null & guest == null){
+            return admin.isAccountNonLocked();
+        } else {
+            return guest.isAccountNonLocked();
+        }
     }
 
     @Override
@@ -53,6 +70,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        if(admin != null & guest == null){
+            return admin.isEnabled();
+        } else {
+            return guest.isEnabled();
+        }
     }
 }
