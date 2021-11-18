@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.siuda.hotel.admin.Admin;
 
+import java.util.Optional;
+
 @Repository
 public interface GuestRepo extends CrudRepository<Guest, Long> {
 

@@ -1,4 +1,4 @@
-package pl.siuda.hotel.dao;
+package pl.siuda.hotel.hotel;
 
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;

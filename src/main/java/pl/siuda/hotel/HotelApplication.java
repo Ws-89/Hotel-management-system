@@ -5,14 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.admin.AdminRequest;
 import pl.siuda.hotel.admin.AdminService;
-import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import javax.annotation.PostConstruct;

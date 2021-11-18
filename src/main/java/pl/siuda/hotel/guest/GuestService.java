@@ -49,6 +49,14 @@ public class GuestService {
         return token;
     }
 
+    public Guest findByEmail(String email){
+        Guest guest = guestRepo.findByEmail(email);
+        if(guest == null){
+            throw new NotFoundException("username not found");
+        }
+        return guest;
+    }
+
     public Long enableAppUser(Long id) {
         return guestRepo.enableAppUser(id);
     }

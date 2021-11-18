@@ -1,4 +1,4 @@
-package pl.siuda.hotel.dao;
+package pl.siuda.hotel.room;
 
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -7,6 +7,7 @@ import pl.siuda.hotel.room.Room;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface RoomRepo extends CrudRepository<Room, Long> {
@@ -16,6 +17,8 @@ public interface RoomRepo extends CrudRepository<Room, Long> {
     @Query("SELECT * FROM room WHERE hotel_id = :id")
     public List<Room> findByHotelId(Long id);
 
+    @Query("SELECT * FROM room WHERE number = :room_number AND hotel_id = :hotel_id")
+    public Optional<Room> findByRoomNumberAndHotelId(Integer room_number, Long hotel_id);
 
 
 }

@@ -1,8 +1,7 @@
 package pl.siuda.hotel.room;
 
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.dao.HotelRepo;
-import pl.siuda.hotel.dao.RoomRepo;
+import pl.siuda.hotel.hotel.HotelRepo;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.hotel.Hotel;
 
@@ -73,6 +72,11 @@ public class RoomService {
         }
         hotel.addRoom(room);
         hotelRepository.save(hotel);
+    }
+
+    public Room findByRoomNumberAndHotelId(Integer room_number, Long hotel_id){
+        return roomRepository.findByRoomNumberAndHotelId(room_number, hotel_id)
+                .orElseThrow(() -> new NotFoundException(String.format("Room with number %s not found in hotel with %s id", room_number, hotel_id)));
     }
 
 }

@@ -19,4 +19,46 @@ public class AvailabilityRequest {
         this.to = to;
     }
 
+    public AvailabilityRequest() {
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Integer getRoomAmmount() {
+        return roomAmmount;
+    }
+
+    public void setRoomAmmount(Integer roomAmmount) {
+        this.roomAmmount = roomAmmount;
+    }
+
+    public Integer getPartySize() {
+        return partySize;
+    }
+
+    public void setPartySize(Integer partySize) {
+        this.partySize = partySize;
+    }
+
+    public LocalDateTime getFrom() {
+        return from;
+    }
+
+    public void setFrom(LocalDateTime from) {
+        this.from = from;
+    }
+
+    public LocalDateTime getTo() {
+        return to;
+    }
+
+    public void setTo(LocalDateTime to) {
+        this.to = to;
+    }
 }

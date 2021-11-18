@@ -1,8 +1,7 @@
 package pl.siuda.hotel.hotel;
 
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.dao.HotelRepo;
-import pl.siuda.hotel.dao.RoomRepo;
+import pl.siuda.hotel.room.RoomRepo;
 import pl.siuda.hotel.exception.NotFoundException;
 
 import java.util.List;

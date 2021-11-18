@@ -48,7 +48,7 @@ public class RoomController {
     @GetMapping("/hotel/{id}")
     public List<Room> roomList(@PathVariable("id")Long id){ return roomService.findByHotelId(id); }
 
-    @PostMapping("/{id}")
+    @PostMapping("{id}")
     public void createRoomAtSpecifiedHotel(@PathVariable("id") Long id, @RequestBody Room room){
         roomService.createRoomAtSpecifiedHotel(id, room);
     }
