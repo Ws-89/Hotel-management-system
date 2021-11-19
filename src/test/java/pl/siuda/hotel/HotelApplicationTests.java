@@ -98,40 +98,24 @@ class HotelApplicationTests {
 		roomService.createRoomAtSpecifiedHotel(1L, room);
 	}
 
-	@Test
-	void addReservationToRoom(){
-		Guest guest = new Guest();
-
-		Reservation reservation = new Reservation();
-		reservation.setFrom_data(LocalDateTime.of(2021, 05, 10, 02,01,1));
-		reservation.setTo_data(LocalDateTime.of(2021, 05, 15, 02,01,2));
-		guest.addReservation(reservation);
-		guestRepo.save(guest);
-
-		Room room = new Room();
-		room.setNumber(203);
-		room.setRoomType(RoomType.DOUBLE);
-		room.addReservation(reservation);
-		roomService.createRoomAtSpecifiedHotel(1L, room);
-
-		for (Room r: roomRepo.findAll()){
-			System.out.println(reservationRepository.findAllById(r.getReservationIds()));
-		}
-	}
 
 	@Test
 	void addReservationToExistingGuest(){
 		Guest guest = guestService.findByEmail("wiktorsiuda3@gmail.com");
 
+		Room room = roomService.findByRoomNumberAndHotelId(12, 3L);
+		Room room2 = roomService.findByRoomNumberAndHotelId(11, 3L);
+
 		Reservation reservation2 = new Reservation();
-		reservation2.setFrom_data(LocalDateTime.of(2021, 8, 10, 02,01,1));
-		reservation2.setTo_data(LocalDateTime.of(2021, 8, 15, 02,01,2));
+		reservation2.setFrom_data(LocalDateTime.of(2021, 1, 10, 02,01,1));
+		reservation2.setTo_data(LocalDateTime.of(2021, 1, 15, 02,01,2));
+
+		reservation2.addRoom(room);
+		reservation2.addRoom(room2);
 		guest.addReservation(reservation2);
 		guestRepo.save(guest);
 
-		Room room = roomService.findByRoomNumberAndHotelId(12, 3L);
-		room.addReservation(reservation2);
-		roomRepo.save(room);
+
 	}
 
 	@Test

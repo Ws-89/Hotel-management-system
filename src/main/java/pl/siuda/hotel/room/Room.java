@@ -16,9 +16,6 @@ public class Room {
     private Long room_id;
     private Integer number;
 
-    @MappedCollection(keyColumn = "ROOM_ID", idColumn = "ROOM_ID")
-    private Set<ReservationArrangement> reservations = new HashSet<>();
-
     private RoomType roomType;
 
     public Room() {
@@ -27,7 +24,6 @@ public class Room {
     public void updateDetails(Room room){
         this.number = room.number;
         this.roomType = room.roomType;
-        this.reservations = room.reservations;
     }
 
     public Long getRoom_id() {
@@ -46,23 +42,6 @@ public class Room {
         this.number = number;
     }
 
-    public Set<ReservationArrangement> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Set<ReservationArrangement> reservations) {
-        this.reservations = reservations;
-    }
-
-    public void addReservation(Reservation reservation){
-        this.reservations.add(new ReservationArrangement(reservation.getId()));
-    }
-
-    public Set<Long> getReservationIds(){
-        return this.reservations.stream()
-                .map(ReservationArrangement::getReservation_id)
-                .collect(Collectors.toSet());
-    }
 
     public RoomType getRoomType() {
         return roomType;
@@ -77,7 +56,6 @@ public class Room {
         return "Room{" +
                 "id=" + room_id +
                 ", number=" + number +
-                ", reservations=" + reservations +
                 ", roomType=" + roomType +
                 '}';
     }

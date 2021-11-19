@@ -1,8 +1,12 @@
 package pl.siuda.hotel.reservation;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import pl.siuda.hotel.room.Room;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Reservation {
 
@@ -11,7 +15,20 @@ public class Reservation {
     private LocalDateTime from_data;
     private LocalDateTime to_data;
     private Integer partySize;
+    @MappedCollection(keyColumn = "RESERVATION_ID", idColumn = "RESERVATION_ID")
+    private Set<ReservationArrangement> rooms = new HashSet<>();
 
+    public Set<ReservationArrangement> getReservations() {
+        return rooms;
+    }
+
+    public void setReservations(Set<ReservationArrangement> rooms) {
+        this.rooms = rooms;
+    }
+
+    public void addRoom(Room room){
+        this.rooms.add(new ReservationArrangement(room.getRoom_id()));
+    }
 
     public Reservation() {
     }
