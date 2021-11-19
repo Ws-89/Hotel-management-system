@@ -6,8 +6,7 @@ import pl.siuda.hotel.reservation.Availability;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 public class AvailabilityRowMapper implements RowMapper<Availability> {
 

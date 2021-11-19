@@ -27,14 +27,24 @@ public class ReservationService implements ReservationServiceInterface {
         return reservationRepository.findRoomsByCity(city);
     }
 
-
+    @Override
     public Set<Availability> getAvailability(AvailabilityRequest request){
         Set<Availability> availabilitySet = reservationRepository.findRoomsByCity(request.getCity());
 
         Predicate<Availability> isDateAvailable = (availability) -> {
             if(availability.getTo_date() != null){
-                boolean isStartDateBetweenAnyReservation = availability.getFrom_date().isAfter(request.getFrom()) && availability.getFrom_date().isBefore(request.getTo());
-                boolean isEndDateBetweenAnyReservation = availability.getTo_date().isAfter(request.getFrom()) && availability.getTo_date().isBefore(request.getTo());
+                boolean isStartDateBetweenAnyReservation =
+                        (availability.getFrom_date().isAfter(request.getFrom())
+                        || availability.getFrom_date().isEqual(request.getFrom()))
+                        && (availability.getFrom_date().isBefore(request.getTo())
+                                || availability.getFrom_date().isEqual(request.getTo()));
+
+                boolean isEndDateBetweenAnyReservation =
+                        (availability.getTo_date().isAfter(request.getFrom())
+                        || availability.getTo_date().isEqual(request.getFrom()))
+                        && (availability.getTo_date().isBefore(request.getTo())
+                        || availability.getTo_date().isEqual(request.getTo()));
+
                 return !(isStartDateBetweenAnyReservation || isEndDateBetweenAnyReservation);
             } else {
                 return true;
@@ -44,15 +54,11 @@ public class ReservationService implements ReservationServiceInterface {
         return availabilitySet.stream().filter(isDateAvailable).collect(Collectors.toSet());
     }
 
-    @Override
-    public List<Availability> getAvailability(String location, LocalDate from, LocalDate to, Integer partySize) {
 
-
-        return null;
-    }
 
     @Override
-    public Reservation makeReservation(Integer roomId, LocalDate from, LocalDate to, Integer partySize, Integer guestId) {
+    public Reservation makeReservation(ReservationRequest request) {
+
         return null;
     }
 

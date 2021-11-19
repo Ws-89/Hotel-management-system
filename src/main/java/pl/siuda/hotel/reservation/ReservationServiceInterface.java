@@ -2,14 +2,15 @@ package pl.siuda.hotel.reservation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface ReservationServiceInterface {
 
 
-    List<Availability> getAvailability(String location, LocalDate from, LocalDate to, Integer partySize);
+    Set<Availability> getAvailability(AvailabilityRequest request);
 
     // throws exception
-    Reservation makeReservation(Integer roomId, LocalDate from, LocalDate to, Integer partySize, Integer guestId);
+    Reservation makeReservation(ReservationRequest request);
 
     void cancelReservation();
 }

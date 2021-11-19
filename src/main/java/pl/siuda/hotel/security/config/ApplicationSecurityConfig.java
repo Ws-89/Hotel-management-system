@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.siuda.hotel.guest.GuestService;
-import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 import static pl.siuda.hotel.security.ApplicationUserPermission.*;
 import static pl.siuda.hotel.security.ApplicationUserRole.*;
@@ -31,6 +30,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .httpBasic()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*", "/api/v1/registration/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/management/api/hotels/**").hasAuthority(HOTEL_WRITE.name())
