@@ -34,9 +34,6 @@ public class HotelService implements IHotelWrite, IHotelRead {
             throw new IllegalStateException("Hotel already exists");
         }
         return hotelRepo.save(hotel);
-//        if(result == null){
-//            throw new IllegalStateException("Something went wrong");
-//        }
     }
 
     public Hotel updateHotel(Long id, Hotel hotelDetails){

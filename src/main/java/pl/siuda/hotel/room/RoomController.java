@@ -30,10 +30,10 @@ public class RoomController {
         return roomService.getRoomByNumber(number);
     }
 
-    @PostMapping
-    public void createRoom(@RequestBody Room room){
-        roomService.addNewRom(room);
-    }
+//    @PostMapping
+//    public void createRoom(@RequestBody Room room){
+//        roomService.addNewRom(room);
+//    }
 
     @DeleteMapping("{id}")
     public void deleteRoom(@PathVariable Long id){
