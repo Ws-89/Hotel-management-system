@@ -11,12 +11,14 @@ import org.springframework.web.filter.CorsFilter;
 import pl.siuda.hotel.admin.AdminRequest;
 import pl.siuda.hotel.admin.AdminService;
 import pl.siuda.hotel.security.CustomUserDetailsService;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @SpringBootApplication
 @EnableJdbcRepositories
+@EnableSwagger2
 public class HotelApplication {
 
 	@Autowired
@@ -55,13 +57,13 @@ public class HotelApplication {
 
 	private void buildSuperAdmin() {
 
-		boolean adminExists = customUserDetailsService.userNotExists("wiktorsiuda@gmail.com");
+		boolean adminExists = customUserDetailsService.userNotExists("ws@gmail.com");
 		if (adminExists) {
 			AdminRequest admin = new AdminRequest(
-					"Wiktor",
-					"Siuda",
-					"wiktorsiuda@gmail.com",
-					"password123"
+					"w",
+					"s",
+					"ws@gmail.com",
+					"123"
 			);
 			adminService.save(admin);
 		}

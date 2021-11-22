@@ -9,10 +9,11 @@ import pl.siuda.hotel.embeddeClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.room.Room;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Hotel {
+public class Hotel implements Serializable {
 
     @Id
     private Long hotel_id;

@@ -1,19 +1,16 @@
 package pl.siuda.hotel.reservation;
 
 import org.springframework.web.bind.annotation.*;
-import pl.siuda.hotel.hotel.Hotel;
-import pl.siuda.hotel.room.Room;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
 
-    private final ReservationService reservationService;
+    private final IReservationService reservationService;
 
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(IReservationService reservationService) {
         this.reservationService = reservationService;
     }
 

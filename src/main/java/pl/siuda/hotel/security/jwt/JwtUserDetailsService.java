@@ -1,5 +1,6 @@
-package pl.siuda.hotel.security;
+package pl.siuda.hotel.security.jwt;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -12,33 +13,44 @@ import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestRepo;
-import pl.siuda.hotel.security.jwt.JwtRequest;
-import pl.siuda.hotel.security.jwt.JwtResponse;
+import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.util.JwtUtil;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
-
+public class JwtUserDetailsService implements UserDetailsService {
 
     private final AdminRepository adminRepository;
     private final GuestRepo guestRepo;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    public CustomUserDetailsService(AdminRepository adminRepository, GuestRepo guestRepo) {
+    public JwtUserDetailsService(AdminRepository adminRepository, GuestRepo guestRepo) {
         this.adminRepository = adminRepository;
         this.guestRepo = guestRepo;
-
     }
 
-    public boolean userNotExists(String email){
-        Admin admin = adminRepository.findByEmail(email);
-        Guest guest = guestRepo.findByEmail(email);
-        if(admin == null && guest == null){
-            return true;
-        }else{
-            return false;
+    public void authenticate(String userName, String userPassword) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, userPassword));
+        }catch(DisabledException e){
+            throw new Exception("User is disabled");
+        }catch (BadCredentialsException e){
+            throw new Exception("Bad credentials from user");
         }
+    }
 
+    public JwtResponse createToken(JwtRequest jwtRequest) throws Exception{
+        String userName = jwtRequest.getUserName();
+        String userPassword = jwtRequest.getUserPassword();
+        authenticate(userName, userPassword);
+        final UserDetails userDetails = loadUserByUsername(userName);
+
+        String generatedToken = jwtUtil.generateToken(userDetails);
+
+        return new JwtResponse(userDetails, generatedToken);
     }
 
     @Override

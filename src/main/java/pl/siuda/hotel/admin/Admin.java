@@ -8,10 +8,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-public class Admin implements UserDetails {
+public class Admin implements UserDetails, Serializable {
 
     @Id
     private Long admin_id;

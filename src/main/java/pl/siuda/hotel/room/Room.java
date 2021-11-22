@@ -1,16 +1,10 @@
 package pl.siuda.hotel.room;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.enums.RoomType;
-import pl.siuda.hotel.reservation.Reservation;
-import pl.siuda.hotel.reservation.ReservationArrangement;
+import java.io.Serializable;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-public class Room {
+public class Room implements Serializable {
 
     @Id
     private Long room_id;

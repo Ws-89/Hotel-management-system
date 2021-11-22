@@ -12,9 +12,10 @@ import pl.siuda.hotel.registration.token.ConfirmationToken;
 import pl.siuda.hotel.reservation.Reservation;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Guest implements UserDetails {
+public class Guest implements UserDetails, Serializable {
 
     @Id
     @Column("GUEST_ID")

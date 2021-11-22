@@ -4,20 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.room.RoomService;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
-public class ReservationService implements ReservationServiceInterface {
+public class IReservationService implements IReservation {
 
     @Autowired
     private final RoomService roomService;
     private final ReservationRepository reservationRepository;
 
-    public ReservationService(RoomService roomService, ReservationRepository reservationRepository) {
+    public IReservationService(RoomService roomService, ReservationRepository reservationRepository) {
         this.roomService = roomService;
         this.reservationRepository = reservationRepository;
 

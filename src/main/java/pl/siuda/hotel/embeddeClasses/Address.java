@@ -2,6 +2,8 @@ package pl.siuda.hotel.embeddeClasses;
 
 import org.springframework.data.relational.core.mapping.Column;
 
+import java.io.Serializable;
+
 public class Address {
 
     @Column("STREET")
