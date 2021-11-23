@@ -3,7 +3,6 @@ package pl.siuda.hotel.security.jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,18 +11,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static pl.siuda.hotel.security.ApplicationUserPermission.HOTEL_READ;
+import static pl.siuda.hotel.security.ApplicationUserPermission.*;
 import static pl.siuda.hotel.security.ApplicationUserRole.ADMIN;
 
-@Order(-1)
+
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -46,13 +43,19 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors();
+
 
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/", "index", "/authenticate").permitAll()
+                .cors()
+                .and()
+                .authorizeRequests().antMatchers("/", "index", "/authenticate", "/registration/**").permitAll()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
-                .antMatchers(HttpMethod.GET, "/management/api/hotels").hasAuthority(HOTEL_READ.getPermission())
-                .antMatchers(HttpMethod.GET, "/management/api/hotels").hasRole(ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/admin/management/hotels/**").hasAuthority(HOTEL_READ.getPermission())
+                .antMatchers(HttpMethod.GET, "/admin/management/rooms/**").hasRole(ADMIN.name())
+//                .antMatchers(HttpMethod.POST, "/admin/management/hotels/**").hasAuthority(HOTEL_WRITE.getPermission())
+//                .antMatchers(HttpMethod.POST, "/admin/management/rooms/**").hasRole(ADMIN.name())
+//                .antMatchers(HttpMethod.PUT, "/admin/management/hotels/**").hasAuthority(HOTEL_DESCRIPTION_UPDATE.getPermission())
+//                .antMatchers(HttpMethod.PUT, "/admin/management/rooms/**").hasRole(ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -62,6 +65,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Override

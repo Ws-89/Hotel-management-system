@@ -6,7 +6,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("management/api/rooms")
+@RequestMapping("/admin/management/rooms")
 public class RoomController {
 
     private final RoomService roomService;

@@ -1,9 +1,11 @@
 package pl.siuda.hotel.security;
 
 import com.google.common.collect.Sets;
+import net.bytebuddy.build.Plugin;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
