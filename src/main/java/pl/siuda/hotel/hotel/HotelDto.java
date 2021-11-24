@@ -2,7 +2,9 @@ package pl.siuda.hotel.hotel;
 
 import pl.siuda.hotel.enums.Grade;
 
-public class HotelDto {
+import java.io.Serializable;
+
+public class HotelDto implements Serializable {
     private Long hotel_id;
     private String name;
     private String street;

@@ -2,7 +2,9 @@ package pl.siuda.hotel.room;
 
 import pl.siuda.hotel.enums.RoomType;
 
-public class RoomDto {
+import java.io.Serializable;
+
+public class RoomDto implements Serializable {
 
     private Long room_id;
     private Integer number;

@@ -1,6 +1,8 @@
 package pl.siuda.hotel.guest;
 
-public class GuestDto {
+import java.io.Serializable;
+
+public class GuestDto implements Serializable {
     private Long guest_id;
     private String firstName;
     private String lastName;

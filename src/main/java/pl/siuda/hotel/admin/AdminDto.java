@@ -2,7 +2,9 @@ package pl.siuda.hotel.admin;
 
 import pl.siuda.hotel.security.ApplicationUserRole;
 
-public class AdminDto {
+import java.io.Serializable;
+
+public class AdminDto implements Serializable {
 
     private Long admin_id;
     private String firstName;
