@@ -3,6 +3,7 @@ package pl.siuda.hotel.room;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -16,24 +17,19 @@ public class RoomController {
     }
 
     @GetMapping
-    public List<Room> listRooms(){
-        return roomService.getAllRooms();
+    public List<RoomDto> listRooms(){
+        return roomService.getAllRooms().stream().map(RoomDto::RoomToDto).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public Room getRoomById(@PathVariable("id") Long id) {
-        return roomService.getRoomById(id);
+    public RoomDto getRoomById(@PathVariable("id") Long id) {
+        return RoomDto.RoomToDto(roomService.getRoomById(id));
     }
 
     @GetMapping("/number{number}")
-    public Room getRoomByNumber(@PathVariable("number") Integer number) {
-        return roomService.getRoomByNumber(number);
+    public RoomDto getRoomByNumber(@PathVariable("number") Integer number) {
+        return RoomDto.RoomToDto(roomService.getRoomByNumber(number));
     }
-
-//    @PostMapping
-//    public void createRoom(@RequestBody Room room){
-//        roomService.addNewRom(room);
-//    }
 
     @DeleteMapping("{id}")
     public void deleteRoom(@PathVariable Long id){
@@ -41,16 +37,17 @@ public class RoomController {
     }
 
     @PutMapping("{id}")
-    public void updateRoom(@PathVariable("id") Long id, @RequestBody Room room){
-        roomService.updateRoom(id, room);
+    public RoomDto updateRoom(@PathVariable("id") Long id, @RequestBody RoomRequest roomRequest){
+        return RoomDto.RoomToDto(roomService.updateRoom(id, roomRequest));
     }
 
     @GetMapping("/hotel/{id}")
-    public List<Room> roomList(@PathVariable("id")Long id){ return roomService.findByHotelId(id); }
+    public List<RoomDto> roomList(@PathVariable("id")Long id){
+        return roomService.findByHotelId(id).stream().map(RoomDto::RoomToDto).collect(Collectors.toList()); }
 
     @PostMapping("{id}")
-    public void createRoomAtSpecifiedHotel(@PathVariable("id") Long id, @RequestBody Room room){
-        roomService.createRoomAtSpecifiedHotel(id, room);
+    public void createRoomAtSpecifiedHotel(@PathVariable("id") Long id, @RequestBody RoomRequest roomRequest){
+        roomService.createRoomAtSpecifiedHotel(id, roomRequest);
     }
 
 }

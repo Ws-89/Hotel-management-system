@@ -14,6 +14,13 @@ public class AdminRequest {
         this.password = password;
     }
 
+    public void copyDtoToEntity(Admin admin){
+        admin.setFirstName(this.firstName);
+        admin.setLastName(this.lastName);
+        admin.setEmail(this.email);
+        admin.setPassword(this.password);
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -29,4 +36,6 @@ public class AdminRequest {
     public String getPassword() {
         return password;
     }
+
+
 }

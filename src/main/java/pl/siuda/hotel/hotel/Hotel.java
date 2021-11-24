@@ -31,12 +31,6 @@ public class Hotel implements Serializable {
     public Hotel() {
     }
 
-    public void updateDetails(Hotel hotel){
-        this.name = hotel.name;
-        this.address = hotel.address;
-        this.contact = hotel.contact;
-        this.grade = hotel.grade;
-    }
 
     public Long getHotel_id() {
         return hotel_id;
@@ -100,6 +94,34 @@ public class Hotel implements Serializable {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public String getStreet(){
+        return address.getStreet();
+    }
+
+    public String getCity(){
+        return address.getCity();
+    }
+
+    public String getState(){
+        return address.getState();
+    }
+
+    public String getCountry(){
+        return address.getCountry();
+    }
+
+    public String getZipcode(){
+        return address.getZipcode();
+    }
+
+    public String getPhoneNumber(){
+        return contact.getPhoneNumber();
+    }
+
+    public String getEmail(){
+        return contact.getEmail();
     }
 
     @Override

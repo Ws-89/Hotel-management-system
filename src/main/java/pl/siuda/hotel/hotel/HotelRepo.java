@@ -13,11 +13,6 @@ import java.util.Optional;
 @Repository
 public interface HotelRepo extends CrudRepository<Hotel, Long> {
 
-    @Override
-    public List<Hotel> findAll();
-
-    public Optional<Hotel> findById(Long id);
-
-    public Optional<Hotel> findByName(String name);
+    Optional<Hotel> findByName(String name);
 
 }

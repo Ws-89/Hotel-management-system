@@ -3,43 +3,43 @@ package pl.siuda.hotel.hotel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/admin/management/hotels")
 public class HotelController {
 
-    private final IHotelWrite hotelWriteService;
-    private final IHotelRead hotelReadService;
+    private final HotelService hotelService;
 
-    public HotelController(HotelService hotelWriteService, IHotelRead hotelReadService) {
-        this.hotelWriteService = hotelWriteService;
-        this.hotelReadService = hotelReadService;
+    public HotelController(HotelService hotelService) {
+        this.hotelService = hotelService;
     }
 
     @GetMapping
-    public List<Hotel> listHotel(){
-        return hotelReadService.getAllHotels();
+    public List<HotelDto> listHotel(){
+        List<HotelDto> hotelDtos = hotelService.getAllHotels().stream().map(HotelDto::hotelToDto).collect(Collectors.toList());
+        return hotelDtos;
     }
 
     @GetMapping("{id}")
-    public Hotel getHotelById(@PathVariable("id")Long id){
-        return hotelReadService.getHotelById(id);
+    public HotelDto getHotelById(@PathVariable("id")Long id){
+        return HotelDto.hotelToDto(hotelService.getHotelById(id));
     }
 
     @PostMapping
-    public Hotel createHotel(@RequestBody Hotel hotel){
-        return hotelWriteService.createHotel(hotel);
+    public HotelDto createHotel(@RequestBody HotelRequest hotelRequest){
+        return HotelDto.hotelToDto(hotelService.createHotel(hotelRequest));
     }
 
     @PutMapping("{id}")
-    public Hotel updateHotel(@PathVariable("id")Long id, @RequestBody Hotel hotel){
-        return hotelWriteService.updateHotel(id, hotel);
+    public HotelDto updateHotel(@PathVariable("id")Long id, @RequestBody HotelRequest hotelRequest){
+        return HotelDto.hotelToDto(hotelService.updateHotel(id, hotelRequest));
     }
 
     @DeleteMapping("{id}")
     public void deleteHotel(@PathVariable("id")Long id){
-        hotelWriteService.deleteHotel(id);
+        hotelService.deleteHotel(id);
     }
 
 

@@ -165,4 +165,27 @@ public class Guest implements UserDetails, Serializable {
     public boolean isEnabled() {
         return enabled;
     }
+
+    public String getStreet(){
+        return this.address.getStreet();
+    }
+
+    public String getCity(){
+        return this.address.getCity();
+    }
+
+    public String getState(){
+        return this.address.getState();
+    }
+
+    public String getCountry(){
+        return this.address.getCountry();
+    }
+
+    public String getZipcode(){
+        return this.address.getZipcode();
+    }
+
+
+
 }

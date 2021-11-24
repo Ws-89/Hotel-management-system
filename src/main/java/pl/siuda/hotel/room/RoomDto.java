@@ -1,18 +1,19 @@
 package pl.siuda.hotel.room;
 
-import org.springframework.data.annotation.Id;
 import pl.siuda.hotel.enums.RoomType;
-import java.io.Serializable;
 
-public class Room implements Serializable {
+public class RoomDto {
 
-    @Id
     private Long room_id;
     private Integer number;
-
     private RoomType roomType;
 
-    public Room() {
+    public static RoomDto RoomToDto(Room room){
+        RoomDto roomDto = new RoomDto();
+        roomDto.room_id = room.getRoom_id();
+        roomDto.number = room.getNumber();
+        roomDto.roomType = room.getRoomType();
+        return roomDto;
     }
 
     public Long getRoom_id() {
@@ -31,21 +32,11 @@ public class Room implements Serializable {
         this.number = number;
     }
 
-
     public RoomType getRoomType() {
         return roomType;
     }
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
-    }
-
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + room_id +
-                ", number=" + number +
-                ", roomType=" + roomType +
-                '}';
     }
 }

@@ -1,0 +1,106 @@
+package pl.siuda.hotel.hotel;
+
+import org.checkerframework.checker.units.qual.C;
+import pl.siuda.hotel.embeddeClasses.Address;
+import pl.siuda.hotel.embeddeClasses.Contact;
+import pl.siuda.hotel.enums.Grade;
+
+public class HotelRequest {
+    private String name;
+    private String street;
+    private String city;
+    private String state;
+    private String country;
+    private String zipcode;
+    private String phoneNumber;
+    private String email;
+    private Grade grade;
+
+    public void copyRequestToEntity(Hotel hotel){
+        hotel.setName(name);
+        Address address = new Address();
+        address.setStreet(street);
+        address.setCity(city);
+        address.setState(state);
+        address.setCountry(country);
+        address.setZipcode(zipcode);
+        hotel.setAddress(address);
+        Contact contact = new Contact();
+        contact.setPhoneNumber(phoneNumber);
+        contact.setEmail(email);
+        hotel.setContact(contact);
+        hotel.setGrade(grade);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Grade getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
+    }
+}

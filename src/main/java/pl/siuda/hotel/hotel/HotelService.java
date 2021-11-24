@@ -6,9 +6,11 @@ import pl.siuda.hotel.exception.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
-public class HotelService implements IHotelWrite, IHotelRead {
+public class HotelService {
 
     private final HotelRepo hotelRepo;
     private final RoomRepo roomRepo;
@@ -20,7 +22,7 @@ public class HotelService implements IHotelWrite, IHotelRead {
 
 
     public List<Hotel> getAllHotels(){
-        return (List<Hotel>) hotelRepo.findAll();
+        return StreamSupport.stream(hotelRepo.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
     public Hotel getHotelById(Long id){
@@ -28,29 +30,26 @@ public class HotelService implements IHotelWrite, IHotelRead {
                 .orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
     }
 
-    public Hotel createHotel(Hotel hotel){
-        Optional<Hotel> ifExists = hotelRepo.findByName(hotel.getName());
+    public Hotel createHotel(HotelRequest hotelRequest){
+        Optional<Hotel> ifExists = hotelRepo.findByName(hotelRequest.getName());
         if(ifExists.isPresent()) {
             throw new IllegalStateException("Hotel already exists");
         }
+        Hotel hotel = new Hotel();
+        hotelRequest.copyRequestToEntity(hotel);
         return hotelRepo.save(hotel);
     }
 
-    public Hotel updateHotel(Long id, Hotel hotelDetails){
+    public Hotel updateHotel(Long id, HotelRequest hotelRequest){
         Hotel hotel = hotelRepo.findById(id)
                 .orElseThrow(()-> new NotFoundException(String.format("Hotel with id %s not found", id)));
-        hotel.updateDetails(hotelDetails);
+        hotelRequest.copyRequestToEntity(hotel);
         return hotelRepo.save(hotel);
     }
 
     public void deleteHotel(Long id){
-        Hotel hotel = hotelRepo.findById(id).get();
-        if(hotel != null) {
-            hotelRepo.delete(hotel);
-        }else {throw new NotFoundException(String.format("Hotel with id %s not found", id));
-
-            }
-
+        Hotel hotel = hotelRepo.findById(id).orElseThrow(()-> new NotFoundException(String.format("Hotel with id %s not found", id)));
+        hotelRepo.delete(hotel);
         }
 
 

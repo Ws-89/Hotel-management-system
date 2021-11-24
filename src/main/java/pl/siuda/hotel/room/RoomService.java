@@ -7,6 +7,8 @@ import pl.siuda.hotel.hotel.Hotel;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class RoomService {
@@ -16,12 +18,11 @@ public class RoomService {
 
     public RoomService(RoomRepo roomRepository, HotelRepo hotelRepository) {
         this.roomRepository = roomRepository;
-
         this.hotelRepository = hotelRepository;
     }
 
     public List<Room> getAllRooms(){
-        return (List<Room>) roomRepository.findAll();
+        return StreamSupport.stream(roomRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
     public Room getRoomById(Long id){
@@ -34,20 +35,10 @@ public class RoomService {
                 .orElseThrow(() -> new NotFoundException(String.format("Room with number %s not found", number)));
     }
 
-    public void addNewRom(Room room){
-        if(roomRepository.findByNumber(room.getNumber()).isPresent()){
-            throw new IllegalStateException("Room already exists");
-        }
-        Room result = roomRepository.save(room);
-        if(result == null){
-            throw new IllegalStateException("Something went wrong");
-        }
-    }
-
-    public Room updateRoom(Long id, Room roomDetails){
+    public Room updateRoom(Long id, RoomRequest roomRequest){
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Room with id %s not found", id)));
-        room.updateDetails(roomDetails);
+        roomRequest.copyRequestToEntity(room);
         return roomRepository.save(room);
     }
 
@@ -65,11 +56,13 @@ public class RoomService {
         return roomRepository.findByHotelId(id);
     }
 
-    public void createRoomAtSpecifiedHotel(Long id, Room room){
+    public void createRoomAtSpecifiedHotel(Long id, RoomRequest roomRequest){
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
-        if(roomRepository.findByHotelId(id).stream().anyMatch(t -> t.getNumber().equals(room.getNumber()))){
+        if(roomRepository.findByHotelId(id).stream().anyMatch(t -> t.getNumber().equals(roomRequest.getNumber()))){
             throw new IllegalStateException("Room already exists");
         }
+        Room room = new Room();
+        roomRequest.copyRequestToEntity(room);
         hotel.addRoom(room);
         hotelRepository.save(hotel);
     }

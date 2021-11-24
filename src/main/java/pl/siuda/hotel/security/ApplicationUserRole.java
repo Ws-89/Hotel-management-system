@@ -33,7 +33,13 @@ public enum ApplicationUserRole {
             ROOM_DESCRIPTION_UPDATE,
             ROOM_WRITE,
             RESERVATION_READ,
-            RESERVATION_WRITE
+            RESERVATION_WRITE,
+            ADMIN_WRITE,
+            ADMIN_READ,
+            ADMIN_UPDATE,
+            GUEST_READ,
+            GUEST_WRITE,
+            GUEST_UPDATE
     ));
 
     private final Set<ApplicationUserPermission> permissions;

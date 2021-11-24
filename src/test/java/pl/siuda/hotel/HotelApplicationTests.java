@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.siuda.hotel.admin.Admin;
+import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.hotel.HotelRepo;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
@@ -21,6 +23,7 @@ import pl.siuda.hotel.reservation.Reservation;
 import pl.siuda.hotel.reservation.ReservationRepository;
 import pl.siuda.hotel.room.Room;
 import pl.siuda.hotel.enums.RoomType;
+import pl.siuda.hotel.room.RoomRequest;
 import pl.siuda.hotel.room.RoomService;
 
 import java.time.LocalDateTime;
@@ -53,6 +56,9 @@ class HotelApplicationTests {
 
 	@Autowired
 	IReservationService reservationService;
+
+	@Autowired
+	AdminRepository adminRepository;
 
 	@Test
 	void contextLoads() {
@@ -92,10 +98,10 @@ class HotelApplicationTests {
 
 	@Test
 	void addRoomAtSpecifiedHotel(){
-		Room room = new Room();
-		room.setNumber(201);
-		room.setRoomType(RoomType.SINGLE);
-		roomService.createRoomAtSpecifiedHotel(1L, room);
+		RoomRequest roomRequest = new RoomRequest();
+		roomRequest.setNumber(201);
+		roomRequest.setRoomType(RoomType.SINGLE);
+		roomService.createRoomAtSpecifiedHotel(1L, roomRequest);
 	}
 
 
@@ -128,6 +134,7 @@ class HotelApplicationTests {
 		System.out.println(reservationService.getAvailability(availabilityRequest));
 
 	}
+
 
 
 }

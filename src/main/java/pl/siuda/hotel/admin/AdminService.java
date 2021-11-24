@@ -8,6 +8,11 @@ import pl.siuda.hotel.registration.EmailValidator;
 import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 @Service
 public class AdminService {
 
@@ -21,6 +26,14 @@ public class AdminService {
         this.emailValidator = emailValidator;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.customUserDetailsService = customUserDetailsService;
+    }
+
+    public List<Admin> adminList(){
+        return StreamSupport.stream(adminRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public Admin getAdminById(Long id){
+        return adminRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found")));
     }
 
     public Admin save(AdminRequest request){
@@ -46,5 +59,19 @@ public class AdminService {
         adminRepository.save(admin);
         return admin;
     }
+
+    public Admin updateAdmin(Long id, AdminRequest adminRequest){
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Admin with id %s not found", id)));
+        adminRequest.copyDtoToEntity(admin);
+        return adminRepository.save(admin);
+    }
+
+    public void deleteAdmin(Long id){
+        Admin admin = adminRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found")));
+        adminRepository.delete(admin);
+    }
+
+
 
 }

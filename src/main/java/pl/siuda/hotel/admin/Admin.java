@@ -24,7 +24,10 @@ public class Admin implements UserDetails, Serializable {
     private boolean enabled = true;
     private ApplicationUserRole applicationUserRole;
 
-    public Admin(String firstName,String lastName, String email, String password, ApplicationUserRole applicationUserRole) {
+    public Admin() {
+    }
+
+    public Admin(String firstName, String lastName, String email, String password, ApplicationUserRole applicationUserRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -43,6 +46,22 @@ public class Admin implements UserDetails, Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return applicationUserRole.getGrantedAuthorities();
+    }
+
+    public Long getAdmin_id() {
+        return admin_id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -73,5 +92,39 @@ public class Admin implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setAdmin_id(Long admin_id) {
+        this.admin_id = admin_id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "admin_id=" + admin_id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", locked=" + locked +
+                ", enabled=" + enabled +
+                ", applicationUserRole=" + applicationUserRole +
+                '}';
     }
 }

@@ -9,7 +9,10 @@ import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class GuestService {
@@ -22,6 +25,14 @@ public class GuestService {
         this.guestRepo = guestRepo;
         this.passwordEncoder = passwordEncoder;
         this.customUserDetailsService = customUserDetailsService;
+    }
+
+    public List<Guest> guestList(){
+        return StreamSupport.stream(guestRepo.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public Guest getGuestById(Long id){
+        return guestRepo.findById(id).orElseThrow(()-> new NotFoundException(String.format("Guest with id %s not found")));
     }
 
     public String signUpGuest(Guest guest){
@@ -43,8 +54,6 @@ public class GuestService {
 
         guest.addConfirmationTokens(confirmationToken);
         guestRepo.save(guest);
-
-        // TODO: Send email
 
         return token;
     }
