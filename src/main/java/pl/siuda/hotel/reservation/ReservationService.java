@@ -9,13 +9,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
-public class IReservationService implements IReservation {
+public class ReservationService implements IReservation {
 
     @Autowired
     private final RoomService roomService;
     private final ReservationRepository reservationRepository;
 
-    public IReservationService(RoomService roomService, ReservationRepository reservationRepository) {
+    public ReservationService(RoomService roomService, ReservationRepository reservationRepository) {
         this.roomService = roomService;
         this.reservationRepository = reservationRepository;
 

@@ -1,5 +1,6 @@
 package pl.siuda.hotel.hotel;
 
+import pl.siuda.hotel.amazonS3bucket.Image;
 import pl.siuda.hotel.enums.Grade;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ public class HotelDto implements Serializable {
     private String phoneNumber;
     private String email;
     private Grade grade;
+    private String image;
 
     public static HotelDto hotelToDto(Hotel hotel){
         HotelDto hotelDto = new HotelDto();

@@ -4,12 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.hotel.HotelRepo;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
-import pl.siuda.hotel.reservation.IReservationService;
+import pl.siuda.hotel.reservation.ReservationService;
 import pl.siuda.hotel.room.RoomRepo;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
@@ -55,7 +54,7 @@ class HotelApplicationTests {
 	GuestService guestService;
 
 	@Autowired
-	IReservationService reservationService;
+    ReservationService reservationService;
 
 	@Autowired
 	AdminRepository adminRepository;

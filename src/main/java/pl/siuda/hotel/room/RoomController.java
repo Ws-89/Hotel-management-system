@@ -26,7 +26,7 @@ public class RoomController {
         return RoomDto.RoomToDto(roomService.getRoomById(id));
     }
 
-    @GetMapping("/number{number}")
+    @GetMapping("/number/{number}")
     public RoomDto getRoomByNumber(@PathVariable("number") Integer number) {
         return RoomDto.RoomToDto(roomService.getRoomByNumber(number));
     }

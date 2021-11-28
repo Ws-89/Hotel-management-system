@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static pl.siuda.hotel.security.ApplicationUserPermission.*;
-import static pl.siuda.hotel.security.ApplicationUserRole.ADMIN;
 
 
 @Configuration
@@ -48,7 +47,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors()
                 .and()
-                .authorizeRequests().antMatchers("/", "index", "/authenticate", "/registration/**").permitAll()
+                .authorizeRequests().antMatchers("/", "index", "/authenticate", "/registration/**", "/registration").permitAll()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .antMatchers(HttpMethod.GET, "/admin/management/hotels/**").hasAuthority(HOTEL_READ.getPermission())
                 .antMatchers(HttpMethod.POST, "/admin/management/hotels/**").hasAuthority(HOTEL_WRITE.getPermission())

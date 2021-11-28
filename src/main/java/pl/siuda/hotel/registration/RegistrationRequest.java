@@ -12,8 +12,9 @@ public class RegistrationRequest {
     private final String state;
     private final String country;
     private final String zipcode;
+    private final String phoneNumber;
 
-    public RegistrationRequest(String firstName, String lastName, String email, String password, String street, String city, String state, String country, String zipcode) {
+    public RegistrationRequest(String firstName, String lastName, String email, String password, String street, String city, String state, String country, String zipcode, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -23,6 +24,7 @@ public class RegistrationRequest {
         this.state = state;
         this.country = country;
         this.zipcode = zipcode;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -59,6 +61,10 @@ public class RegistrationRequest {
 
     public String getZipcode() {
         return zipcode;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     @Override

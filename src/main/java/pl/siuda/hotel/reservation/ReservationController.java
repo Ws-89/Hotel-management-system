@@ -8,9 +8,9 @@ import java.util.Set;
 @RequestMapping("/reservations")
 public class ReservationController {
 
-    private final IReservationService reservationService;
+    private final ReservationService reservationService;
 
-    public ReservationController(IReservationService reservationService) {
+    public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 

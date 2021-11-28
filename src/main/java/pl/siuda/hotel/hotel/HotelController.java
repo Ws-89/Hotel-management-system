@@ -1,7 +1,12 @@
 package pl.siuda.hotel.hotel;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +45,19 @@ public class HotelController {
     @DeleteMapping("{id}")
     public void deleteHotel(@PathVariable("id")Long id){
         hotelService.deleteHotel(id);
+    }
+
+
+    @PostMapping(value = "/{id}/images/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void uploadHotelImage(@PathVariable("id") Long hotel_id, @RequestParam("file")MultipartFile file){
+        hotelService.uploadHotelImage(hotel_id, file);
+    }
+
+    @GetMapping(value = "/{id}/images/download")
+    public byte[] downloadHotelProfileImage(@PathVariable("id") Long hotel_id) throws IOException {
+        return hotelService.downloadHotelProfileImage(hotel_id);
     }
 
 
