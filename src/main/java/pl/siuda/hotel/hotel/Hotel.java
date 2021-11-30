@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.amazonS3bucket.Image;
+import pl.siuda.hotel.amazonS3bucket.ImageModel;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
@@ -135,6 +136,8 @@ public class Hotel implements Serializable {
     }
 
     public Optional<String> getImageLink() { return Optional.ofNullable(image.getImageLink()); }
+
+
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package pl.siuda.hotel.hotel;
 
 import pl.siuda.hotel.amazonS3bucket.Image;
+import pl.siuda.hotel.amazonS3bucket.ImageModel;
 import pl.siuda.hotel.enums.Grade;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public class HotelDto implements Serializable {
     private String phoneNumber;
     private String email;
     private Grade grade;
-    private String image;
+    private byte[] image;
 
     public static HotelDto hotelToDto(Hotel hotel){
         HotelDto hotelDto = new HotelDto();
@@ -31,6 +32,10 @@ public class HotelDto implements Serializable {
         hotelDto.email = hotel.getEmail();
         hotelDto.grade = hotel.getGrade();
         return hotelDto;
+    }
+
+    public void addImage(byte[] image){
+        this.image = image;
     }
 
     public Long getHotel_id() {

@@ -1,6 +1,5 @@
 package pl.siuda.hotel.admin;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.exception.NotFoundException;
@@ -28,7 +27,7 @@ public class AdminService {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    public List<Admin> adminList(){
+    public List<Admin> findAll(){
         return StreamSupport.stream(adminRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
