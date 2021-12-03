@@ -16,7 +16,7 @@ class AdminRepositoryTest {
 
     @Test
     void findAdminById() {
-        Admin admin = adminRepository.findById(2L).orElseThrow(()-> new NotFoundException("Not found"));
-        assertTrue(admin.)
+
+
     }
 }

@@ -1,5 +1,6 @@
 package pl.siuda.hotel;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 @SpringBootApplication
 @EnableJdbcRepositories
 @EnableSwagger2
+@EnableEncryptableProperties
 public class HotelApplication {
 
 	@Autowired

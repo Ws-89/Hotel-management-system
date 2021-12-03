@@ -106,14 +106,14 @@ class HotelApplicationTests {
 
 	@Test
 	void addReservationToExistingGuest(){
-		Guest guest = guestService.findByEmail("wiktorsiuda3@gmail.com");
+		Guest guest = guestService.findByEmail("wiktorsiuda5@gmail.com");
 
-		Room room = roomService.findByRoomNumberAndHotelId(12, 3L);
-		Room room2 = roomService.findByRoomNumberAndHotelId(11, 3L);
+		Room room = roomService.findByRoomNumberAndHotelId(131, 1L);
+		Room room2 = roomService.findByRoomNumberAndHotelId(130, 1L);
 
 		Reservation reservation2 = new Reservation();
-		reservation2.setFrom_data(LocalDateTime.of(2021, 1, 10, 02,01,1));
-		reservation2.setTo_data(LocalDateTime.of(2021, 1, 15, 02,01,2));
+		reservation2.setFrom_data(LocalDateTime.of(2022, 1, 1, 00,00,1));
+		reservation2.setTo_data(LocalDateTime.of(2022, 1, 5, 00,00,1));
 
 		reservation2.addRoom(room);
 		reservation2.addRoom(room2);
@@ -126,8 +126,8 @@ class HotelApplicationTests {
 	@Test
 	void checkReservation(){
 		AvailabilityRequest availabilityRequest = new AvailabilityRequest();
-		availabilityRequest.setFrom(LocalDateTime.of(2021, 5, 13, 12, 00, 00));
-		availabilityRequest.setTo(LocalDateTime.of(2021, 5, 21, 00, 00, 00));
+		availabilityRequest.setFrom_date(LocalDateTime.of(2021, 5, 13, 12, 00, 00));
+		availabilityRequest.setTo_date(LocalDateTime.of(2021, 5, 21, 00, 00, 00));
 		availabilityRequest.setCity("Leiden");
 
 		System.out.println(reservationService.getAvailability(availabilityRequest));

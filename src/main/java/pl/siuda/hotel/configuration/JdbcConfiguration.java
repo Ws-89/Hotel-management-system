@@ -1,5 +1,6 @@
 package pl.siuda.hotel.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,10 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJdbcRepositories
 public class JdbcConfiguration extends AbstractJdbcConfiguration {
+
+    @Value("${app.datasource.password}")
+    private String getDatasourcePassword;
+
     // NamedParameterJdbcOperations is used internally to submit SQL statements to the database
     @Bean
     NamedParameterJdbcOperations operations() {
@@ -39,7 +44,7 @@ public class JdbcConfiguration extends AbstractJdbcConfiguration {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/hotels?serverTimezone=UTC");
         dataSource.setUsername("root");
-        dataSource.setPassword("haslo123");
+        dataSource.setPassword(getDatasourcePassword);
         return dataSource;
     }
 

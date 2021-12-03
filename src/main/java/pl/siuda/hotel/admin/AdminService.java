@@ -9,7 +9,6 @@ import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -55,8 +54,7 @@ public class AdminService {
                 ApplicationUserRole.ADMIN
         );
 
-        adminRepository.save(admin);
-        return admin;
+        return adminRepository.save(admin);
     }
 
     public Admin updateAdmin(Long id, AdminRequest adminRequest){
