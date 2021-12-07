@@ -31,13 +31,13 @@ public class AdminService {
     }
 
     public Admin getAdminById(Long id){
-        return adminRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found")));
+        return adminRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found", id)));
     }
 
     public Admin save(AdminRequest request){
         boolean userNotExists = customUserDetailsService.userNotExists(request.getEmail());
         if(!userNotExists){
-            throw new NotFoundException("email already in use");
+            throw new IllegalStateException("email already in use");
         }
         boolean isValid = emailValidator.test(request.getEmail());
         if(!isValid){

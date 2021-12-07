@@ -1,11 +1,9 @@
 package pl.siuda.hotel.guest;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.registration.token.ConfirmationToken;
-import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.time.LocalDateTime;
@@ -14,25 +12,26 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+
 @Service
 public class GuestService {
 
-    private final GuestRepo guestRepo;
+    private final GuestRepository guestRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final CustomUserDetailsService customUserDetailsService;
 
-    public GuestService(GuestRepo guestRepo, BCryptPasswordEncoder passwordEncoder, CustomUserDetailsService customUserDetailsService) {
-        this.guestRepo = guestRepo;
+    public GuestService(GuestRepository guestRepository, BCryptPasswordEncoder passwordEncoder, CustomUserDetailsService customUserDetailsService) {
+        this.guestRepository = guestRepository;
         this.passwordEncoder = passwordEncoder;
         this.customUserDetailsService = customUserDetailsService;
     }
 
     public List<Guest> guestList(){
-        return StreamSupport.stream(guestRepo.findAll().spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(guestRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
     public Guest getGuestById(Long id){
-        return guestRepo.findById(id).orElseThrow(()-> new NotFoundException(String.format("Guest with id %s not found")));
+        return guestRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Guest with id %s not found")));
     }
 
     public String signUpGuest(Guest guest){
@@ -53,13 +52,13 @@ public class GuestService {
         );
 
         guest.addConfirmationTokens(confirmationToken);
-        guestRepo.save(guest);
+        guestRepository.save(guest);
 
         return token;
     }
 
     public Guest findByEmail(String email){
-        Guest guest = guestRepo.findByEmail(email);
+        Guest guest = guestRepository.findByEmail(email);
         if(guest == null){
             throw new NotFoundException("username not found");
         }
@@ -67,6 +66,6 @@ public class GuestService {
     }
 
     public Long enableAppUser(Long id) {
-        return guestRepo.enableAppUser(id);
+        return guestRepository.enableAppUser(id);
     }
 }

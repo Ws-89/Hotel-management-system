@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface HotelRepo extends CrudRepository<Hotel, Long> {
+public interface HotelRepository extends CrudRepository<Hotel, Long> {
 
     Optional<Hotel> findByName(String name);
 }

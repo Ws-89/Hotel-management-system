@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.GuestService;
-import pl.siuda.hotel.hotel.HotelRepo;
+import pl.siuda.hotel.hotel.HotelRepository;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
 import pl.siuda.hotel.reservation.ReservationService;
 import pl.siuda.hotel.room.RoomRepo;
@@ -15,7 +15,7 @@ import pl.siuda.hotel.embeddeClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.guest.Guest;
-import pl.siuda.hotel.guest.GuestRepo;
+import pl.siuda.hotel.guest.GuestRepository;
 import pl.siuda.hotel.hotel.Hotel;
 import pl.siuda.hotel.hotel.HotelService;
 import pl.siuda.hotel.reservation.Reservation;
@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 class HotelApplicationTests {
 
 	@Autowired
-	HotelRepo hotelRepository;
+    HotelRepository hotelRepository;
 
 	@Autowired
     HotelService hotelService;
@@ -48,7 +48,7 @@ class HotelApplicationTests {
 	ReservationRepository reservationRepository;
 
 	@Autowired
-	GuestRepo guestRepo;
+    GuestRepository guestRepository;
 
 	@Autowired
 	GuestService guestService;
@@ -118,7 +118,7 @@ class HotelApplicationTests {
 		reservation2.addRoom(room);
 		reservation2.addRoom(room2);
 		guest.addReservation(reservation2);
-		guestRepo.save(guest);
+		guestRepository.save(guest);
 
 
 	}

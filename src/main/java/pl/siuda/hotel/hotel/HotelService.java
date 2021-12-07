@@ -18,13 +18,13 @@ import java.util.stream.StreamSupport;
 @Service
 public class HotelService {
 
-    private final HotelRepo hotelRepo;
+    private final HotelRepository hotelRepository;
     private final RoomRepo roomRepo;
     private final FileStore fileStore;
     private final ImageRepo imageRepo;
 
-    public HotelService(HotelRepo hotelRepo, RoomRepo roomRepo, ImageRepo imageRepo, FileStore fileStore, ImageRepo imageRepo1) {
-        this.hotelRepo = hotelRepo;
+    public HotelService(HotelRepository hotelRepository, RoomRepo roomRepo, ImageRepo imageRepo, FileStore fileStore, ImageRepo imageRepo1) {
+        this.hotelRepository = hotelRepository;
         this.roomRepo = roomRepo;
         this.fileStore = fileStore;
         this.imageRepo = imageRepo1;
@@ -32,7 +32,7 @@ public class HotelService {
 
 
     public List<Hotel> getAllHotels(){
-        return StreamSupport.stream(hotelRepo.findAll().spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(hotelRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
     public Hotel getHotelById(Long id){
@@ -40,24 +40,24 @@ public class HotelService {
     }
 
     public Hotel createHotel(HotelRequest hotelRequest){
-        Optional<Hotel> ifExists = hotelRepo.findByName(hotelRequest.getName());
+        Optional<Hotel> ifExists = hotelRepository.findByName(hotelRequest.getName());
         if(ifExists.isPresent()) {
             throw new IllegalStateException("Hotel already exists");
         }
         Hotel hotel = new Hotel();
         hotelRequest.copyRequestToEntity(hotel);
-        return hotelRepo.save(hotel);
+        return hotelRepository.save(hotel);
     }
 
     public Hotel updateHotel(Long id, HotelRequest hotelRequest){
         Hotel hotel = getHotelByIdOrThrowException(id);
         hotelRequest.copyRequestToEntity(hotel);
-        return hotelRepo.save(hotel);
+        return hotelRepository.save(hotel);
     }
 
     public void deleteHotel(Long id){
         Hotel hotel = getHotelByIdOrThrowException(id);
-        hotelRepo.delete(hotel);
+        hotelRepository.delete(hotel);
         }
 
 
@@ -79,7 +79,7 @@ public class HotelService {
             Image image = new Image(fileName);
 
             hotel.setImage(image);
-            hotelRepo.save(hotel);
+            hotelRepository.save(hotel);
 
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -102,7 +102,7 @@ public class HotelService {
     }
 
     private Hotel getHotelByIdOrThrowException(Long hotel_id) {
-        return hotelRepo.findById(hotel_id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotel_id)));
+        return hotelRepository.findById(hotel_id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotel_id)));
     }
 
     private void isAnImage(MultipartFile file) {

@@ -1,7 +1,7 @@
 package pl.siuda.hotel.room;
 
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.hotel.HotelRepo;
+import pl.siuda.hotel.hotel.HotelRepository;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.hotel.Hotel;
 
@@ -14,9 +14,9 @@ import java.util.stream.StreamSupport;
 public class RoomService {
 
     private final RoomRepo roomRepository;
-    private final HotelRepo hotelRepository;
+    private final HotelRepository hotelRepository;
 
-    public RoomService(RoomRepo roomRepository, HotelRepo hotelRepository) {
+    public RoomService(RoomRepo roomRepository, HotelRepository hotelRepository) {
         this.roomRepository = roomRepository;
         this.hotelRepository = hotelRepository;
     }

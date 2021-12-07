@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.Guest;
-import pl.siuda.hotel.guest.GuestRepo;
+import pl.siuda.hotel.guest.GuestRepository;
 import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.util.JwtUtil;
 
@@ -20,16 +20,16 @@ import pl.siuda.hotel.util.JwtUtil;
 public class JwtUserDetailsService implements UserDetailsService {
 
     private final AdminRepository adminRepository;
-    private final GuestRepo guestRepo;
+    private final GuestRepository guestRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public JwtUserDetailsService(AdminRepository adminRepository, GuestRepo guestRepo) {
+    public JwtUserDetailsService(AdminRepository adminRepository, GuestRepository guestRepository) {
         this.adminRepository = adminRepository;
-        this.guestRepo = guestRepo;
+        this.guestRepository = guestRepository;
     }
 
     public void authenticate(String userName, String userPassword) throws Exception {
@@ -56,7 +56,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Admin admin = adminRepository.findByEmail(email);
-        Guest guest = guestRepo.findByEmail(email);
+        Guest guest = guestRepository.findByEmail(email);
 
         if(admin == null && guest == null){
             throw new UsernameNotFoundException(String.format("Username %s not found", email));
