@@ -7,7 +7,7 @@ import pl.siuda.hotel.amazonS3bucket.Image;
 import pl.siuda.hotel.amazonS3bucket.ImageRepo;
 import pl.siuda.hotel.amazonS3bucket.bucket.BucketName;
 import pl.siuda.hotel.amazonS3bucket.filestore.FileStore;
-import pl.siuda.hotel.room.RoomRepo;
+import pl.siuda.hotel.room.RoomRepository;
 import pl.siuda.hotel.exception.NotFoundException;
 
 import java.io.IOException;
@@ -19,21 +19,21 @@ import java.util.stream.StreamSupport;
 public class HotelService {
 
     private final HotelRepository hotelRepository;
-    private final RoomRepo roomRepo;
+    private final RoomRepository roomRepository;
     private final FileStore fileStore;
     private final ImageRepo imageRepo;
 
-    public HotelService(HotelRepository hotelRepository, RoomRepo roomRepo, ImageRepo imageRepo, FileStore fileStore, ImageRepo imageRepo1) {
+    public HotelService(HotelRepository hotelRepository, RoomRepository roomRepository, ImageRepo imageRepo, FileStore fileStore, ImageRepo imageRepo1) {
         this.hotelRepository = hotelRepository;
-        this.roomRepo = roomRepo;
+        this.roomRepository = roomRepository;
         this.fileStore = fileStore;
         this.imageRepo = imageRepo1;
     }
 
-
     public List<Hotel> getAllHotels(){
         return StreamSupport.stream(hotelRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
+
 
     public Hotel getHotelById(Long id){
         return getHotelByIdOrThrowException(id);
@@ -62,13 +62,13 @@ public class HotelService {
 
 
     public void uploadHotelImage(Long hotel_id, MultipartFile file) {
-        isFileEmpty(file);
+        fileStore.isFileEmpty(file);
 
-        isAnImage(file);
+        fileStore.isAnImage(file);
 
         Hotel hotel = getHotelByIdOrThrowException(hotel_id);
 
-        Map<String, String> metadata = extractMetadata(file);
+        Map<String, String> metadata = fileStore.extractMetadata(file);
 
         String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), hotel.getHotel_id());
         String fileName = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
@@ -94,26 +94,9 @@ public class HotelService {
                 .orElse(new byte[0]);
     }
 
-    private Map<String, String> extractMetadata(MultipartFile file) {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("Content-Type", file.getContentType());
-        metadata.put("Content-Size", String.valueOf(file.getSize()));
-        return metadata;
-    }
-
     private Hotel getHotelByIdOrThrowException(Long hotel_id) {
         return hotelRepository.findById(hotel_id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotel_id)));
     }
 
-    private void isAnImage(MultipartFile file) {
-        if(!Arrays.asList(ContentType.IMAGE_JPEG.getMimeType(), ContentType.IMAGE_PNG.getMimeType(), ContentType.IMAGE_GIF.getMimeType()).contains(file.getContentType()))
-            throw new IllegalStateException("File must be an image [" + file.getContentType() + "]");
-    }
-
-    private void isFileEmpty(MultipartFile file) {
-        if(file.isEmpty()) {
-            throw new IllegalStateException("Cannot upload empty file [" + file.getSize() + "]");
-        }
-    }
 }
 

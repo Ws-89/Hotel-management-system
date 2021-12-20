@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface RoomRepo extends CrudRepository<Room, Long> {
+public interface RoomRepository extends CrudRepository<Room, Long> {
 
     public Optional<Room> findByNumber(Integer id);
 

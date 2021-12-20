@@ -16,6 +16,21 @@ public class HotelRequest {
     private String email;
     private Grade grade;
 
+    public HotelRequest() {
+    }
+
+    public HotelRequest(String name, String street, String city, String state, String country, String zipcode, String phoneNumber, String email, Grade grade) {
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.zipcode = zipcode;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.grade = grade;
+    }
+
     public void copyRequestToEntity(Hotel hotel){
         hotel.setName(name);
         Address address = new Address();

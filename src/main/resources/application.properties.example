@@ -1,10 +1,10 @@
 server.port=8085
 
-app.datasource.password=haslo123
+app.datasource.password=must be filled
 spring.profiles.active=test
 
-app.amazon.accesskey=AKIAUYMTHCSQG7TQGPE3
-app.amazon.secretkey=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
+app.amazon.accesskey=must be filled
+app.amazon.secretkey=must be filled
 
 app.jwt.secret=82DF213A1C816E9BF6CCA40F0CCE17130E06CEA94851C175CC6D3EF8723D7978
 

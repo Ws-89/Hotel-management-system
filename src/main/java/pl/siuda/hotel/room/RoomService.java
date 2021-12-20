@@ -13,10 +13,10 @@ import java.util.stream.StreamSupport;
 @Service
 public class RoomService {
 
-    private final RoomRepo roomRepository;
+    private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository;
 
-    public RoomService(RoomRepo roomRepository, HotelRepository hotelRepository) {
+    public RoomService(RoomRepository roomRepository, HotelRepository hotelRepository) {
         this.roomRepository = roomRepository;
         this.hotelRepository = hotelRepository;
     }

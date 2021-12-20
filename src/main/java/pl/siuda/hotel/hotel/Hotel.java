@@ -35,6 +35,21 @@ public class Hotel implements Serializable {
     public Hotel() {
     }
 
+    public Hotel(Long hotel_id, String name, Address address, Contact contact, Grade grade) {
+        this.hotel_id = hotel_id;
+        this.name = name;
+        this.address = address;
+        this.contact = contact;
+        this.grade = grade;
+    }
+
+    public Hotel(String name, Address address, Contact contact, Grade grade) {
+        this.name = name;
+        this.address = address;
+        this.contact = contact;
+        this.grade = grade;
+    }
+
     public Image getImage() {
         return image;
     }

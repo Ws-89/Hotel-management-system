@@ -4,11 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.siuda.hotel.email.EmailSender;
 import pl.siuda.hotel.embeddeClasses.Address;
+import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.registration.token.ConfirmationToken;
 import pl.siuda.hotel.registration.token.ConfirmationTokenService;
 import pl.siuda.hotel.security.ApplicationUserRole;
+import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +30,7 @@ public class RegistrationService {
     }
 
     public void register(RegistrationRequest request){
+
         boolean isValidEmail = emailValidator.test(request.getEmail());
         if(!isValidEmail){
             throw new IllegalStateException("email not valid");

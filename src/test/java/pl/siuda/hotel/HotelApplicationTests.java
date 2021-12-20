@@ -9,7 +9,7 @@ import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.hotel.HotelRepository;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
 import pl.siuda.hotel.reservation.ReservationService;
-import pl.siuda.hotel.room.RoomRepo;
+import pl.siuda.hotel.room.RoomRepository;
 import pl.siuda.hotel.embeddeClasses.Address;
 import pl.siuda.hotel.embeddeClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
@@ -39,7 +39,7 @@ class HotelApplicationTests {
     HotelService hotelService;
 
 	@Autowired
-	RoomRepo roomRepo;
+	RoomRepository roomRepository;
 
 	@Autowired
 	RoomService roomService;

@@ -39,6 +39,29 @@ public class Guest implements UserDetails, Serializable {
     public Guest() {
     }
 
+    public Guest(Long guest_id, String firstName, String lastName, String email, String password, Address address, String phoneNumber, ApplicationUserRole applicationUserRole) {
+        this.guest_id = guest_id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.applicationUserRole = applicationUserRole;
+    }
+
+    public Guest(String firstName, String lastName, String email, String password, Address address, String phoneNumber, Boolean enabled,  ApplicationUserRole applicationUserRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.enabled = enabled;
+        this.applicationUserRole = applicationUserRole;
+    }
+
+
     public Guest(String firstName, String lastName, String email, String password, Address address, String phoneNumber, ApplicationUserRole applicationUserRole) {
         this.firstName = firstName;
         this.lastName = lastName;

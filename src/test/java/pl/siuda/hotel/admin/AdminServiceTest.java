@@ -40,8 +40,6 @@ class AdminServiceTest {
     @Mock(name = "bCryptPasswordEncoder")
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-
     @Test
     void injectedComponentsAreNotNull(){
         assertThat(adminService).isNotNull();
@@ -50,9 +48,6 @@ class AdminServiceTest {
         assertThat(emailValidator).isNotNull();
         assertThat(bCryptPasswordEncoder).isNotNull();
     }
-
-
-
 
     @Test
     void adminListReturnsCorrectSize() {
@@ -83,34 +78,15 @@ class AdminServiceTest {
     }
 
     @Test
-    void adminListSizeReturnsFalseNumber() {
-        // given
-        List<Admin> adminList = Arrays.asList(
-                new Admin("Jon", "Doe", "jondoe@gmail.com", "pass123", ApplicationUserRole.ADMIN),
-                new Admin( "Kevin", "Smith", "kevinsmith@gmail.com", "pass123", ApplicationUserRole.ADMIN),
-                new Admin("Anna", "Adams", "annaadams@gmail.com", "pass123", ApplicationUserRole.ADMIN),
-                new Admin("Kathrine", "Brown", "katherinebrown@gmail.com", "pass123", ApplicationUserRole.ADMIN)
-        );
-
-        // when
-        when(adminRepository.findAll()).thenReturn(adminList);
-        List<Admin> list = adminService.findAll();
-
-        // then
-        assertNotEquals(3, list.size());
-    }
-
-    @Test
     void findAdminById() {
         // given
         Admin Kevin = new Admin(2L, "Kevin", "Smith", "kevinsmith@gmail.com", "password123", ApplicationUserRole.ADMIN);
         // when
         when(adminRepository.findById(2L)).thenReturn(java.util.Optional
                 .of(Kevin));
-        Optional<Admin> optionalAdmin = Optional.ofNullable(adminService.getAdminById(2L));
+       Admin admin = adminService.getAdminById(2L);
         // then
-        assertThat(optionalAdmin.isPresent()).isTrue();
-        Admin admin = optionalAdmin.get();
+
         assertThat(admin.getAdmin_id()).isEqualTo(2L);
         assertThat(admin.getFirstName()).isEqualTo("Kevin");
         assertThat(admin.getLastName()).isEqualTo("Smith");
@@ -129,28 +105,28 @@ class AdminServiceTest {
     }
 
     @Test
-    void saveKevin() {
+    void saveAdmin() {
         // given
         AdminRequest Kevin = new AdminRequest("Kevin", "Smith", "kevinsmith@gmail.com", "pass123");
         // when
         when(customUserDetailsService.userNotExists("kevinsmith@gmail.com")).thenReturn(true);
         when(emailValidator.test("kevinsmith@gmail.com")).thenReturn(true);
-        when(bCryptPasswordEncoder.encode("pass123")).thenReturn("pass123");
+        when(bCryptPasswordEncoder.encode("pass123")).thenReturn("1");
         adminService.save(Kevin);
 
         // then
         ArgumentCaptor<Admin> adminArgumentCaptor = ArgumentCaptor.forClass(Admin.class);
         verify(adminRepository).save(adminArgumentCaptor.capture());
 
-        Admin capturedAdmin = adminArgumentCaptor.getValue();
-        assertThat(capturedAdmin.getFirstName()).isEqualTo(Kevin.getFirstName());
-        assertThat(capturedAdmin.getLastName()).isEqualTo(Kevin.getLastName());
-        assertThat(capturedAdmin.getEmail()).isEqualTo(Kevin.getEmail());
-        assertThat(capturedAdmin.getPassword()).isEqualTo(Kevin.getPassword());
+        Admin argumentCaptorValue = adminArgumentCaptor.getValue();
+        assertThat(argumentCaptorValue.getFirstName()).isEqualTo(Kevin.getFirstName());
+        assertThat(argumentCaptorValue.getLastName()).isEqualTo(Kevin.getLastName());
+        assertThat(argumentCaptorValue.getEmail()).isEqualTo(Kevin.getEmail());
+        assertThat(argumentCaptorValue.getPassword()).isEqualTo("1");
     }
 
     @Test
-    void saveKevinThrowsExceptionEmailAlreadyExists() {
+    void saveAdminThrowsExceptionEmailAlreadyExists() {
         // given
         AdminRequest Kevin = new AdminRequest("Kevin", "Smith", "kevinsmith@gmail.com", "pass123");
         // when
@@ -161,7 +137,7 @@ class AdminServiceTest {
     }
 
     @Test
-    void saveKevinThrowsExceptionEmailIsNotValid() {
+    void saveAdminThrowsExceptionEmailIsNotValid() {
         // given
         AdminRequest Kevin = new AdminRequest("Kevin", "Smith", "kevinsmith@gmail.com", "pass123");
         // when
@@ -173,29 +149,6 @@ class AdminServiceTest {
         assertThrows(IllegalStateException.class, () -> adminService.save(Kevin));
     }
 
-
-
-    @Test
-    void saveAnna() {
-        // given
-        AdminRequest Anna = new AdminRequest("Anna", "Adams", "annaadams@gmail.com", "pass123");
-        // when
-        when(customUserDetailsService.userNotExists("annaadams@gmail.com")).thenReturn(true);
-        when(emailValidator.test("annaadams@gmail.com")).thenReturn(true);
-        when(bCryptPasswordEncoder.encode("pass123")).thenReturn("pass123");
-        adminService.save(Anna);
-
-        // then
-        ArgumentCaptor<Admin> adminArgumentCaptor = ArgumentCaptor.forClass(Admin.class);
-        verify(adminRepository).save(adminArgumentCaptor.capture());
-
-        Admin capturedAdmin = adminArgumentCaptor.getValue();
-        assertThat(capturedAdmin.getFirstName()).isEqualTo(Anna.getFirstName());
-        assertThat(capturedAdmin.getLastName()).isEqualTo(Anna.getLastName());
-        assertThat(capturedAdmin.getEmail()).isEqualTo(Anna.getEmail());
-        assertThat(capturedAdmin.getPassword()).isEqualTo(Anna.getPassword());
-    }
-
     @Test
     void updateAdmin() {
         // given
@@ -204,9 +157,6 @@ class AdminServiceTest {
         AdminRequest adminRequest = new AdminRequest("updatedKevin", "updatedSmith", "updatedkevinsmith@gmail.com", "pass1234");
         // when
         when(adminRepository.findById(2L)).thenReturn(Optional.of(Kevin));
-        Optional<Admin> optionalAdmin = adminRepository.findById(2L);
-        assertThat(optionalAdmin.isPresent()).isTrue();
-        Admin admin = optionalAdmin.get();
         adminService.updateAdmin(2L, adminRequest);
 
         // then
@@ -227,19 +177,16 @@ class AdminServiceTest {
 
         // when
         when(adminRepository.findById(2L)).thenReturn(Optional.of(Kevin));
-        Optional<Admin> optionalAdmin = adminRepository.findById(2L);
-        assertThat(optionalAdmin.isPresent()).isTrue();
-        Admin admin = optionalAdmin.get();
         adminService.deleteAdmin(2L);
         // then
 
         ArgumentCaptor<Admin> adminArgumentCaptor = ArgumentCaptor.forClass(Admin.class);
         verify(adminRepository).delete(adminArgumentCaptor.capture());
 
-        Admin capturedAdmin = adminArgumentCaptor.getValue();
-        assertThat(capturedAdmin.getFirstName()).isEqualTo(admin.getFirstName());
-        assertThat(capturedAdmin.getLastName()).isEqualTo(admin.getLastName());
-        assertThat(capturedAdmin.getEmail()).isEqualTo(admin.getEmail());
-        assertThat(capturedAdmin.getPassword()).isEqualTo(admin.getPassword());
+        Admin adminArgumentCaptorValue = adminArgumentCaptor.getValue();
+        assertThat(adminArgumentCaptorValue.getFirstName()).isEqualTo(Kevin.getFirstName());
+        assertThat(adminArgumentCaptorValue.getLastName()).isEqualTo(Kevin.getLastName());
+        assertThat(adminArgumentCaptorValue.getEmail()).isEqualTo(Kevin.getEmail());
+        assertThat(adminArgumentCaptorValue.getPassword()).isEqualTo(Kevin.getPassword());
     }
 }

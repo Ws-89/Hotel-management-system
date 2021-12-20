@@ -3,6 +3,7 @@ package pl.siuda.hotel.guest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.exception.NotFoundException;
+import pl.siuda.hotel.registration.EmailValidator;
 import pl.siuda.hotel.registration.token.ConfirmationToken;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
@@ -17,12 +18,14 @@ import java.util.stream.StreamSupport;
 public class GuestService {
 
     private final GuestRepository guestRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmailValidator emailValidator;
     private final CustomUserDetailsService customUserDetailsService;
 
-    public GuestService(GuestRepository guestRepository, BCryptPasswordEncoder passwordEncoder, CustomUserDetailsService customUserDetailsService) {
+    public GuestService(GuestRepository guestRepository, BCryptPasswordEncoder bCryptPasswordEncoder, EmailValidator emailValidator, CustomUserDetailsService customUserDetailsService) {
         this.guestRepository = guestRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.emailValidator = emailValidator;
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -40,7 +43,7 @@ public class GuestService {
             throw new NotFoundException("email already in use");
         }
 
-        String encodedPassword = passwordEncoder.encode(guest.getPassword());
+        String encodedPassword = bCryptPasswordEncoder.encode(guest.getPassword());
 
         guest.setPassword(encodedPassword);
 
@@ -68,4 +71,8 @@ public class GuestService {
     public Long enableAppUser(Long id) {
         return guestRepository.enableAppUser(id);
     }
+
+    // todo: update user
+
+    // todo: delete user
 }
