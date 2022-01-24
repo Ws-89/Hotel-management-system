@@ -1,6 +1,5 @@
 package pl.siuda.hotel.guest;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -8,8 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.siuda.hotel.embeddeClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
@@ -17,7 +15,6 @@ import pl.siuda.hotel.security.CustomUserDetailsService;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;

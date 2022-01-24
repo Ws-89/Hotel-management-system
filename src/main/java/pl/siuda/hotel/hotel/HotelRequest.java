@@ -1,8 +1,7 @@
 package pl.siuda.hotel.hotel;
 
-import org.checkerframework.checker.units.qual.C;
-import pl.siuda.hotel.embeddeClasses.Address;
-import pl.siuda.hotel.embeddeClasses.Contact;
+import pl.siuda.hotel.embeddedClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 
 public class HotelRequest {

@@ -1,4 +1,4 @@
-package pl.siuda.hotel.embeddeClasses;
+package pl.siuda.hotel.embeddedClasses;
 
 import org.springframework.data.relational.core.mapping.Column;
 

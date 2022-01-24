@@ -4,9 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.amazonS3bucket.Image;
-import pl.siuda.hotel.amazonS3bucket.ImageModel;
-import pl.siuda.hotel.embeddeClasses.Address;
-import pl.siuda.hotel.embeddeClasses.Contact;
+import pl.siuda.hotel.embeddedClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.room.Room;
 

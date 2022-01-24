@@ -12,5 +12,5 @@ public interface IReservation {
     // throws exception
     Reservation makeReservation(ReservationRequest request);
 
-    void cancelReservation();
+    void cancelReservation(Long reservation_id);
 }

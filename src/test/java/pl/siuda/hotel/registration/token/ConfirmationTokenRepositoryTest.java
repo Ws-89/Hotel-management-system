@@ -4,19 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import pl.siuda.hotel.embeddeClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestRepository;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

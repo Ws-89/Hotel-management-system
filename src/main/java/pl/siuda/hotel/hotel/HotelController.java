@@ -27,7 +27,7 @@ public class HotelController {
 
     @GetMapping("{id}")
     public HotelDto getHotelById(@PathVariable("id")Long id){
-        return HotelDto.hotelToDto(hotelService.getHotelById(id));
+        return HotelDto.hotelToDto(hotelService.NullSafeGetHotelById(id));
     }
 
     @PostMapping
