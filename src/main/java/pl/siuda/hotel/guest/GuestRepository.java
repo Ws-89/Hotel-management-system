@@ -10,7 +10,7 @@ import pl.siuda.hotel.admin.Admin;
 import java.util.Optional;
 
 @Repository
-public interface GuestRepo extends CrudRepository<Guest, Long> {
+public interface GuestRepository extends CrudRepository<Guest, Long> {
 
     Guest findByEmail(String email);
 

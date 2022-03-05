@@ -1,7 +1,7 @@
 package pl.siuda.hotel.registration.token;
 
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.guest.GuestRepo;
+import pl.siuda.hotel.guest.GuestRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -10,11 +10,11 @@ import java.util.Optional;
 public class ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final GuestRepo guestRepo;
+    private final GuestRepository guestRepository;
 
-    public ConfirmationTokenService(ConfirmationTokenRepository confirmationTokenRepository, GuestRepo guestRepo) {
+    public ConfirmationTokenService(ConfirmationTokenRepository confirmationTokenRepository, GuestRepository guestRepository) {
         this.confirmationTokenRepository = confirmationTokenRepository;
-        this.guestRepo = guestRepo;
+        this.guestRepository = guestRepository;
     }
 
     public void saveConfirmationToken(ConfirmationToken token) {

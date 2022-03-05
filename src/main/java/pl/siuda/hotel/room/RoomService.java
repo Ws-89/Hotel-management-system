@@ -1,7 +1,7 @@
 package pl.siuda.hotel.room;
 
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.hotel.HotelRepo;
+import pl.siuda.hotel.hotel.HotelRepository;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.hotel.Hotel;
 
@@ -13,10 +13,10 @@ import java.util.stream.StreamSupport;
 @Service
 public class RoomService {
 
-    private final RoomRepo roomRepository;
-    private final HotelRepo hotelRepository;
+    private final RoomRepository roomRepository;
+    private final HotelRepository hotelRepository;
 
-    public RoomService(RoomRepo roomRepository, HotelRepo hotelRepository) {
+    public RoomService(RoomRepository roomRepository, HotelRepository hotelRepository) {
         this.roomRepository = roomRepository;
         this.hotelRepository = hotelRepository;
     }
@@ -26,8 +26,7 @@ public class RoomService {
     }
 
     public Room getRoomById(Long id){
-        return roomRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Room with id %s not found", id)));
+        return getRoomByIdOrElseThrowException(id);
     }
 
     public Room getRoomByNumber(Integer number){
@@ -36,8 +35,7 @@ public class RoomService {
     }
 
     public Room updateRoom(Long id, RoomRequest roomRequest){
-        Room room = roomRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Room with id %s not found", id)));
+        Room room = getRoomByIdOrElseThrowException(id);
         roomRequest.copyRequestToEntity(room);
         return roomRepository.save(room);
     }
@@ -70,6 +68,11 @@ public class RoomService {
     public Room findByRoomNumberAndHotelId(Integer room_number, Long hotel_id){
         return roomRepository.findByRoomNumberAndHotelId(room_number, hotel_id)
                 .orElseThrow(() -> new NotFoundException(String.format("Room with number %s not found in hotel with %s id", room_number, hotel_id)));
+    }
+
+    private Room getRoomByIdOrElseThrowException(Long id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Room with id %s not found", id)));
     }
 
 }

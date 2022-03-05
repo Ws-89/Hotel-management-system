@@ -1,22 +1,21 @@
 package pl.siuda.hotel.reservation;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class AvailabilityRequest {
 
     private String city;
     private Integer roomAmmount;
     private Integer partySize;
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private LocalDateTime from_date;
+    private LocalDateTime to_date;
 
-    public AvailabilityRequest(String city, Integer roomAmmount, Integer partySize, LocalDateTime from, LocalDateTime to) {
+    public AvailabilityRequest(String city, Integer roomAmmount, Integer partySize, LocalDateTime from_date, LocalDateTime to_date) {
         this.city = city;
         this.roomAmmount = roomAmmount;
         this.partySize = partySize;
-        this.from = from;
-        this.to = to;
+        this.from_date = from_date;
+        this.to_date = to_date;
     }
 
     public AvailabilityRequest() {
@@ -46,19 +45,19 @@ public class AvailabilityRequest {
         this.partySize = partySize;
     }
 
-    public LocalDateTime getFrom() {
-        return from;
+    public LocalDateTime getFrom_date() {
+        return from_date;
     }
 
-    public void setFrom(LocalDateTime from) {
-        this.from = from;
+    public void setFrom_date(LocalDateTime from_date) {
+        this.from_date = from_date;
     }
 
-    public LocalDateTime getTo() {
-        return to;
+    public LocalDateTime getTo_date() {
+        return to_date;
     }
 
-    public void setTo(LocalDateTime to) {
-        this.to = to;
+    public void setTo_date(LocalDateTime to_date) {
+        this.to_date = to_date;
     }
 }

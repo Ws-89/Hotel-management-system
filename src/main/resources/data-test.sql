@@ -1,0 +1,2 @@
+INSERT INTO guest (first_name, last_name, email, password, locked, enabled, application_user_role, street, city, state, country, zipcode)
+VALUES ('a', 'a', 'aaaa@gmail.com', 'aaaaa', 0, 1, 'GUEST', 'aa', 'aa', 'aa', 'aa', 123)

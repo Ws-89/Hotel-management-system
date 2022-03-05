@@ -3,7 +3,7 @@ package pl.siuda.hotel.registration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.siuda.hotel.email.EmailSender;
-import pl.siuda.hotel.embeddeClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.registration.token.ConfirmationToken;
@@ -27,7 +27,8 @@ public class RegistrationService {
         this.confirmationTokenService = confirmationTokenService;
     }
 
-    public String register(RegistrationRequest request){
+    public void register(RegistrationRequest request){
+
         boolean isValidEmail = emailValidator.test(request.getEmail());
         if(!isValidEmail){
             throw new IllegalStateException("email not valid");
@@ -43,6 +44,7 @@ public class RegistrationService {
                                 request.getState(),
                                 request.getCountry(),
                                 request.getZipcode()),
+                        request.getPhoneNumber(),
                         ApplicationUserRole.GUEST
                 )
         );
@@ -50,7 +52,7 @@ public class RegistrationService {
         emailSender.send(
                 request.getEmail(),
                 buildEmail(request.getFirstName(), link));
-        return token;
+
     }
 
     @Transactional

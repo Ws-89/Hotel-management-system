@@ -1,58 +1,66 @@
 package pl.siuda.hotel.hotel;
 
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.room.RoomRepo;
+import org.springframework.web.multipart.MultipartFile;
+import pl.siuda.hotel.amazonS3bucket.Image;
+import pl.siuda.hotel.amazonS3bucket.ImageRepo;
+import pl.siuda.hotel.amazonS3bucket.bucket.BucketName;
+import pl.siuda.hotel.amazonS3bucket.filestore.FileStore;
+import pl.siuda.hotel.room.RoomRepository;
 import pl.siuda.hotel.exception.NotFoundException;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
 public class HotelService {
 
-    private final HotelRepo hotelRepo;
-    private final RoomRepo roomRepo;
+    private final HotelRepository hotelRepository;
+    private final RoomRepository roomRepository;
+    private final FileStore fileStore;
+    private final ImageRepo imageRepo;
 
-    public HotelService(HotelRepo hotelRepo, RoomRepo roomRepo) {
-        this.hotelRepo = hotelRepo;
-        this.roomRepo = roomRepo;
+    public HotelService(HotelRepository hotelRepository, RoomRepository roomRepository, ImageRepo imageRepo, FileStore fileStore, ImageRepo imageRepo1) {
+        this.hotelRepository = hotelRepository;
+        this.roomRepository = roomRepository;
+        this.fileStore = fileStore;
+        this.imageRepo = imageRepo;
     }
-
 
     public List<Hotel> getAllHotels(){
-        return StreamSupport.stream(hotelRepo.findAll().spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(hotelRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public Hotel getHotelById(Long id){
-        return hotelRepo.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
+    public Hotel NullSafeGetHotelById(Long hotel_id) {
+        return hotelRepository.findById(hotel_id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotel_id)));
     }
 
     public Hotel createHotel(HotelRequest hotelRequest){
-        Optional<Hotel> ifExists = hotelRepo.findByName(hotelRequest.getName());
+        Optional<Hotel> ifExists = hotelRepository.findByName(hotelRequest.getName());
         if(ifExists.isPresent()) {
             throw new IllegalStateException("Hotel already exists");
         }
         Hotel hotel = new Hotel();
         hotelRequest.copyRequestToEntity(hotel);
-        return hotelRepo.save(hotel);
+        return hotelRepository.save(hotel);
     }
 
     public Hotel updateHotel(Long id, HotelRequest hotelRequest){
-        Hotel hotel = hotelRepo.findById(id)
-                .orElseThrow(()-> new NotFoundException(String.format("Hotel with id %s not found", id)));
+        Hotel hotel = NullSafeGetHotelById(id);
         hotelRequest.copyRequestToEntity(hotel);
-        return hotelRepo.save(hotel);
+        return hotelRepository.save(hotel);
+    }
+
+    public Hotel updateHotel(Hotel hotel){
+        return hotelRepository.save(hotel);
     }
 
     public void deleteHotel(Long id){
-        Hotel hotel = hotelRepo.findById(id).orElseThrow(()-> new NotFoundException(String.format("Hotel with id %s not found", id)));
-        hotelRepo.delete(hotel);
-        }
-
-
+        Hotel hotel = NullSafeGetHotelById(id);
+        hotelRepository.delete(hotel);
+    }
 
 }
 

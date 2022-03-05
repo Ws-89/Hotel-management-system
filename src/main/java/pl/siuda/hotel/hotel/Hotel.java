@@ -3,14 +3,15 @@ package pl.siuda.hotel.hotel;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
-import pl.siuda.hotel.admin.Admin;
-import pl.siuda.hotel.embeddeClasses.Address;
-import pl.siuda.hotel.embeddeClasses.Contact;
+import pl.siuda.hotel.amazonS3bucket.Image;
+import pl.siuda.hotel.embeddedClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.room.Room;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class Hotel implements Serializable {
@@ -27,10 +28,34 @@ public class Hotel implements Serializable {
     private Set<OpeningTimes> openingTimes = new HashSet<>();
     @MappedCollection(idColumn = "HOTEL_ID")
     private Set<Room> rooms = new HashSet<>();
+    @MappedCollection(idColumn = "HOTEL_ID")
+    private Image image;
 
     public Hotel() {
     }
 
+    public Hotel(Long hotel_id, String name, Address address, Contact contact, Grade grade) {
+        this.hotel_id = hotel_id;
+        this.name = name;
+        this.address = address;
+        this.contact = contact;
+        this.grade = grade;
+    }
+
+    public Hotel(String name, Address address, Contact contact, Grade grade) {
+        this.name = name;
+        this.address = address;
+        this.contact = contact;
+        this.grade = grade;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
     public Long getHotel_id() {
         return hotel_id;
@@ -123,6 +148,10 @@ public class Hotel implements Serializable {
     public String getEmail(){
         return contact.getEmail();
     }
+
+    public Optional<String> getImageLink() { return Optional.ofNullable(image.getImageLink()); }
+
+
 
     @Override
     public String toString() {

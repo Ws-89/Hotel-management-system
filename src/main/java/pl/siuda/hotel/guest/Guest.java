@@ -5,9 +5,8 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.siuda.hotel.embeddeClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.registration.token.ConfirmationToken;
 import pl.siuda.hotel.reservation.Reservation;
 import pl.siuda.hotel.security.ApplicationUserRole;
@@ -31,21 +30,53 @@ public class Guest implements UserDetails, Serializable {
     private ApplicationUserRole applicationUserRole;
     @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private Address address;
+    private String phoneNumber;
     @MappedCollection(keyColumn = "GUEST_ID", idColumn = "GUEST_ID")
     private Set<ConfirmationToken> confirmationTokens = new HashSet<>();
 
     public Guest() {
     }
 
-    public Guest(String firstName, String lastName, String email, String password, Address address, ApplicationUserRole applicationUserRole) {
+    public Guest(Long guest_id, String firstName, String lastName, String email, String password, Address address, String phoneNumber, ApplicationUserRole applicationUserRole) {
+        this.guest_id = guest_id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.address = address;
+        this.phoneNumber = phoneNumber;
         this.applicationUserRole = applicationUserRole;
     }
 
+    public Guest(String firstName, String lastName, String email, String password, Address address, String phoneNumber, Boolean enabled,  ApplicationUserRole applicationUserRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.enabled = enabled;
+        this.applicationUserRole = applicationUserRole;
+    }
+
+
+    public Guest(String firstName, String lastName, String email, String password, Address address, String phoneNumber, ApplicationUserRole applicationUserRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.applicationUserRole = applicationUserRole;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public Set<ConfirmationToken> getConfirmationTokens() {
         return confirmationTokens;

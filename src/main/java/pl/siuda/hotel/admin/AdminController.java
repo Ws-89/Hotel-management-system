@@ -17,7 +17,7 @@ public class AdminController {
 
     @GetMapping
     public List<AdminDto> getAllAdmins(){
-        return adminService.adminList().stream().map(AdminDto::adminToDto).collect(Collectors.toList());
+        return adminService.findAll().stream().map(AdminDto::adminToDto).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")

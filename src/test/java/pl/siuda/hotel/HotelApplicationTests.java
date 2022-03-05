@@ -4,19 +4,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.GuestService;
-import pl.siuda.hotel.hotel.HotelRepo;
+import pl.siuda.hotel.hotel.HotelRepository;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
-import pl.siuda.hotel.reservation.IReservationService;
-import pl.siuda.hotel.room.RoomRepo;
-import pl.siuda.hotel.embeddeClasses.Address;
-import pl.siuda.hotel.embeddeClasses.Contact;
+import pl.siuda.hotel.reservation.ReservationService;
+import pl.siuda.hotel.room.RoomRepository;
+import pl.siuda.hotel.embeddedClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.guest.Guest;
-import pl.siuda.hotel.guest.GuestRepo;
+import pl.siuda.hotel.guest.GuestRepository;
 import pl.siuda.hotel.hotel.Hotel;
 import pl.siuda.hotel.hotel.HotelService;
 import pl.siuda.hotel.reservation.Reservation;
@@ -34,13 +33,13 @@ import java.time.LocalDateTime;
 class HotelApplicationTests {
 
 	@Autowired
-	HotelRepo hotelRepository;
+    HotelRepository hotelRepository;
 
 	@Autowired
     HotelService hotelService;
 
 	@Autowired
-	RoomRepo roomRepo;
+	RoomRepository roomRepository;
 
 	@Autowired
 	RoomService roomService;
@@ -49,13 +48,13 @@ class HotelApplicationTests {
 	ReservationRepository reservationRepository;
 
 	@Autowired
-	GuestRepo guestRepo;
+    GuestRepository guestRepository;
 
 	@Autowired
 	GuestService guestService;
 
 	@Autowired
-	IReservationService reservationService;
+    ReservationService reservationService;
 
 	@Autowired
 	AdminRepository adminRepository;
@@ -107,19 +106,19 @@ class HotelApplicationTests {
 
 	@Test
 	void addReservationToExistingGuest(){
-		Guest guest = guestService.findByEmail("wiktorsiuda3@gmail.com");
+		Guest guest = guestService.findByEmail("wiktorsiuda5@gmail.com");
 
-		Room room = roomService.findByRoomNumberAndHotelId(12, 3L);
-		Room room2 = roomService.findByRoomNumberAndHotelId(11, 3L);
+		Room room = roomService.findByRoomNumberAndHotelId(131, 1L);
+		Room room2 = roomService.findByRoomNumberAndHotelId(130, 1L);
 
 		Reservation reservation2 = new Reservation();
-		reservation2.setFrom_data(LocalDateTime.of(2021, 1, 10, 02,01,1));
-		reservation2.setTo_data(LocalDateTime.of(2021, 1, 15, 02,01,2));
+		reservation2.setFrom_data(LocalDateTime.of(2022, 1, 1, 00,00,1));
+		reservation2.setTo_data(LocalDateTime.of(2022, 1, 5, 00,00,1));
 
 		reservation2.addRoom(room);
 		reservation2.addRoom(room2);
 		guest.addReservation(reservation2);
-		guestRepo.save(guest);
+		guestRepository.save(guest);
 
 
 	}
@@ -127,8 +126,8 @@ class HotelApplicationTests {
 	@Test
 	void checkReservation(){
 		AvailabilityRequest availabilityRequest = new AvailabilityRequest();
-		availabilityRequest.setFrom(LocalDateTime.of(2021, 5, 13, 12, 00, 00));
-		availabilityRequest.setTo(LocalDateTime.of(2021, 5, 21, 00, 00, 00));
+		availabilityRequest.setFrom_date(LocalDateTime.of(2021, 5, 13, 12, 00, 00));
+		availabilityRequest.setTo_date(LocalDateTime.of(2021, 5, 21, 00, 00, 00));
 		availabilityRequest.setCity("Leiden");
 
 		System.out.println(reservationService.getAvailability(availabilityRequest));

@@ -8,9 +8,9 @@ import java.util.Set;
 @RequestMapping("/reservations")
 public class ReservationController {
 
-    private final IReservationService reservationService;
+    private final ReservationService reservationService;
 
-    public ReservationController(IReservationService reservationService) {
+    public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
@@ -20,7 +20,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public Set<Availability> getAvailability(@RequestBody AvailabilityRequest request){
+    public Set<Offert> getAvailability(@RequestBody AvailabilityRequest request){
         return reservationService.getAvailability(request);
     }
 

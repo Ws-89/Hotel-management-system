@@ -1,9 +1,5 @@
 package pl.siuda.hotel.security;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,28 +7,25 @@ import org.springframework.stereotype.Service;
 import pl.siuda.hotel.admin.Admin;
 import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.Guest;
-import pl.siuda.hotel.guest.GuestRepo;
-import pl.siuda.hotel.security.jwt.JwtRequest;
-import pl.siuda.hotel.security.jwt.JwtResponse;
-import pl.siuda.hotel.util.JwtUtil;
+import pl.siuda.hotel.guest.GuestRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
 
     private final AdminRepository adminRepository;
-    private final GuestRepo guestRepo;
+    private final GuestRepository guestRepository;
 
 
-    public CustomUserDetailsService(AdminRepository adminRepository, GuestRepo guestRepo) {
+    public CustomUserDetailsService(AdminRepository adminRepository, GuestRepository guestRepository) {
         this.adminRepository = adminRepository;
-        this.guestRepo = guestRepo;
+        this.guestRepository = guestRepository;
 
     }
 
     public boolean userNotExists(String email){
         Admin admin = adminRepository.findByEmail(email);
-        Guest guest = guestRepo.findByEmail(email);
+        Guest guest = guestRepository.findByEmail(email);
         if(admin == null && guest == null){
             return true;
         }else{
@@ -44,7 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Admin admin = adminRepository.findByEmail(email);
-        Guest guest = guestRepo.findByEmail(email);
+        Guest guest = guestRepository.findByEmail(email);
 
         if(admin == null && guest == null){
             throw new UsernameNotFoundException(String.format("Username %s not found", email));

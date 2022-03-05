@@ -1,8 +1,7 @@
 package pl.siuda.hotel.hotel;
 
-import org.checkerframework.checker.units.qual.C;
-import pl.siuda.hotel.embeddeClasses.Address;
-import pl.siuda.hotel.embeddeClasses.Contact;
+import pl.siuda.hotel.embeddedClasses.Address;
+import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 
 public class HotelRequest {
@@ -15,6 +14,21 @@ public class HotelRequest {
     private String phoneNumber;
     private String email;
     private Grade grade;
+
+    public HotelRequest() {
+    }
+
+    public HotelRequest(String name, String street, String city, String state, String country, String zipcode, String phoneNumber, String email, Grade grade) {
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.zipcode = zipcode;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.grade = grade;
+    }
 
     public void copyRequestToEntity(Hotel hotel){
         hotel.setName(name);

@@ -27,6 +27,15 @@ public class Admin implements UserDetails, Serializable {
     public Admin() {
     }
 
+    public Admin(Long admin_id, String firstName, String lastName, String email, String password, ApplicationUserRole applicationUserRole) {
+        this.admin_id = admin_id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.applicationUserRole = applicationUserRole;
+    }
+
     public Admin(String firstName, String lastName, String email, String password, ApplicationUserRole applicationUserRole) {
         this.firstName = firstName;
         this.lastName = lastName;

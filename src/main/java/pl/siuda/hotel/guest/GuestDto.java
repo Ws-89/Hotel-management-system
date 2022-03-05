@@ -12,6 +12,7 @@ public class GuestDto implements Serializable {
     private String state;
     private String country;
     private String zipcode;
+    private String phoneNumber;
 
     public static GuestDto guestToDto (Guest guest){
         GuestDto guestDto = new GuestDto();
@@ -24,7 +25,16 @@ public class GuestDto implements Serializable {
         guestDto.state = guest.getState();
         guestDto.country = guest.getCountry();
         guestDto.zipcode = guest.getZipcode();
+        guestDto.phoneNumber = guest.getPhoneNumber();
         return guestDto;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getGuest_id() {
