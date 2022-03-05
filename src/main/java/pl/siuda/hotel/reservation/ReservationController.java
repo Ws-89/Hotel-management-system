@@ -20,7 +20,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public Set<Availability> getAvailability(@RequestBody AvailabilityRequest request){
+    public Set<Offert> getAvailability(@RequestBody AvailabilityRequest request){
         return reservationService.getAvailability(request);
     }
 

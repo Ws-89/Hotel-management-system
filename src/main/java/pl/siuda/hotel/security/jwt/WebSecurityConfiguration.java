@@ -47,7 +47,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors()
                 .and()
-                .authorizeRequests().antMatchers("/", "index", "/authenticate", "/registration/**", "/registration", "/h2-console").permitAll()
+                .authorizeRequests().antMatchers("/", "index", "/authenticate", "/registration/**", "/reservations/**", "/reservations",  "/images/**").permitAll()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .antMatchers(HttpMethod.GET, "/admin/management/hotels/**").hasAuthority(HOTEL_READ.getPermission())
                 .antMatchers(HttpMethod.POST, "/admin/management/hotels/**").hasAuthority(HOTEL_WRITE.getPermission())
@@ -58,7 +58,6 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/admin/management/rooms/**").hasAuthority(ROOM_WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT, "/admin/management/rooms/**").hasAuthority(ROOM_DESCRIPTION_UPDATE.getPermission())
                 .antMatchers(HttpMethod.PUT, "management/admins/**").hasAuthority(ROOM_DESCRIPTION_UPDATE.getPermission())
-
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

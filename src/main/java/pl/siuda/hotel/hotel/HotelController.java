@@ -46,19 +46,4 @@ public class HotelController {
     }
 
 
-    @PostMapping(value = "{id}/images/upload",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public void uploadHotelImage(@PathVariable("id") Long hotel_id, @RequestParam("file")MultipartFile file){
-        hotelService.uploadHotelImage(hotel_id, file);
-    }
-
-    @GetMapping(value = "{id}/images/download")
-    public ImageModel downloadHotelProfileImage(@PathVariable("id") Long hotel_id) {
-         ImageModel imageModel = new ImageModel(hotelService.downloadHotelProfileImage(hotel_id));
-         return imageModel;
-    }
-
-
-
 }

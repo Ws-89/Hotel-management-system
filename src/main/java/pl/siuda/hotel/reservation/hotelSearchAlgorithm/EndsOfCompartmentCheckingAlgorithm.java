@@ -9,18 +9,31 @@ public class EndsOfCompartmentCheckingAlgorithm  implements AvailabilityCheckPro
     @Override
     public boolean checkAvailability(Availability availability, AvailabilityRequest availabilityRequest) {
         if(availability.getFrom_date() != null || availability.getTo_date() != null)
-            return isStartDateBetweenAnyReservation(availability, availabilityRequest) && isEndDateBetweenAnyReservation(availability, availabilityRequest) ;
+            return  isRequestStartDateInsideAnyReservationDate(availability, availabilityRequest)
+                    || (isRequestEndDateInsideReservationDate(availability, availabilityRequest))
+                    || isRequestOutsideOfReservationDate(availability, availabilityRequest)
+                    || isRequestDateInsideReservationDate(availability, availabilityRequest);
         else
-            return true;
+            return false;
     }
 
-    boolean isStartDateBetweenAnyReservation(Availability availability, AvailabilityRequest request){
-        return (availability.getFrom_date().isAfter(request.getFrom_date()) || availability.getFrom_date().isEqual(request.getFrom_date()))
-                && (availability.getFrom_date().isBefore(request.getTo_date()) || availability.getFrom_date().isEqual(request.getTo_date()));
+    boolean isRequestStartDateInsideAnyReservationDate(Availability availability, AvailabilityRequest request){
+        return (request.getFrom_date().isAfter(availability.getFrom_date()) || request.getFrom_date().isEqual(availability.getFrom_date()))
+                && (request.getFrom_date().isBefore(availability.getTo_date()) || request.getFrom_date().isEqual(availability.getTo_date()));
     }
 
-    boolean isEndDateBetweenAnyReservation(Availability availability, AvailabilityRequest request){
-        return (availability.getTo_date().isAfter(request.getFrom_date()) || availability.getTo_date().isEqual(request.getFrom_date()))
-                && (availability.getTo_date().isBefore(request.getTo_date()) || availability.getTo_date().isEqual(request.getTo_date()));
+    boolean isRequestEndDateInsideReservationDate(Availability availability, AvailabilityRequest request){
+        return (request.getTo_date().isAfter(availability.getFrom_date()) || request.getTo_date().isEqual(availability.getFrom_date()))
+                && (request.getTo_date().isBefore(availability.getTo_date()) || request.getTo_date().isEqual(availability.getTo_date()));
+    }
+
+    boolean isRequestOutsideOfReservationDate(Availability availability, AvailabilityRequest request){
+        return (request.getFrom_date().isBefore(availability.getFrom_date()) || request.getFrom_date().isEqual(availability.getFrom_date()))
+                && (request.getTo_date().isAfter(availability.getTo_date()) || request.getTo_date().isEqual(availability.getTo_date()));
+    }
+
+    boolean isRequestDateInsideReservationDate(Availability availability, AvailabilityRequest request){
+        return (request.getFrom_date().isAfter(availability.getFrom_date()) || request.getFrom_date().isEqual(availability.getFrom_date()))
+                && (request.getTo_date().isBefore(availability.getTo_date()) || request.getTo_date().isEqual(availability.getTo_date()));
     }
 }

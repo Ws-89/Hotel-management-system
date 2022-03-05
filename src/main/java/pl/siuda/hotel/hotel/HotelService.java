@@ -26,7 +26,7 @@ public class HotelService {
         this.hotelRepository = hotelRepository;
         this.roomRepository = roomRepository;
         this.fileStore = fileStore;
-        this.imageRepo = imageRepo1;
+        this.imageRepo = imageRepo;
     }
 
     public List<Hotel> getAllHotels(){
@@ -53,46 +53,14 @@ public class HotelService {
         return hotelRepository.save(hotel);
     }
 
+    public Hotel updateHotel(Hotel hotel){
+        return hotelRepository.save(hotel);
+    }
+
     public void deleteHotel(Long id){
         Hotel hotel = NullSafeGetHotelById(id);
         hotelRepository.delete(hotel);
-        }
-
-
-    public void uploadHotelImage(Long hotel_id, MultipartFile file) {
-        fileStore.isFileEmpty(file);
-
-        fileStore.isAnImage(file);
-
-        Hotel hotel = NullSafeGetHotelById(hotel_id);
-
-        Map<String, String> metadata = fileStore.extractMetadata(file);
-
-        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), hotel.getHotel_id());
-        String fileName = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
-
-        try {
-            fileStore.save(path, fileName, Optional.of(metadata), file.getInputStream());
-
-            Image image = new Image(fileName);
-
-            hotel.setImage(image);
-            hotelRepository.save(hotel);
-
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
     }
-
-    public byte[] downloadHotelProfileImage(Long hotel_id) {
-        Hotel hotel = NullSafeGetHotelById(hotel_id);
-        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), hotel.getHotel_id());
-
-       return hotel.getImageLink().map(key -> fileStore.download(path, key))
-                .orElse(new byte[0]);
-    }
-
-
 
 }
 

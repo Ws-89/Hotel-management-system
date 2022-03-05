@@ -24,38 +24,10 @@ import java.util.Arrays;
 @EnableEncryptableProperties
 public class HotelApplication {
 
-	@Autowired
-	CustomUserDetailsService customUserDetailsService;
-
-	@Autowired
-	AdminService adminService;
-
 	public static void main(String[] args) {
 		SpringApplication.run(HotelApplication.class, args);
 
 
 	}
-
-
-//	@PostConstruct
-//	private void init() {
-//		buildSuperAdmin();
-//	}
-//
-//	private void buildSuperAdmin() {
-//
-//		boolean adminExists = customUserDetailsService.userNotExists("ws@gmail.com");
-//		if (adminExists) {
-//			AdminRequest admin = new AdminRequest(
-//					"w",
-//					"s",
-//					"ws@gmail.com",
-//					"123"
-//			);
-//			adminService.save(admin);
-//		}
-
-
-//	}
 }
 
