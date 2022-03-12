@@ -14,10 +14,4 @@ public interface GuestRepository extends CrudRepository<Guest, Long> {
 
     Guest findByEmail(String email);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE guest a " +
-            "SET a.enabled = TRUE WHERE a.guest_id = :id")
-    Long enableAppUser(Long id);
-
 }

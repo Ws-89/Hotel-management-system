@@ -7,7 +7,6 @@ import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.siuda.hotel.embeddedClasses.Address;
-import pl.siuda.hotel.registration.token.ConfirmationToken;
 import pl.siuda.hotel.reservation.Reservation;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
@@ -26,13 +25,11 @@ public class Guest implements UserDetails, Serializable {
     private String email;
     private String password;
     private boolean locked = false;
-    private boolean enabled = false;
+    private boolean enabled = true;
     private ApplicationUserRole applicationUserRole;
     @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private Address address;
     private String phoneNumber;
-    @MappedCollection(keyColumn = "GUEST_ID", idColumn = "GUEST_ID")
-    private Set<ConfirmationToken> confirmationTokens = new HashSet<>();
 
     public Guest() {
     }
@@ -76,14 +73,6 @@ public class Guest implements UserDetails, Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Set<ConfirmationToken> getConfirmationTokens() {
-        return confirmationTokens;
-    }
-
-    public void addConfirmationTokens(ConfirmationToken confirmationTokens) {
-        this.confirmationTokens.add(confirmationTokens);
     }
 
     public void addReservation(Reservation reservation){

@@ -20,10 +20,10 @@ public class AvailabilityRowMapper implements RowMapper<Availability> {
         availability.setRoom_id(rs.getLong("room_id"));
         availability.setRoomType(RoomType.valueOf(rs.getString("room_type")));
         availability.setReservation_id(rs.getLong("reservation_id"));
-        if(rs.getTimestamp("from_data") != null)
-        availability.setFrom_date(rs.getTimestamp("from_data").toLocalDateTime());
-        if(rs.getTimestamp("to_data") != null)
-        availability.setTo_date(rs.getTimestamp("to_data").toLocalDateTime());
+        if(rs.getTimestamp("from_date") != null)
+        availability.setFrom_date(rs.getTimestamp("from_date").toLocalDateTime());
+        if(rs.getTimestamp("to_date") != null)
+        availability.setTo_date(rs.getTimestamp("to_date").toLocalDateTime());
 
         return availability;
     }
