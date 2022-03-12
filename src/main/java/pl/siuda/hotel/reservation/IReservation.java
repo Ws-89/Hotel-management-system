@@ -10,7 +10,7 @@ public interface IReservation {
     Set<Offert> getAvailability(AvailabilityRequest request);
 
     // throws exception
-    Reservation makeReservation(ReservationRequest request);
+    Reservation makeAReservation(ReservationRequest request);
 
     void cancelReservation(Long reservation_id);
 }

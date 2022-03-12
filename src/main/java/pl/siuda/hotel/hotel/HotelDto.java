@@ -1,7 +1,4 @@
 package pl.siuda.hotel.hotel;
-
-import pl.siuda.hotel.amazonS3bucket.Image;
-import pl.siuda.hotel.amazonS3bucket.ImageModel;
 import pl.siuda.hotel.enums.Grade;
 
 import java.io.Serializable;

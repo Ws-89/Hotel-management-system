@@ -1,10 +1,14 @@
 package pl.siuda.hotel.reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.reservation.hotelSearchAlgorithm.AvailabilityCheckProcessingAlgorithm;
 import pl.siuda.hotel.reservation.pricingAlgorithm.CalculatePriceAlgorithm;
 import pl.siuda.hotel.room.RoomService;
+import pl.siuda.hotel.security.CustomUserDetails;
+import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,14 +23,16 @@ public class ReservationService implements IReservation {
     @Autowired
     private final RoomService roomService;
     private final ReservationRepository reservationRepository;
-    private AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm;
-    private CalculatePriceAlgorithm calculatePriceAlgorithm;
+    private final AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm;
+    private final CalculatePriceAlgorithm calculatePriceAlgorithm;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public ReservationService(RoomService roomService, ReservationRepository reservationRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm, CalculatePriceAlgorithm calculatePriceAlgorithm) {
+    public ReservationService(RoomService roomService, ReservationRepository reservationRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm, CalculatePriceAlgorithm calculatePriceAlgorithm, CustomUserDetailsService customUserDetailsService) {
         this.roomService = roomService;
         this.reservationRepository = reservationRepository;
         this.availabilityCheckProcessingAlgorithm = availabilityCheckProcessingAlgorithm;
         this.calculatePriceAlgorithm = calculatePriceAlgorithm;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     public Set<Availability> getRoomsByCity(String city) {
@@ -49,9 +55,19 @@ public class ReservationService implements IReservation {
     }
 
     @Override
-    public Reservation makeReservation(ReservationRequest request) {
-
-        return null;
+    public Reservation makeAReservation(ReservationRequest request) {
+        Reservation reservation = new Reservation();
+        request.requestToEntity(reservation);
+        Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userName;
+        if(authentication instanceof UserDetails){
+            userName = ((UserDetails) authentication).getUsername();
+        }else {
+            throw new IllegalArgumentException();
+        }
+        CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(userName);
+        reservation.setGuest_id(user.getId());
+        return reservationRepository.save(reservation);
     }
 
     @Override

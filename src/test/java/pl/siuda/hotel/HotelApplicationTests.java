@@ -112,11 +112,11 @@ class HotelApplicationTests {
 		Room room2 = roomService.findByRoomNumberAndHotelId(130, 1L);
 
 		Reservation reservation2 = new Reservation();
-		reservation2.setFrom_data(LocalDateTime.of(2022, 1, 1, 00,00,1));
-		reservation2.setTo_data(LocalDateTime.of(2022, 1, 5, 00,00,1));
+		reservation2.setFrom_date(LocalDateTime.of(2022, 1, 1, 00,00,1));
+		reservation2.setTo_date(LocalDateTime.of(2022, 1, 5, 00,00,1));
 
-		reservation2.addRoom(room);
-		reservation2.addRoom(room2);
+		reservation2.addRoom(1);
+		reservation2.addRoom(2);
 		guest.addReservation(reservation2);
 		guestRepository.save(guest);
 

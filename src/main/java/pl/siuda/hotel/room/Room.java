@@ -1,8 +1,6 @@
 package pl.siuda.hotel.room;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import pl.siuda.hotel.amazonS3bucket.Image;
 import pl.siuda.hotel.enums.RoomType;
 import java.io.Serializable;
 import java.util.HashSet;

@@ -3,7 +3,6 @@ package pl.siuda.hotel.hotel;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
-import pl.siuda.hotel.amazonS3bucket.Image;
 import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
@@ -11,7 +10,7 @@ import pl.siuda.hotel.room.Room;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Set;
 
 public class Hotel implements Serializable {
@@ -25,11 +24,8 @@ public class Hotel implements Serializable {
     private Contact contact;
     private Grade grade;
     @MappedCollection(idColumn = "HOTEL_ID")
-    private Set<OpeningTimes> openingTimes = new HashSet<>();
-    @MappedCollection(idColumn = "HOTEL_ID")
     private Set<Room> rooms = new HashSet<>();
-    @MappedCollection(idColumn = "HOTEL_ID")
-    private Image image;
+    private String image;
 
     public Hotel() {
     }
@@ -47,14 +43,6 @@ public class Hotel implements Serializable {
         this.address = address;
         this.contact = contact;
         this.grade = grade;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     public Long getHotel_id() {
@@ -95,14 +83,6 @@ public class Hotel implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Set<OpeningTimes> getOpeningTimes() {
-        return openingTimes;
-    }
-
-    public void addOpeningTimes(OpeningTimes openingTime) {
-        this.openingTimes.add(openingTime);
     }
 
     public Set<Room> getRooms() {
@@ -149,9 +129,13 @@ public class Hotel implements Serializable {
         return contact.getEmail();
     }
 
-    public Optional<String> getImageLink() { return Optional.ofNullable(image.getImageLink()); }
+    public String getImageUrl() {
+        return image;
+    }
 
-
+    public void setImageUrl(String imageUrl) {
+        this.image = imageUrl;
+    }
 
     @Override
     public String toString() {
@@ -161,7 +145,6 @@ public class Hotel implements Serializable {
                 ", address=" + address +
                 ", contact=" + contact +
                 ", grade=" + grade +
-                ", openingTimes=" + openingTimes +
                 ", rooms=" + rooms +
                 '}';
     }

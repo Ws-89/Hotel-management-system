@@ -1,5 +1,7 @@
 package pl.siuda.hotel;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -26,8 +28,6 @@ public class HotelApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HotelApplication.class, args);
-
-
 	}
 }
 

@@ -1,10 +1,9 @@
 package pl.siuda.hotel.hotel;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.siuda.hotel.amazonS3bucket.ImageModel;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,7 @@ public class HotelController {
 
     @GetMapping("{id}")
     public HotelDto getHotelById(@PathVariable("id")Long id){
-        return HotelDto.hotelToDto(hotelService.NullSafeGetHotelById(id));
+        return HotelDto.hotelToDto(hotelService.nullSafeGetHotelById(id));
     }
 
     @PostMapping
@@ -43,6 +42,11 @@ public class HotelController {
     @DeleteMapping("{id}")
     public void deleteHotel(@PathVariable("id")Long id){
         hotelService.deleteHotel(id);
+    }
+
+    @PostMapping("images/{id}")
+    public Hotel uploadImage(@PathVariable("id")Long id, @RequestParam("file") MultipartFile file){
+        return hotelService.uploadImage(id, file);
     }
 
 
