@@ -4,12 +4,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.registration.EmailValidator;
-import pl.siuda.hotel.registration.token.ConfirmationToken;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -37,7 +34,7 @@ public class GuestService {
         return guestRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Guest with id %s not found")));
     }
 
-    public String signUpGuest(Guest guest){
+    public Guest signUpGuest(Guest guest){
         boolean userNotExists = customUserDetailsService.userNotExists(guest.getEmail());
         if(!userNotExists){
             throw new NotFoundException("email already in use");
@@ -46,18 +43,7 @@ public class GuestService {
         String encodedPassword = bCryptPasswordEncoder.encode(guest.getPassword());
 
         guest.setPassword(encodedPassword);
-
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15)
-        );
-
-        guest.addConfirmationTokens(confirmationToken);
-        guestRepository.save(guest);
-
-        return token;
+        return guestRepository.save(guest);
     }
 
     public Guest findByEmail(String email){
@@ -67,12 +53,4 @@ public class GuestService {
         }
         return guest;
     }
-
-    public Long enableAppUser(Long id) {
-        return guestRepository.enableAppUser(id);
-    }
-
-    // todo: update user
-
-    // todo: delete user
 }
