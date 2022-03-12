@@ -8,20 +8,20 @@ import java.util.Set;
 @RequestMapping("/reservations")
 public class ReservationController {
 
-    private final ReservationService reservationService;
+    private final IReservation reservationService;
 
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
-    @GetMapping("/roomsByCity/{city}")
-    public Set<Availability> getRoomsByCity(@PathVariable("city") String city){
-        return reservationService.getRoomsByCity(city);
-    }
-
     @PostMapping
     public Set<Offert> getAvailability(@RequestBody AvailabilityRequest request){
         return reservationService.getAvailability(request);
+    }
+
+    @PostMapping("/makeAReservation")
+    public void makeAReservation(@RequestBody ReservationRequest request) {
+        reservationService.makeAReservation(request);
     }
 
 

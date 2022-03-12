@@ -2,7 +2,6 @@ package pl.siuda.hotel.reservation;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
-import pl.siuda.hotel.room.Room;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -12,11 +11,12 @@ public class Reservation {
 
     @Id
     private Long reservation_id;
-    private LocalDateTime from_data;
-    private LocalDateTime to_data;
-    private Integer partySize;
+    private LocalDateTime from_date;
+    private LocalDateTime to_date;
+    private int partySize;
     @MappedCollection(keyColumn = "RESERVATION_ID", idColumn = "RESERVATION_ID")
     private Set<ReservationArrangement> rooms = new HashSet<>();
+    private Long guest_id;
 
     public Set<ReservationArrangement> getReservations() {
         return rooms;
@@ -26,27 +26,27 @@ public class Reservation {
         this.rooms = rooms;
     }
 
-    public void addRoom(Room room){
-        this.rooms.add(new ReservationArrangement(room.getRoom_id()));
+    public void addRoom(long room_id){
+        this.rooms.add(new ReservationArrangement(room_id));
     }
 
     public Reservation() {
     }
 
-    public LocalDateTime getFrom_data() {
-        return from_data;
+    public LocalDateTime getFrom_date() {
+        return from_date;
     }
 
-    public void setFrom_data(LocalDateTime from_data) {
-        this.from_data = from_data;
+    public void setFrom_date(LocalDateTime from_date) {
+        this.from_date = from_date;
     }
 
-    public LocalDateTime getTo_data() {
-        return to_data;
+    public LocalDateTime getTo_date() {
+        return to_date;
     }
 
-    public void setTo_data(LocalDateTime to_data) {
-        this.to_data = to_data;
+    public void setTo_date(LocalDateTime to_date) {
+        this.to_date = to_date;
     }
 
     public Long getReservation_id() {
@@ -72,6 +72,26 @@ public class Reservation {
 
     public void setId(Long id) {
         this.reservation_id = id;
+    }
+
+    public void setPartySize(int partySize) {
+        this.partySize = partySize;
+    }
+
+    public Set<ReservationArrangement> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<ReservationArrangement> rooms) {
+        this.rooms = rooms;
+    }
+
+    public Long getGuest_id() {
+        return guest_id;
+    }
+
+    public void setGuest_id(Long guest_id) {
+        this.guest_id = guest_id;
     }
 
     @Override

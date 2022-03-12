@@ -40,6 +40,14 @@ public class CustomUserDetails implements UserDetails {
         }
     }
 
+    public Long getId() {
+        if(admin != null & guest == null){
+            return admin.getAdmin_id();
+        } else {
+            return guest.getGuest_id();
+        }
+    }
+
     @Override
     public String getUsername() {
         if(admin != null & guest == null){

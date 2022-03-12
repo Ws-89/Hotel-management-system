@@ -2,14 +2,11 @@ package pl.siuda.hotel.hotel;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.siuda.hotel.amazonS3bucket.Image;
-import pl.siuda.hotel.amazonS3bucket.ImageRepo;
-import pl.siuda.hotel.amazonS3bucket.bucket.BucketName;
-import pl.siuda.hotel.amazonS3bucket.filestore.FileStore;
+import pl.siuda.hotel.imageService.ImageService;
 import pl.siuda.hotel.room.RoomRepository;
 import pl.siuda.hotel.exception.NotFoundException;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,21 +16,20 @@ public class HotelService {
 
     private final HotelRepository hotelRepository;
     private final RoomRepository roomRepository;
-    private final FileStore fileStore;
-    private final ImageRepo imageRepo;
+    private final ImageService imageService;
 
-    public HotelService(HotelRepository hotelRepository, RoomRepository roomRepository, ImageRepo imageRepo, FileStore fileStore, ImageRepo imageRepo1) {
+
+    public HotelService(HotelRepository hotelRepository, RoomRepository roomRepository, ImageService imageService) {
         this.hotelRepository = hotelRepository;
         this.roomRepository = roomRepository;
-        this.fileStore = fileStore;
-        this.imageRepo = imageRepo;
+        this.imageService = imageService;
     }
 
     public List<Hotel> getAllHotels(){
         return StreamSupport.stream(hotelRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public Hotel NullSafeGetHotelById(Long hotel_id) {
+    public Hotel nullSafeGetHotelById(Long hotel_id) {
         return hotelRepository.findById(hotel_id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotel_id)));
     }
 
@@ -48,7 +44,7 @@ public class HotelService {
     }
 
     public Hotel updateHotel(Long id, HotelRequest hotelRequest){
-        Hotel hotel = NullSafeGetHotelById(id);
+        Hotel hotel = nullSafeGetHotelById(id);
         hotelRequest.copyRequestToEntity(hotel);
         return hotelRepository.save(hotel);
     }
@@ -58,8 +54,14 @@ public class HotelService {
     }
 
     public void deleteHotel(Long id){
-        Hotel hotel = NullSafeGetHotelById(id);
+        Hotel hotel = nullSafeGetHotelById(id);
         hotelRepository.delete(hotel);
+    }
+
+    public Hotel uploadImage(Long id, MultipartFile file){
+        Hotel hotel = nullSafeGetHotelById(id);
+        hotel.setImageUrl(imageService.uploadFile(file));
+        return hotelRepository.save(hotel);
     }
 
 }

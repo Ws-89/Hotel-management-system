@@ -8,8 +8,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.siuda.hotel.amazonS3bucket.ImageRepo;
-import pl.siuda.hotel.amazonS3bucket.filestore.FileStore;
 import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
@@ -38,18 +36,13 @@ class HotelServiceTest {
     @Mock
     RoomRepository roomRepository;
 
-    @Mock
-    FileStore fileStore;
 
-    @Mock
-    ImageRepo imageRepo;
 
     @Test
     void injectedComponentsAreNotNull(){
         assertThat(hotelService).isNotNull();
         assertThat(roomRepository).isNotNull();
-        assertThat(fileStore).isNotNull();
-        assertThat(imageRepo).isNotNull();
+
         assertThat(hotelRepository).isNotNull();
     }
 
@@ -87,7 +80,7 @@ class HotelServiceTest {
         Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
         // when
         when(hotelRepository.findById(1L)).thenReturn(java.util.Optional.of(pokojeWMiescie));
-        Hotel hotel = hotelService.NullSafeGetHotelById(1L);
+        Hotel hotel = hotelService.nullSafeGetHotelById(1L);
         // then
         assertThat(hotel.getHotel_id()).isEqualTo(pokojeWMiescie.getHotel_id());
         assertThat(hotel.getName()).isEqualTo(pokojeWMiescie.getName());
@@ -101,7 +94,7 @@ class HotelServiceTest {
         // when
         when(hotelRepository.findById(1L)).thenThrow(NotFoundException.class);
         // then
-        assertThrows(NotFoundException.class, ()-> hotelService.NullSafeGetHotelById(1L));
+        assertThrows(NotFoundException.class, ()-> hotelService.nullSafeGetHotelById(1L));
     }
 
     @ParameterizedTest
