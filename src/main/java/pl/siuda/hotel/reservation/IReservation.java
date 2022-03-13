@@ -7,7 +7,7 @@ import java.util.Set;
 public interface IReservation {
 
 
-    Set<Offert> getAvailability(AvailabilityRequest request);
+    Set<Availability> getAvailability(AvailabilityRequest request);
 
     // throws exception
     Reservation makeAReservation(ReservationRequest request);

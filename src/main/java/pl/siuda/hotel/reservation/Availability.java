@@ -4,6 +4,7 @@ import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.enums.RoomType;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Availability {
@@ -12,11 +13,13 @@ public class Availability {
     private String hotel_name;
     private String city;
     private Grade grade;
+    private String image;
     private long room_id;
     private RoomType roomType;
     private Long reservation_id;
     private LocalDateTime from_date;
     private LocalDateTime to_date;
+    private BigDecimal price;
 
     public Availability() {
     }
@@ -25,20 +28,24 @@ public class Availability {
                         String hotel_name,
                         String city,
                         Grade grade,
+                        String image,
                         long room_id,
                         RoomType roomType,
                         Long reservation_id,
                         LocalDateTime from_date,
-                        LocalDateTime to_date) {
+                        LocalDateTime to_date,
+                        BigDecimal price) {
         this.hotel_id = hotel_id;
         this.hotel_name = hotel_name;
         this.city = city;
         this.grade = grade;
+        this.image = image;
         this.room_id = room_id;
         this.roomType = roomType;
         this.reservation_id = reservation_id;
         this.from_date = from_date;
         this.to_date = to_date;
+        this.price = price;
     }
 
     public long getRoom_id() {
@@ -112,6 +119,22 @@ public class Availability {
 
     public void setReservation_id(Long reservation_id) {
         this.reservation_id = reservation_id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override

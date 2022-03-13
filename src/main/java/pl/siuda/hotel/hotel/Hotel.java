@@ -10,7 +10,6 @@ import pl.siuda.hotel.room.Room;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class Hotel implements Serializable {

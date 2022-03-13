@@ -10,7 +10,7 @@ import java.util.Set;
 @Repository
 public interface ReservationRepository extends CrudRepository<Reservation, Long> {
 
-    @Query(rowMapperClass = AvailabilityRowMapper.class, value = "SELECT hotel.hotel_id, hotel.name AS hotel_name, hotel.city, hotel.grade, room.room_id, room.room_type, reservation.reservation_id, \n" +
+    @Query(rowMapperClass = AvailabilityRowMapper.class, value = "SELECT hotel.hotel_id, hotel.name AS hotel_name, hotel.city, hotel.grade, hotel.image, room.room_id, room.room_type, reservation.reservation_id, \n" +
             "reservation.from_date, reservation.to_date \n" +
             "FROM hotel INNER JOIN room ON room.hotel_id = hotel.hotel_id\n" +
             "LEFT JOIN room_reservation ON room_reservation.room_id = room.room_id\n" +

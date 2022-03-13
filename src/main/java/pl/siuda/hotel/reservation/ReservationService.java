@@ -40,7 +40,7 @@ public class ReservationService implements IReservation {
     }
 
     @Override
-    public Set<Offert> getAvailability(AvailabilityRequest request){
+    public Set<Availability> getAvailability(AvailabilityRequest request){
         Set<Availability> availabilitiesAndReservations = reservationRepository.findRoomsByCity(request.getCity());
         Set<Long> takenRooms = getTakenRooms(request, availabilitiesAndReservations);
 
@@ -75,22 +75,13 @@ public class ReservationService implements IReservation {
 
     }
 
-    private Set<Offert> getOfferts(Set<Availability> availabilitiesAndReservations, Set<Long> takenRooms) {
-        return availabilitiesAndReservations.stream().filter(availability -> !takenRooms.contains(availability.getRoom_id()))
+    private Set<Availability> getOfferts(Set<Availability> availabilitiesAndReservations, Set<Long> takenRooms) {
+        Set<Availability> availabilities = availabilitiesAndReservations.stream().filter(availability -> !takenRooms.contains(availability.getRoom_id()))
                 .filter(distinctByKey(p -> p.getRoom_id()))
-                .map(availability -> Offert.builder()
-                        .hotel_id(availability.getHotel_id())
-                        .hotel_name(availability.getHotel_name())
-                        .city(availability.getCity())
-                        .grade(availability.getGrade())
-                        .room_id(availability.getRoom_id())
-                        .roomType(availability.getRoomType())
-                        .reservation_id(availability.getReservation_id())
-                        .from_date(availability.getFrom_date())
-                        .to_date(availability.getTo_date())
-                        .price(calculatePriceAlgorithm.getPrice(availability))
-                        .build())
                 .collect(Collectors.toSet());
+
+        availabilities.forEach(availability -> availability.setPrice(calculatePriceAlgorithm.getPrice(availability)));
+        return availabilities;
     }
 
     private Set<Long> getTakenRooms(AvailabilityRequest request, Set<Availability> availabilitiesAndReservations) {
