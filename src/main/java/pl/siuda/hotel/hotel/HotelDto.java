@@ -14,7 +14,7 @@ public class HotelDto implements Serializable {
     private String phoneNumber;
     private String email;
     private Grade grade;
-    private String imageUrl;
+    private String image;
 
     public static HotelDto hotelToDto(Hotel hotel){
         HotelDto hotelDto = new HotelDto();
@@ -28,7 +28,7 @@ public class HotelDto implements Serializable {
         hotelDto.phoneNumber = hotel.getPhoneNumber();
         hotelDto.email = hotel.getEmail();
         hotelDto.grade = hotel.getGrade();
-        hotelDto.imageUrl = hotel.getImageUrl();
+        hotelDto.image = hotel.getImageUrl();
         return hotelDto;
     }
 
@@ -72,5 +72,5 @@ public class HotelDto implements Serializable {
         return grade;
     }
 
-    public String getImageUrl() { return imageUrl; }
+    public String getImage() { return image; }
 }
