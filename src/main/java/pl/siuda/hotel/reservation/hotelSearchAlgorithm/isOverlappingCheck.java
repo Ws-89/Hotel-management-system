@@ -4,7 +4,7 @@ import pl.siuda.hotel.reservation.Availability;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
 
 @Component
-public class EndsOfCompartmentCheckingAlgorithm  implements AvailabilityCheckProcessingAlgorithm{
+public class OverlappingCheck implements AvailabilityCheckProcessingAlgorithm{
 
     @Override
     public boolean checkAvailability(Availability availability, AvailabilityRequest availabilityRequest) {
