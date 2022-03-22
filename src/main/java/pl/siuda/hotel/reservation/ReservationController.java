@@ -2,6 +2,7 @@ package pl.siuda.hotel.reservation;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -20,8 +21,8 @@ public class ReservationController {
     }
 
     @PostMapping("/makeAReservation")
-    public void makeAReservation(@RequestBody ReservationRequest request) {
-        reservationService.makeAReservation(request);
+    public List<Reservation> makeAReservation(@RequestBody List<ReservationRequest> request) {
+        return reservationService.makeAReservation(request);
     }
 
 

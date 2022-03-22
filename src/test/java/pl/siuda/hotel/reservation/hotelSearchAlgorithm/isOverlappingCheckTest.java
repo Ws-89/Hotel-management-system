@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class OverlappingCheckTest {
+class isOverlappingCheckTest {
 
     @Test
     void checkAvailability() {
-        OverlappingCheck algorithm = new OverlappingCheck();
+        isOverlappingCheck algorithm = new isOverlappingCheck();
         Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
                 LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
@@ -24,12 +24,12 @@ class OverlappingCheckTest {
                 LocalDateTime.of(2022, 05, 6, 00, 00, 01),
                 LocalDateTime.of(2022, 05, 11, 00, 00, 01));
 
-        assertThat(algorithm.checkAvailability(availability, request)).isEqualTo(true);
+        assertThat(algorithm.isOverlapping(availability, request)).isEqualTo(true);
     }
 
     @Test
     void isRequestStartDateInsideAnyReservationDate() {
-        OverlappingCheck algorithm = new OverlappingCheck();
+        isOverlappingCheck algorithm = new isOverlappingCheck();
         Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
                 LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
@@ -43,7 +43,7 @@ class OverlappingCheckTest {
 
     @Test
     void isRequestEndDateInsideReservationDate() {
-        OverlappingCheck algorithm = new OverlappingCheck();
+        isOverlappingCheck algorithm = new isOverlappingCheck();
         Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
                 LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
@@ -57,7 +57,7 @@ class OverlappingCheckTest {
 
     @Test
     void isRequestOutsideOfReservationDate() {
-        OverlappingCheck algorithm = new OverlappingCheck();
+        isOverlappingCheck algorithm = new isOverlappingCheck();
         Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
                 LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
@@ -71,7 +71,7 @@ class OverlappingCheckTest {
 
     @Test
     void isRequestDateInsideReservationDate() {
-        OverlappingCheck algorithm = new OverlappingCheck();
+        isOverlappingCheck algorithm = new isOverlappingCheck();
         Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
                 LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));

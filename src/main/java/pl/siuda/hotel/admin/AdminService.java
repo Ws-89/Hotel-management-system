@@ -26,15 +26,19 @@ public class AdminService {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    public List<Admin> findAll(){
-        return StreamSupport.stream(adminRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    public List<AdminDto> findAllAdmins(){
+        return StreamSupport.stream(adminRepository.findAll().spliterator(), false)
+                .map(admin -> AdminDto.adminToDto(admin))
+                .collect(Collectors.toList());
     }
 
-    public Admin getAdminById(Long id){
-        return adminRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found", id)));
+    public AdminDto getAdminById(Long id){
+        return adminRepository.findById(id)
+                .map(admin -> AdminDto.adminToDto(admin))
+                .orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found", id)));
     }
 
-    public Admin save(AdminRequest request){
+    public void saveAdmin(AdminRequest request){
         boolean userNotExists = customUserDetailsService.userNotExists(request.getEmail());
         if(!userNotExists){
             throw new IllegalStateException("email already in use");
@@ -54,14 +58,14 @@ public class AdminService {
                 ApplicationUserRole.ADMIN
         );
 
-        return adminRepository.save(admin);
+        adminRepository.save(admin);
     }
 
-    public Admin updateAdmin(Long id, AdminRequest adminRequest){
-        Admin admin = adminRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Admin with id %s not found", id)));
-        adminRequest.copyDtoToEntity(admin);
-        return adminRepository.save(admin);
+    public void updateAdmin(Long id, AdminRequest adminRequest){
+            Admin admin = adminRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException(String.format("Admin with id %s not found", id)));
+            adminRequest.copyDtoToEntity(admin);
+            adminRepository.save(admin);
     }
 
     public void deleteAdmin(Long id){

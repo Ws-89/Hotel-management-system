@@ -16,45 +16,27 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(Admin admin) {
         this.admin = admin;
     }
-
     public CustomUserDetails(Guest guest) {
         this.guest = guest;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(admin != null & guest == null){
-            return admin.getAuthorities();
-        } else {
-            return guest.getAuthorities();
-        }
-
+        return admin != null ? admin.getAuthorities() : guest.getAuthorities();
     }
 
     @Override
     public String getPassword() {
-        if(admin != null & guest == null){
-            return admin.getPassword();
-        } else {
-            return guest.getPassword();
-        }
+        return admin != null ? admin.getPassword() : guest.getPassword();
     }
 
     public Long getId() {
-        if(admin != null & guest == null){
-            return admin.getAdmin_id();
-        } else {
-            return guest.getGuest_id();
-        }
+        return admin != null ? admin.getAdmin_id() : guest.getGuest_id();
     }
 
     @Override
     public String getUsername() {
-        if(admin != null & guest == null){
-            return admin.getUsername();
-        } else {
-            return guest.getUsername();
-        }
+        return admin != null ? admin.getUsername() : guest.getUsername();
     }
 
     @Override
@@ -64,11 +46,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        if(admin != null & guest == null){
-            return admin.isAccountNonLocked();
-        } else {
-            return guest.isAccountNonLocked();
-        }
+        return admin != null ? admin.isAccountNonLocked() : guest.isAccountNonLocked();
     }
 
     @Override
@@ -78,10 +56,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        if(admin != null & guest == null){
-            return admin.isEnabled();
-        } else {
-            return guest.isEnabled();
-        }
+        return admin != null ? admin.isEnabled() : guest.isEnabled();
     }
 }

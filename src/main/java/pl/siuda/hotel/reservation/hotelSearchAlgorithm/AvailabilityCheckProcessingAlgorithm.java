@@ -5,5 +5,5 @@ import pl.siuda.hotel.reservation.AvailabilityRequest;
 
 public interface AvailabilityCheckProcessingAlgorithm  {
 
-    boolean checkAvailability(Availability availability, AvailabilityRequest availabilityRequest);
+    boolean isOverlapping(Availability availability, AvailabilityRequest availabilityRequest);
 }

@@ -2,13 +2,11 @@ package pl.siuda.hotel.admin;
 
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.registration.EmailValidator;
@@ -61,7 +59,7 @@ class AdminServiceTest {
 
         // when
         when(adminRepository.findAll()).thenReturn(adminList);
-        List<Admin> list = adminService.findAll();
+        List<AdminDto> list = adminService.findAllAdmins();
 
         // then
         assertThat(list.size()).isEqualTo(4);
@@ -71,7 +69,7 @@ class AdminServiceTest {
     void adminListReturnsZero() {
         // when
         when(adminRepository.findAll()).thenReturn(Collections.emptyList());
-        List<Admin> list = adminService.findAll();
+        List<AdminDto> list = adminService.findAllAdmins();
 
         // then
         assertThat(list.size()).isEqualTo(0);
@@ -84,14 +82,13 @@ class AdminServiceTest {
         // when
         when(adminRepository.findById(2L)).thenReturn(java.util.Optional
                 .of(Kevin));
-       Admin admin = adminService.getAdminById(2L);
+       AdminDto admin = adminService.getAdminById(2L);
         // then
 
         assertThat(admin.getAdmin_id()).isEqualTo(2L);
         assertThat(admin.getFirstName()).isEqualTo("Kevin");
         assertThat(admin.getLastName()).isEqualTo("Smith");
         assertThat(admin.getEmail()).isEqualTo("kevinsmith@gmail.com");
-        assertThat(admin.getPassword()).isEqualTo("password123");
         assertThat(admin.getApplicationUserRole()).isEqualTo(ApplicationUserRole.ADMIN);
     }
 
@@ -112,7 +109,7 @@ class AdminServiceTest {
         when(customUserDetailsService.userNotExists("kevinsmith@gmail.com")).thenReturn(true);
         when(emailValidator.test("kevinsmith@gmail.com")).thenReturn(true);
         when(bCryptPasswordEncoder.encode("pass123")).thenReturn("1");
-        adminService.save(Kevin);
+        adminService.saveAdmin(Kevin);
 
         // then
         ArgumentCaptor<Admin> adminArgumentCaptor = ArgumentCaptor.forClass(Admin.class);
@@ -133,7 +130,7 @@ class AdminServiceTest {
         when(customUserDetailsService.userNotExists("kevinsmith@gmail.com")).thenReturn(false);
 
         // then
-        assertThrows(IllegalStateException.class, () -> adminService.save(Kevin));
+        assertThrows(IllegalStateException.class, () -> adminService.saveAdmin(Kevin));
     }
 
     @Test
@@ -146,7 +143,7 @@ class AdminServiceTest {
         ;
 
         // then
-        assertThrows(IllegalStateException.class, () -> adminService.save(Kevin));
+        assertThrows(IllegalStateException.class, () -> adminService.saveAdmin(Kevin));
     }
 
     @Test

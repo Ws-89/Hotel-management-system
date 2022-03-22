@@ -4,20 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.reservation.hotelSearchAlgorithm.AvailabilityCheckProcessingAlgorithm;
 import pl.siuda.hotel.reservation.pricingAlgorithm.CalculatePriceAlgorithm;
 import pl.siuda.hotel.room.RoomService;
 import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ReservationService implements IReservation {
 
     @Autowired
@@ -33,10 +35,6 @@ public class ReservationService implements IReservation {
         this.availabilityCheckProcessingAlgorithm = availabilityCheckProcessingAlgorithm;
         this.calculatePriceAlgorithm = calculatePriceAlgorithm;
         this.customUserDetailsService = customUserDetailsService;
-    }
-
-    public Set<Availability> getRoomsByCity(String city) {
-        return reservationRepository.findRoomsByCity(city);
     }
 
     @Override
@@ -55,9 +53,7 @@ public class ReservationService implements IReservation {
     }
 
     @Override
-    public Reservation makeAReservation(ReservationRequest request) {
-        Reservation reservation = new Reservation();
-        request.requestToEntity(reservation);
+    public List<Reservation> makeAReservation(List<ReservationRequest> request) {
         Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userName;
         if(authentication instanceof UserDetails){
@@ -66,17 +62,29 @@ public class ReservationService implements IReservation {
             throw new IllegalArgumentException();
         }
         CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(userName);
-        reservation.setGuest_id(user.getId());
-        return reservationRepository.save(reservation);
+        List<Reservation> result = new ArrayList<>();
+        request.forEach(item -> {
+            Reservation reservation = new Reservation(
+               item.getFrom_date(),
+               item.getTo_date(),
+               item.getRoom_id(),
+               item.getPrice(),
+                    user.getId()
+            );
+            result.add(reservationRepository.save(reservation));
+                });
+        return result;
     }
 
     @Override
-    public void cancelReservation(Long reservation_id) {
-
+    public boolean cancelReservation(Long reservation_id) {
+        Optional.ofNullable(reservationRepository.findById(reservation_id)).orElseThrow(()-> new NotFoundException(""));
+        return true;
     }
 
     private Set<Availability> getOfferts(Set<Availability> availabilitiesAndReservations, Set<Long> takenRooms) {
-        Set<Availability> availabilities = availabilitiesAndReservations.stream().filter(availability -> !takenRooms.contains(availability.getRoom_id()))
+        Set<Availability> availabilities = availabilitiesAndReservations.stream()
+                .filter(availability -> !takenRooms.contains(availability.getRoom_id()))
                 .filter(distinctByKey(p -> p.getRoom_id()))
                 .collect(Collectors.toSet());
 
@@ -86,7 +94,7 @@ public class ReservationService implements IReservation {
 
     private Set<Long> getTakenRooms(AvailabilityRequest request, Set<Availability> availabilitiesAndReservations) {
         Set<Long> takenRooms = availabilitiesAndReservations.stream()
-                .filter(availability -> availabilityCheckProcessingAlgorithm.checkAvailability(availability, request))
+                .filter(availability -> availabilityCheckProcessingAlgorithm.isOverlapping(availability, request))
                 .map(x -> x.getRoom_id())
                 .collect(Collectors.toSet());
         return takenRooms;

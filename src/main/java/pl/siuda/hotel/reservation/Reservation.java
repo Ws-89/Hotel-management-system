@@ -3,6 +3,7 @@ package pl.siuda.hotel.reservation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,21 +14,24 @@ public class Reservation {
     private Long reservation_id;
     private LocalDateTime from_date;
     private LocalDateTime to_date;
-    private int partySize;
-    @MappedCollection(keyColumn = "RESERVATION_ID", idColumn = "RESERVATION_ID")
-    private Set<ReservationArrangement> rooms = new HashSet<>();
+    private Long room_id;
+    private BigDecimal price;
     private Long guest_id;
 
-    public Set<ReservationArrangement> getReservations() {
-        return rooms;
+    public Reservation(LocalDateTime from_date, LocalDateTime to_date, Long room_id, BigDecimal price, Long guest_id) {
+        this.from_date = from_date;
+        this.to_date = to_date;
+        this.room_id = room_id;
+        this.price = price;
+        this.guest_id = guest_id;
     }
 
-    public void setReservations(Set<ReservationArrangement> rooms) {
-        this.rooms = rooms;
+    public Long getRoom_id() {
+        return room_id;
     }
 
-    public void addRoom(long room_id){
-        this.rooms.add(new ReservationArrangement(room_id));
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
     }
 
     public Reservation() {
@@ -57,15 +61,6 @@ public class Reservation {
         this.reservation_id = reservation_id;
     }
 
-
-    public Integer getPartySize() {
-        return partySize;
-    }
-
-    public void setPartySize(Integer partySize) {
-        this.partySize = partySize;
-    }
-
     public Long getId() {
         return reservation_id;
     }
@@ -74,20 +69,16 @@ public class Reservation {
         this.reservation_id = id;
     }
 
-    public void setPartySize(int partySize) {
-        this.partySize = partySize;
-    }
-
-    public Set<ReservationArrangement> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(Set<ReservationArrangement> rooms) {
-        this.rooms = rooms;
-    }
-
     public Long getGuest_id() {
         return guest_id;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public void setGuest_id(Long guest_id) {

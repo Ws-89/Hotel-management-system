@@ -16,7 +16,7 @@ public enum ApplicationUserRole {
             RESERVATION_GUEST
     )),
 
-    EMPLOYER(Sets.newHashSet(
+    EMPLOYEE(Sets.newHashSet(
             HOTEL_READ,
             HOTEL_DESCRIPTION_UPDATE,
             ROOM_DESCRIPTION_UPDATE,

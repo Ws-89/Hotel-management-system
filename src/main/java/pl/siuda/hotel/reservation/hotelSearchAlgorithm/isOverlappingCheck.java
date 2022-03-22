@@ -4,10 +4,10 @@ import pl.siuda.hotel.reservation.Availability;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
 
 @Component
-public class OverlappingCheck implements AvailabilityCheckProcessingAlgorithm{
+public class isOverlappingCheck implements AvailabilityCheckProcessingAlgorithm{
 
     @Override
-    public boolean checkAvailability(Availability availability, AvailabilityRequest availabilityRequest) {
+    public boolean isOverlapping(Availability availability, AvailabilityRequest availabilityRequest) {
         if(availability.getFrom_date() != null || availability.getTo_date() != null)
             return  isRequestStartDateInsideAnyReservationDate(availability, availabilityRequest)
                     || (isRequestEndDateInsideReservationDate(availability, availabilityRequest))
