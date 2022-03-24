@@ -1,5 +1,6 @@
 package pl.siuda.hotel.reservation;
 
+import org.springframework.data.annotation.Id;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.enums.RoomType;
 
@@ -9,6 +10,10 @@ import java.time.LocalDateTime;
 
 public class Availability {
 
+    @Id
+    private Long reservation_id;
+    private boolean confirmed = false;
+    private String email;
     private long hotel_id;
     private String hotel_name;
     private String city;
@@ -16,12 +21,34 @@ public class Availability {
     private String image;
     private long room_id;
     private RoomType roomType;
-    private Long reservation_id;
     private LocalDateTime from_date;
     private LocalDateTime to_date;
     private BigDecimal price;
 
     public Availability() {
+    }
+
+    public Availability(String email,
+                        long hotel_id,
+                        String hotel_name,
+                        String city, Grade grade,
+                        String image,
+                        long room_id,
+                        RoomType roomType,
+                        LocalDateTime from_date,
+                        LocalDateTime to_date,
+                        BigDecimal price) {
+        this.email = email;
+        this.hotel_id = hotel_id;
+        this.hotel_name = hotel_name;
+        this.city = city;
+        this.grade = grade;
+        this.image = image;
+        this.room_id = room_id;
+        this.roomType = roomType;
+        this.from_date = from_date;
+        this.to_date = to_date;
+        this.price = price;
     }
 
     public Availability(long hotel_id,

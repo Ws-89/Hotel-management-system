@@ -16,14 +16,15 @@ public class Reservation {
     private LocalDateTime to_date;
     private Long room_id;
     private BigDecimal price;
-    private Long guest_id;
+    private String email;
 
-    public Reservation(LocalDateTime from_date, LocalDateTime to_date, Long room_id, BigDecimal price, Long guest_id) {
+    public Reservation(LocalDateTime from_date, LocalDateTime to_date, Long room_id, BigDecimal price, String email) {
         this.from_date = from_date;
         this.to_date = to_date;
         this.room_id = room_id;
         this.price = price;
-        this.guest_id = guest_id;
+        this.email = email;
+
     }
 
     public Long getRoom_id() {
@@ -69,10 +70,6 @@ public class Reservation {
         this.reservation_id = id;
     }
 
-    public Long getGuest_id() {
-        return guest_id;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -81,8 +78,12 @@ public class Reservation {
         this.price = price;
     }
 
-    public void setGuest_id(Long guest_id) {
-        this.guest_id = guest_id;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

@@ -53,4 +53,8 @@ public class GuestService {
         }
         return guest;
     }
+
+    public void save(Guest guest){
+        this.guestRepository.save(guest);
+    }
 }
