@@ -54,7 +54,7 @@ public class ReservationService{
     public void makeAReservation(List<Availability> request) {
         String userName = getUserName();
         CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(userName);
-        List<Reservation> result = new ArrayList<>();
+        List<Availability> result = new ArrayList<>();
         request.forEach(item -> {
 //            Availability reservation = new Availability(
 //               item.getFrom_date(),
