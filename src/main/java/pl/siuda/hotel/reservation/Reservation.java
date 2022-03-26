@@ -24,8 +24,10 @@ public class Reservation {
 
     public Reservation(long hotel_id,
                        String hotel_name,
-                       String city, Grade grade,
-                       String image, long room_id,
+                       String city,
+                       Grade grade,
+                       String image,
+                       long room_id,
                        RoomType roomType,
                        LocalDateTime from_date,
                        LocalDateTime to_date,

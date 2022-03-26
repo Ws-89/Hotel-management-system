@@ -51,22 +51,17 @@ public class ReservationService{
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    public void makeAReservation(List<Availability> request) {
+    public void makeAReservation(ReservationRequest request) {
         String userName = getUserName();
-        CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(userName);
-        List<Availability> result = new ArrayList<>();
-        request.forEach(item -> {
-//            Availability reservation = new Availability(
-//               item.getFrom_date(),
-//               item.getTo_date(),
-//               item.getRoom_id(),
-//               item.getPrice()
-//
-//            );
-//
-//                });
-
-    });}
+        ReservationArrangement reservation = new ReservationArrangement();
+        reservation.setPartySize(request.getPartySize());
+        reservation.setNumberOfRooms(request.getNumberOfRooms());
+        reservation.setReservations(request.getReservations());
+        reservation.setEmail(userName);
+        reservation.setConfirmed(true);
+        reservation.setPrice(request.getPrice());
+        reservationRepository.save(reservation);
+    }
 
     private String getUserName() {
         Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

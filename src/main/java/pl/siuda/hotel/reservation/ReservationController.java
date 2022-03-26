@@ -21,18 +21,7 @@ public class ReservationController {
     }
 
     @PostMapping("/makeAReservation")
-    public void makeAReservation(@RequestBody List<Availability> request) {
+    public void makeAReservation(@RequestBody ReservationRequest request) {
         reservationService.makeAReservation(request);
     }
-
-//    @PostMapping("/addToReservationCart")
-//    public void addToReservationCart(@RequestBody Availability availability){
-//        reservationService.addToCart(availability);
-//    }
-//
-//    @GetMapping("/getReservationItems")
-//    public List<Availability> getReservationItems(){
-//        return reservationService.getReservationItems();
-//    }
-
 }
