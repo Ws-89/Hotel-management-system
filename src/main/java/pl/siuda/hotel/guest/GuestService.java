@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.registration.EmailValidator;
+import pl.siuda.hotel.reservation.availabilityCart.AvailabilityCart;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.util.List;
@@ -41,8 +42,11 @@ public class GuestService {
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(guest.getPassword());
-
         guest.setPassword(encodedPassword);
+
+        AvailabilityCart availabilityCart = new AvailabilityCart();
+        guest.setAvailabilityCart(availabilityCart);
+
         return guestRepository.save(guest);
     }
 
@@ -52,5 +56,9 @@ public class GuestService {
             throw new NotFoundException("username not found");
         }
         return guest;
+    }
+
+    public void save(Guest guest){
+        this.guestRepository.save(guest);
     }
 }

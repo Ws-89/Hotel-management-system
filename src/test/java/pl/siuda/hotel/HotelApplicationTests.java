@@ -87,52 +87,11 @@ class HotelApplicationTests {
 
 	}
 
-	@Test
-	void updateTest(){
-		Hotel h1 = hotelRepository.findById(1L).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", 1L)));
-		h1.setPhoneNumber("123");
-		h1.setEmail("asdf@gmail.com");
-		System.out.println(hotelRepository.save(h1));
-	}
-
-	@Test
-	void addRoomAtSpecifiedHotel(){
-		RoomRequest roomRequest = new RoomRequest();
-		roomRequest.setNumber(201);
-		roomRequest.setRoomType(RoomType.SINGLE);
-		roomService.createRoomAtSpecifiedHotel(1L, roomRequest);
-	}
 
 
-	@Test
-	void addReservationToExistingGuest(){
-		Guest guest = guestService.findByEmail("wiktorsiuda5@gmail.com");
-
-		Room room = roomService.findByRoomNumberAndHotelId(131, 1L);
-		Room room2 = roomService.findByRoomNumberAndHotelId(130, 1L);
-
-		Reservation reservation2 = new Reservation();
-		reservation2.setFrom_date(LocalDateTime.of(2022, 1, 1, 00,00,1));
-		reservation2.setTo_date(LocalDateTime.of(2022, 1, 5, 00,00,1));
-
-		reservation2.addRoom(1);
-		reservation2.addRoom(2);
-		guest.addReservation(reservation2);
-		guestRepository.save(guest);
 
 
-	}
 
-	@Test
-	void checkReservation(){
-		AvailabilityRequest availabilityRequest = new AvailabilityRequest();
-		availabilityRequest.setFrom_date(LocalDateTime.of(2021, 5, 13, 12, 00, 00));
-		availabilityRequest.setTo_date(LocalDateTime.of(2021, 5, 21, 00, 00, 00));
-		availabilityRequest.setCity("Leiden");
-
-		System.out.println(reservationService.getAvailability(availabilityRequest));
-
-	}
 
 
 

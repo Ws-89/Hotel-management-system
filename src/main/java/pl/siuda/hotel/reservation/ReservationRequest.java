@@ -1,32 +1,76 @@
 package pl.siuda.hotel.reservation;
 
+import org.springframework.data.relational.core.mapping.MappedCollection;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ReservationRequest {
 
-    private int party_size;
-    private LocalDateTime from_date;
-    private LocalDateTime to_date;
-    private List<Integer> room_ids;
-    private BigDecimal price;
+    int partySize;
+    int numberOfRooms;
+    Set<Reservation> reservations = new HashSet<>();
+    String email;
+    boolean confirmed;
+    BigDecimal price;
 
-    public ReservationRequest(int party_size, LocalDateTime from_date, LocalDateTime to_date, List<Integer> room_ids, BigDecimal price) {
-        this.party_size = party_size;
-        this.from_date = from_date;
-        this.to_date = to_date;
-        this.room_ids = room_ids;
+    public ReservationRequest(int partySize, int numberOfRooms, Set<Reservation> reservations, String email, boolean confirmed, BigDecimal price) {
+        this.partySize = partySize;
+        this.numberOfRooms = numberOfRooms;
+        this.reservations = reservations;
+        this.email = email;
+        this.confirmed = confirmed;
         this.price = price;
     }
 
-    public void requestToEntity(Reservation reservation){
-        reservation.setPartySize(party_size);
-        reservation.setFrom_date(from_date);
-        reservation.setTo_date(to_date);
-        for(Integer id : room_ids){
-            reservation.addRoom(id);
-        }
+    public int getPartySize() {
+        return partySize;
     }
 
+    public void setPartySize(int partySize) {
+        this.partySize = partySize;
+    }
+
+    public int getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public void setNumberOfRooms(int numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }

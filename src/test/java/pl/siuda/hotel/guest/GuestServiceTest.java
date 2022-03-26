@@ -153,12 +153,5 @@ class GuestServiceTest {
         assertThrows(NotFoundException.class, ()-> guestService.findByEmail("johndoe@gmail.com"));
     }
 
-    @Test
-    void enableAppUser() {
-        // when
-        when(guestRepository.enableAppUser(1L)).thenReturn(1L);
-        Long id = guestService.enableAppUser(1L);
-        //
-        assertThat(id).isEqualTo(1L);
-    }
+  
 }

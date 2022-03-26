@@ -4,21 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.reservation.hotelSearchAlgorithm.AvailabilityCheckProcessingAlgorithm;
 import pl.siuda.hotel.reservation.pricingAlgorithm.CalculatePriceAlgorithm;
 import pl.siuda.hotel.room.RoomService;
 import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
-public class ReservationService implements IReservation {
+@Transactional
+public class ReservationService{
 
     @Autowired
     private final RoomService roomService;
@@ -35,16 +37,11 @@ public class ReservationService implements IReservation {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    public Set<Availability> getRoomsByCity(String city) {
-        return reservationRepository.findRoomsByCity(city);
-    }
+    public List<Availability> getAvailability(AvailabilityRequest request){
+        List<Availability> getPossibleAvailabilities = reservationRepository.findRoomsByCity(request.getCity());
+        List<Long> takenRooms = filterTakenRooms(request, getPossibleAvailabilities);
 
-    @Override
-    public Set<Availability> getAvailability(AvailabilityRequest request){
-        Set<Availability> availabilitiesAndReservations = reservationRepository.findRoomsByCity(request.getCity());
-        Set<Long> takenRooms = getTakenRooms(request, availabilitiesAndReservations);
-
-        return getOfferts(availabilitiesAndReservations, takenRooms);
+        return getOfferts(getPossibleAvailabilities, takenRooms);
     }
 
     public static <T> Predicate<T> distinctByKey(
@@ -54,10 +51,19 @@ public class ReservationService implements IReservation {
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    @Override
-    public Reservation makeAReservation(ReservationRequest request) {
-        Reservation reservation = new Reservation();
-        request.requestToEntity(reservation);
+    public void makeAReservation(ReservationRequest request) {
+        String userName = getUserName();
+        ReservationArrangement reservation = new ReservationArrangement();
+        reservation.setPartySize(request.getPartySize());
+        reservation.setNumberOfRooms(request.getNumberOfRooms());
+        reservation.setReservations(request.getReservations());
+        reservation.setEmail(userName);
+        reservation.setConfirmed(true);
+        reservation.setPrice(request.getPrice());
+        reservationRepository.save(reservation);
+    }
+
+    private String getUserName() {
         Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userName;
         if(authentication instanceof UserDetails){
@@ -65,31 +71,30 @@ public class ReservationService implements IReservation {
         }else {
             throw new IllegalArgumentException();
         }
-        CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(userName);
-        reservation.setGuest_id(user.getId());
-        return reservationRepository.save(reservation);
+        return userName;
     }
 
-    @Override
-    public void cancelReservation(Long reservation_id) {
 
+    public boolean cancelReservation(Long reservation_id) {
+        Optional.ofNullable(reservationRepository.findById(reservation_id)).orElseThrow(()-> new NotFoundException(""));
+        return true;
     }
 
-    private Set<Availability> getOfferts(Set<Availability> availabilitiesAndReservations, Set<Long> takenRooms) {
-        Set<Availability> availabilities = availabilitiesAndReservations.stream().filter(availability -> !takenRooms.contains(availability.getRoom_id()))
+    private List<Availability> getOfferts(List<Availability> availabilitiesAndReservations, List<Long> takenRooms) {
+        List<Availability> availabilities = availabilitiesAndReservations.stream()
+                .filter(availability -> !takenRooms.contains(availability.getRoom_id()))
                 .filter(distinctByKey(p -> p.getRoom_id()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
         availabilities.forEach(availability -> availability.setPrice(calculatePriceAlgorithm.getPrice(availability)));
         return availabilities;
     }
 
-    private Set<Long> getTakenRooms(AvailabilityRequest request, Set<Availability> availabilitiesAndReservations) {
-        Set<Long> takenRooms = availabilitiesAndReservations.stream()
-                .filter(availability -> availabilityCheckProcessingAlgorithm.checkAvailability(availability, request))
-                .map(x -> x.getRoom_id())
-                .collect(Collectors.toSet());
-        return takenRooms;
+    private List<Long> filterTakenRooms(AvailabilityRequest request, List<Availability> availabilitiesAndReservations) {
+        return availabilitiesAndReservations.stream()
+                .filter(availability -> availabilityCheckProcessingAlgorithm.isOverlapping(availability, request))
+                .map(item -> item.getRoom_id())
+                .collect(Collectors.toList());
     }
 }
 

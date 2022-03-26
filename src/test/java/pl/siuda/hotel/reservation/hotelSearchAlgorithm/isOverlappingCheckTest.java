@@ -6,33 +6,33 @@ import pl.siuda.hotel.enums.RoomType;
 import pl.siuda.hotel.reservation.Availability;
 import pl.siuda.hotel.reservation.AvailabilityRequest;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-class EndsOfCompartmentCheckingAlgorithmTest {
+class isOverlappingCheckTest {
 
     @Test
     void checkAvailability() {
-        EndsOfCompartmentCheckingAlgorithm algorithm = new EndsOfCompartmentCheckingAlgorithm();
-        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, 2L, RoomType.DOUBLE, 1L,
+        isOverlappingCheck algorithm = new isOverlappingCheck();
+        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
-                LocalDateTime.of(2022, 05, 06, 00, 00, 01));
+                LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
 
         AvailabilityRequest request = new AvailabilityRequest("Leiden", 2, 2,
                 LocalDateTime.of(2022, 05, 6, 00, 00, 01),
                 LocalDateTime.of(2022, 05, 11, 00, 00, 01));
 
-        assertThat(algorithm.checkAvailability(availability, request)).isEqualTo(true);
+        assertThat(algorithm.isOverlapping(availability, request)).isEqualTo(true);
     }
 
     @Test
     void isRequestStartDateInsideAnyReservationDate() {
-        EndsOfCompartmentCheckingAlgorithm algorithm = new EndsOfCompartmentCheckingAlgorithm();
-        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, 2L, RoomType.DOUBLE, 1L,
+        isOverlappingCheck algorithm = new isOverlappingCheck();
+        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
-                LocalDateTime.of(2022, 05, 06, 00, 00, 01));
+                LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
 
         AvailabilityRequest request = new AvailabilityRequest("Leiden", 2, 2,
                 LocalDateTime.of(2022, 05, Integer.parseInt("02"), 00, 00, 01),
@@ -43,10 +43,10 @@ class EndsOfCompartmentCheckingAlgorithmTest {
 
     @Test
     void isRequestEndDateInsideReservationDate() {
-        EndsOfCompartmentCheckingAlgorithm algorithm = new EndsOfCompartmentCheckingAlgorithm();
-        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, 2L, RoomType.DOUBLE, 1L,
+        isOverlappingCheck algorithm = new isOverlappingCheck();
+        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
-                LocalDateTime.of(2022, 05, 06, 00, 00, 01));
+                LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
 
         AvailabilityRequest request = new AvailabilityRequest("Leiden", 2, 2,
                 LocalDateTime.of(2022, 05, Integer.parseInt("01"), 00, 00, 01),
@@ -57,10 +57,10 @@ class EndsOfCompartmentCheckingAlgorithmTest {
 
     @Test
     void isRequestOutsideOfReservationDate() {
-        EndsOfCompartmentCheckingAlgorithm algorithm = new EndsOfCompartmentCheckingAlgorithm();
-        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, 2L, RoomType.DOUBLE, 1L,
+        isOverlappingCheck algorithm = new isOverlappingCheck();
+        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
-                LocalDateTime.of(2022, 05, 06, 00, 00, 01));
+                LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
 
         AvailabilityRequest request = new AvailabilityRequest("Leiden", 2, 2,
                 LocalDateTime.of(2022, 05, Integer.parseInt("01"), 00, 00, 01),
@@ -71,10 +71,10 @@ class EndsOfCompartmentCheckingAlgorithmTest {
 
     @Test
     void isRequestDateInsideReservationDate() {
-        EndsOfCompartmentCheckingAlgorithm algorithm = new EndsOfCompartmentCheckingAlgorithm();
-        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, 2L, RoomType.DOUBLE, 1L,
+        isOverlappingCheck algorithm = new isOverlappingCheck();
+        Availability availability = new Availability(1L, "Flex", "Leiden", Grade.THREESTARS, "",2L, RoomType.DOUBLE, 1L,
                 LocalDateTime.of(2022, 05, 02, 00, 00, 01),
-                LocalDateTime.of(2022, 05, 06, 00, 00, 01));
+                LocalDateTime.of(2022, 05, 06, 00, 00, 01), BigDecimal.valueOf(1));
 
         AvailabilityRequest request = new AvailabilityRequest("Leiden", 2, 2,
                 LocalDateTime.of(2022, 05, Integer.parseInt("02"), 00, 00, 01),

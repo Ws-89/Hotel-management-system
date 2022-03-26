@@ -5,19 +5,17 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import pl.siuda.hotel.mappers.AvailabilityRowMapper;
 
+import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface ReservationRepository extends CrudRepository<Reservation, Long> {
+public interface ReservationRepository extends CrudRepository<ReservationArrangement, Long> {
 
     @Query(rowMapperClass = AvailabilityRowMapper.class, value = "SELECT hotel.hotel_id, hotel.name AS hotel_name, hotel.city, hotel.grade, hotel.image, room.room_id, room.room_type, reservation.reservation_id, \n" +
             "reservation.from_date, reservation.to_date \n" +
             "FROM hotel INNER JOIN room ON room.hotel_id = hotel.hotel_id\n" +
-            "LEFT JOIN room_reservation ON room_reservation.room_id = room.room_id\n" +
-            "LEFT JOIN reservation ON reservation.reservation_id = room_reservation.reservation_id \n" +
+            "LEFT JOIN reservation ON reservation.room_id = room.room_id\n" +
             "WHERE hotel.city = :city")
-    Set<Availability> findRoomsByCity(String city);
-
-
+    List<Availability> findRoomsByCity(String city);
 
 }

@@ -21,7 +21,6 @@ public class JdbcConfiguration extends AbstractJdbcConfiguration {
     @Value("${app.datasource.password}")
     private String getDatasourcePassword;
 
-    // NamedParameterJdbcOperations is used internally to submit SQL statements to the database
     @Bean
     NamedParameterJdbcOperations operations() {
         return new NamedParameterJdbcTemplate(dataSource());

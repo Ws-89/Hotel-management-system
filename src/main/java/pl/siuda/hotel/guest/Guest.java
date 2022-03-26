@@ -7,7 +7,9 @@ import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.siuda.hotel.embeddedClasses.Address;
-import pl.siuda.hotel.reservation.Reservation;
+
+import pl.siuda.hotel.reservation.Availability;
+import pl.siuda.hotel.reservation.availabilityCart.AvailabilityCart;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
 import java.io.Serializable;
@@ -18,8 +20,6 @@ public class Guest implements UserDetails, Serializable {
     @Id
     @Column("GUEST_ID")
     private Long guest_id;
-    @MappedCollection(keyColumn = "GUEST_ID", idColumn = "GUEST_ID")
-    private Set<Reservation> reservations = new HashSet<>();
     private String firstName;
     private String lastName;
     private String email;
@@ -30,6 +30,8 @@ public class Guest implements UserDetails, Serializable {
     @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private Address address;
     private String phoneNumber;
+    @MappedCollection(idColumn = "AVAILABILITY_CART_ID")
+    private AvailabilityCart availabilityCart;
 
     public Guest() {
     }
@@ -67,6 +69,20 @@ public class Guest implements UserDetails, Serializable {
         this.applicationUserRole = applicationUserRole;
     }
 
+    public Guest(Long guest_id, String firstName, String lastName, String email, String password, boolean locked, boolean enabled, ApplicationUserRole applicationUserRole, Address address, String phoneNumber, AvailabilityCart availabilityCart) {
+        this.guest_id = guest_id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.locked = locked;
+        this.enabled = enabled;
+        this.applicationUserRole = applicationUserRole;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.availabilityCart = availabilityCart;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -75,20 +91,8 @@ public class Guest implements UserDetails, Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public void addReservation(Reservation reservation){
-        this.reservations.add(reservation);
-    }
-
     public Long getGuest_id() {
         return guest_id;
-    }
-
-    public Set<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Set<Reservation> reservations) {
-        this.reservations = reservations;
     }
 
     public void setGuest_id(Long guest_id) {
@@ -206,6 +210,11 @@ public class Guest implements UserDetails, Serializable {
         return this.address.getZipcode();
     }
 
+    public AvailabilityCart getAvailabilityCart() {
+        return availabilityCart;
+    }
 
-
+    public void setAvailabilityCart(AvailabilityCart availabilityCart) {
+        this.availabilityCart = availabilityCart;
+    }
 }

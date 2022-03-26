@@ -3,7 +3,6 @@ package pl.siuda.hotel.admin;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("management/admins")
@@ -17,22 +16,22 @@ public class AdminController {
 
     @GetMapping
     public List<AdminDto> getAllAdmins(){
-        return adminService.findAll().stream().map(AdminDto::adminToDto).collect(Collectors.toList());
+        return adminService.findAllAdmins();
     }
 
     @GetMapping("{id}")
     public AdminDto getAdminById(@PathVariable("id") Long id){
-        return AdminDto.adminToDto(adminService.getAdminById(id));
+        return adminService.getAdminById(id);
     }
 
     @PostMapping
-    public AdminDto save(@RequestBody AdminRequest request){
-        return AdminDto.adminToDto(adminService.save(request));
+    public void saveAdmin(@RequestBody AdminRequest request){
+        adminService.saveAdmin(request);
     }
 
     @PutMapping("{id}")
-    public AdminDto update(@PathVariable Long id, @RequestBody AdminRequest request){
-        return AdminDto.adminToDto(adminService.updateAdmin(id, request));
+    public void updateAdmin(@PathVariable Long id, @RequestBody AdminRequest request){
+        adminService.updateAdmin(id, request);
     }
 
     @DeleteMapping("{id}")

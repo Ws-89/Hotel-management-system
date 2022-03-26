@@ -1,0 +1,2 @@
+ALTER TABLE reservation
+ADD PRICE DECIMAL

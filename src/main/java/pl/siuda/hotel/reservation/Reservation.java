@@ -1,36 +1,111 @@
 package pl.siuda.hotel.reservation;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
+import pl.siuda.hotel.enums.Grade;
+import pl.siuda.hotel.enums.RoomType;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Reservation {
 
     @Id
     private Long reservation_id;
+    private long hotel_id;
+    private String hotel_name;
+    private String city;
+    private Grade grade;
+    private String image;
+    private long room_id;
+    private RoomType roomType;
     private LocalDateTime from_date;
     private LocalDateTime to_date;
-    private int partySize;
-    @MappedCollection(keyColumn = "RESERVATION_ID", idColumn = "RESERVATION_ID")
-    private Set<ReservationArrangement> rooms = new HashSet<>();
-    private Long guest_id;
+    private BigDecimal price;
 
-    public Set<ReservationArrangement> getReservations() {
-        return rooms;
+    public Reservation(long hotel_id,
+                       String hotel_name,
+                       String city,
+                       Grade grade,
+                       String image,
+                       long room_id,
+                       RoomType roomType,
+                       LocalDateTime from_date,
+                       LocalDateTime to_date,
+                       BigDecimal price) {
+        this.hotel_id = hotel_id;
+        this.hotel_name = hotel_name;
+        this.city = city;
+        this.grade = grade;
+        this.image = image;
+        this.room_id = room_id;
+        this.roomType = roomType;
+        this.from_date = from_date;
+        this.to_date = to_date;
+        this.price = price;
     }
 
-    public void setReservations(Set<ReservationArrangement> rooms) {
-        this.rooms = rooms;
+    public Long getReservation_id() {
+        return reservation_id;
     }
 
-    public void addRoom(long room_id){
-        this.rooms.add(new ReservationArrangement(room_id));
+    public void setReservation_id(Long reservation_id) {
+        this.reservation_id = reservation_id;
     }
 
-    public Reservation() {
+    public long getHotel_id() {
+        return hotel_id;
+    }
+
+    public void setHotel_id(long hotel_id) {
+        this.hotel_id = hotel_id;
+    }
+
+    public String getHotel_name() {
+        return hotel_name;
+    }
+
+    public void setHotel_name(String hotel_name) {
+        this.hotel_name = hotel_name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Grade getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public long getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(long room_id) {
+        this.room_id = room_id;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
     }
 
     public LocalDateTime getFrom_date() {
@@ -49,55 +124,11 @@ public class Reservation {
         this.to_date = to_date;
     }
 
-    public Long getReservation_id() {
-        return reservation_id;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setReservation_id(Long reservation_id) {
-        this.reservation_id = reservation_id;
-    }
-
-
-    public Integer getPartySize() {
-        return partySize;
-    }
-
-    public void setPartySize(Integer partySize) {
-        this.partySize = partySize;
-    }
-
-    public Long getId() {
-        return reservation_id;
-    }
-
-    public void setId(Long id) {
-        this.reservation_id = id;
-    }
-
-    public void setPartySize(int partySize) {
-        this.partySize = partySize;
-    }
-
-    public Set<ReservationArrangement> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(Set<ReservationArrangement> rooms) {
-        this.rooms = rooms;
-    }
-
-    public Long getGuest_id() {
-        return guest_id;
-    }
-
-    public void setGuest_id(Long guest_id) {
-        this.guest_id = guest_id;
-    }
-
-    @Override
-    public String toString() {
-        return "Reservation{" +
-                "reservationNo=" +  +
-                '}';
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

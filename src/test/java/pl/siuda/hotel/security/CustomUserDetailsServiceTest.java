@@ -12,6 +12,8 @@ import pl.siuda.hotel.admin.AdminRepository;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestRepository;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
