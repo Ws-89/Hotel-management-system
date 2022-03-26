@@ -19,23 +19,21 @@ public class AvailabilityCartService {
         this.guestService = guestService;
     }
 
-    public void save(Availability availability) {
-        availabilityCartRepository.findByGuestId(getUserId()).ifPresentOrElse(
-                element -> {
-                    element.addCartItem(availability);
-                    availabilityCartRepository.save(element);
-                }, () -> {
-                    Guest guest = guestService.getGuestById(getUserId());
-                    AvailabilityCart availabilityCart = new AvailabilityCart();
-                    availabilityCart.addCartItem(availability);
-                    guest.setAvailabilityCart(availabilityCart);
-                    guestService.save(guest);
-                }
-        );
+    public void addToCart(Availability availability) {
+        Guest guest = guestService.getGuestById(getUserId());
+//        if(guest.getAvailabilityCart() == null){
+//            AvailabilityCart availabilityCart = new AvailabilityCart();
+//            availabilityCart.addCartItem(availability);
+//            guest.setAvailabilityCart(availabilityCart);
+//            guestService.save(guest);
+//        }else
+        guest.getAvailabilityCart().addCartItem(availability);
+        guestService.save(guest);
     }
 
-    public AvailabilityCart findByEmail() {
-        return availabilityCartRepository.findByGuestId(getUserId()).orElseThrow(()-> new NotFoundException("No items found for current user"));
+    public AvailabilityCart getAvailabilityCart() {
+        Guest guest = guestService.getGuestById(getUserId());
+        return guest.getAvailabilityCart();
     }
 
     private Long getUserId() {

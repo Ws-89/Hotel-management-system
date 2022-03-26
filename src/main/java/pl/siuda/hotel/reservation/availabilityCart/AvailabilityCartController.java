@@ -1,14 +1,11 @@
 package pl.siuda.hotel.reservation.availabilityCart;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.siuda.hotel.reservation.Availability;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/availabilityCart")
 public class AvailabilityCartController {
@@ -20,12 +17,12 @@ public class AvailabilityCartController {
     }
 
     @PostMapping
-    public void addToCart(Availability availability){
-        this.availabilityCartService.save(availability);
+    public void addToCart(@RequestBody Availability availability){
+        this.availabilityCartService.addToCart(availability);
     }
 
     @GetMapping
-    public AvailabilityCart getReservationItems(){
-        return this.availabilityCartService.findByEmail();
+    public AvailabilityCart getAvailabilityCart(){
+        return this.availabilityCartService.getAvailabilityCart();
     }
 }

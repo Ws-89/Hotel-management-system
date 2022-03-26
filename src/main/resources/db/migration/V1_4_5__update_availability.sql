@@ -1,0 +1,1 @@
+ALTER TABLE availability MODIFY CONFIRMED BIT;

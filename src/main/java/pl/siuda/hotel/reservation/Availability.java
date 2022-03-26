@@ -8,12 +8,11 @@ import pl.siuda.hotel.enums.RoomType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+
 public class Availability {
 
     @Id
-    private Long reservation_id;
-    private boolean confirmed = false;
-    private String email;
+    private Long availability_id;
     private long hotel_id;
     private String hotel_name;
     private String city;
@@ -28,7 +27,7 @@ public class Availability {
     public Availability() {
     }
 
-    public Availability(String email,
+    public Availability(
                         long hotel_id,
                         String hotel_name,
                         String city, Grade grade,
@@ -38,7 +37,6 @@ public class Availability {
                         LocalDateTime from_date,
                         LocalDateTime to_date,
                         BigDecimal price) {
-        this.email = email;
         this.hotel_id = hotel_id;
         this.hotel_name = hotel_name;
         this.city = city;
@@ -58,7 +56,7 @@ public class Availability {
                         String image,
                         long room_id,
                         RoomType roomType,
-                        Long reservation_id,
+                        Long availability_id,
                         LocalDateTime from_date,
                         LocalDateTime to_date,
                         BigDecimal price) {
@@ -69,7 +67,7 @@ public class Availability {
         this.image = image;
         this.room_id = room_id;
         this.roomType = roomType;
-        this.reservation_id = reservation_id;
+        this.availability_id = availability_id;
         this.from_date = from_date;
         this.to_date = to_date;
         this.price = price;
@@ -139,15 +137,6 @@ public class Availability {
         this.to_date = to_date;
     }
 
-
-    public Long getReservation_id() {
-        return reservation_id;
-    }
-
-    public void setReservation_id(Long reservation_id) {
-        this.reservation_id = reservation_id;
-    }
-
     public String getImage() {
         return image;
     }
@@ -164,18 +153,28 @@ public class Availability {
         this.price = price;
     }
 
+    public Long getAvailability_id() {
+        return availability_id;
+    }
+
+    public void setAvailability_id(Long availability_id) {
+        this.availability_id = availability_id;
+    }
+
     @Override
     public String toString() {
         return "Availability{" +
-                "hotel_id=" + hotel_id +
+                "availability_id=" + availability_id +
+                ", hotel_id=" + hotel_id +
                 ", hotel_name='" + hotel_name + '\'' +
                 ", city='" + city + '\'' +
                 ", grade=" + grade +
+                ", image='" + image + '\'' +
                 ", room_id=" + room_id +
                 ", roomType=" + roomType +
-                ", reservation_id=" + reservation_id +
                 ", from_date=" + from_date +
                 ", to_date=" + to_date +
+                ", price=" + price +
                 '}';
     }
 }

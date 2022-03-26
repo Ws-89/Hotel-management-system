@@ -19,5 +19,4 @@ public interface ReservationRepository extends CrudRepository<Reservation, Long>
             "WHERE hotel.city = :city")
     List<Availability> findRoomsByCity(String city);
 
-    List<Availability> findByEmail(String email);
 }
