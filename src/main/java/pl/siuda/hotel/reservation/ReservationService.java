@@ -63,6 +63,17 @@ public class ReservationService{
         reservationRepository.save(reservation);
     }
 
+    public void makeAReservationForNonLoggedInUser(ReservationRequest request) {
+        ReservationArrangement reservation = new ReservationArrangement();
+        reservation.setPartySize(request.getPartySize());
+        reservation.setNumberOfRooms(request.getNumberOfRooms());
+        reservation.setReservations(request.getReservations());
+        reservation.setEmail(request.email);
+        reservation.setConfirmed(true);
+        reservation.setPrice(request.getPrice());
+        reservationRepository.save(reservation);
+    }
+
     private String getUserName() {
         Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userName;
@@ -86,7 +97,10 @@ public class ReservationService{
                 .filter(distinctByKey(p -> p.getRoom_id()))
                 .collect(Collectors.toList());
 
-        availabilities.forEach(availability -> availability.setPrice(calculatePriceAlgorithm.getPrice(availability)));
+        availabilities.forEach(availability -> {
+            availability.setPrice(calculatePriceAlgorithm.getPrice(availability));
+            availability.setAvailability_id(0L);
+        });
         return availabilities;
     }
 

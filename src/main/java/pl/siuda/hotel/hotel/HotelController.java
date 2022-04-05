@@ -42,7 +42,7 @@ public class HotelController {
         hotelService.deleteHotel(id);
     }
 
-    @PostMapping("images/{id}")
+    @PostMapping("images/upload/{id}")
     public void uploadImage(@PathVariable("id")Long id, @RequestParam("file") MultipartFile file){
         hotelService.uploadImage(id, file);
     }

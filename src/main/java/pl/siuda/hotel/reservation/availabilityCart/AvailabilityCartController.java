@@ -25,4 +25,9 @@ public class AvailabilityCartController {
     public AvailabilityCart getAvailabilityCart(){
         return this.availabilityCartService.getAvailabilityCart();
     }
+
+    @DeleteMapping("{id}")
+    public void deleteCartItem(@PathVariable("id") long id){
+        availabilityCartService.deleteCartItem(id);
+    }
 }
