@@ -3,16 +3,16 @@ package pl.siuda.hotel.registration;
 import java.util.Objects;
 
 public class RegistrationRequest {
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final String password;
-    private final String street;
-    private final String city;
-    private final String state;
-    private final String country;
-    private final String zipcode;
-    private final String phoneNumber;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String street;
+    private String city;
+    private String state;
+    private String country;
+    private String zipcode;
+    private String phoneNumber;
 
     public RegistrationRequest(String firstName, String lastName, String email, String password, String street, String city, String state, String country, String zipcode, String phoneNumber) {
         this.firstName = firstName;
@@ -25,6 +25,9 @@ public class RegistrationRequest {
         this.country = country;
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
+    }
+
+    public RegistrationRequest() {
     }
 
     public String getFirstName() {

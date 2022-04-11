@@ -8,6 +8,8 @@ import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.reservation.Availability;
 
+import java.util.Set;
+
 @Service
 public class AvailabilityCartService {
 
@@ -29,9 +31,9 @@ public class AvailabilityCartService {
         guestService.save(guest);
     }
 
-    public AvailabilityCart getAvailabilityCart() {
+    public Set<Availability> getAvailabilityCart() {
         Guest guest = guestService.getGuestById(getUserId());
-        return guest.getAvailabilityCart();
+        return guest.getAvailabilityCart().getCartItems();
     }
 
     public void deleteCartItem(long id){
