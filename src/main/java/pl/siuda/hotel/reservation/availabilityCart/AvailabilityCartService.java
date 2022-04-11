@@ -8,32 +8,37 @@ import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.reservation.Availability;
 
+import java.util.Set;
+
 @Service
 public class AvailabilityCartService {
 
     private final AvailabilityCartRepository availabilityCartRepository;
+    private final AvailabilityRepository availabilityRepository;
     private final GuestService guestService;
 
-    public AvailabilityCartService(AvailabilityCartRepository availabilityCartRepository, GuestService guestService) {
+    public AvailabilityCartService(AvailabilityCartRepository availabilityCartRepository,
+                                   AvailabilityRepository availabilityRepository,
+                                   GuestService guestService) {
         this.availabilityCartRepository = availabilityCartRepository;
+        this.availabilityRepository = availabilityRepository;
         this.guestService = guestService;
     }
 
     public void addToCart(Availability availability) {
         Guest guest = guestService.getGuestById(getUserId());
-//        if(guest.getAvailabilityCart() == null){
-//            AvailabilityCart availabilityCart = new AvailabilityCart();
-//            availabilityCart.addCartItem(availability);
-//            guest.setAvailabilityCart(availabilityCart);
-//            guestService.save(guest);
-//        }else
         guest.getAvailabilityCart().addCartItem(availability);
         guestService.save(guest);
     }
 
-    public AvailabilityCart getAvailabilityCart() {
+    public Set<Availability> getAvailabilityCart() {
         Guest guest = guestService.getGuestById(getUserId());
-        return guest.getAvailabilityCart();
+        return guest.getAvailabilityCart().getCartItems();
+    }
+
+    public void deleteCartItem(long id){
+        Availability availability = availabilityRepository.findById(id).orElseThrow(() -> new NotFoundException("item with id " + id + " not found"));
+        availabilityRepository.delete(availability);
     }
 
     private Long getUserId() {

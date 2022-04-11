@@ -2,6 +2,7 @@ package pl.siuda.hotel.reservation;
 
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.siuda.hotel.mappers.AvailabilityRowMapper;
 
@@ -16,6 +17,6 @@ public interface ReservationRepository extends CrudRepository<ReservationArrange
             "FROM hotel INNER JOIN room ON room.hotel_id = hotel.hotel_id\n" +
             "LEFT JOIN reservation ON reservation.room_id = room.room_id\n" +
             "WHERE hotel.city = :city")
-    List<Availability> findRoomsByCity(String city);
+    List<Availability> findRoomsByCity(@Param("city") String city);
 
 }

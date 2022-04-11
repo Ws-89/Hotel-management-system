@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.siuda.hotel.reservation.Availability;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -22,7 +23,12 @@ public class AvailabilityCartController {
     }
 
     @GetMapping
-    public AvailabilityCart getAvailabilityCart(){
+    public Set<Availability> getAvailabilityCart(){
         return this.availabilityCartService.getAvailabilityCart();
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteCartItem(@PathVariable("id") long id){
+        availabilityCartService.deleteCartItem(id);
     }
 }

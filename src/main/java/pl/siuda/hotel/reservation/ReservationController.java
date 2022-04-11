@@ -24,4 +24,10 @@ public class ReservationController {
     public void makeAReservation(@RequestBody ReservationRequest request) {
         reservationService.makeAReservation(request);
     }
+
+    @PostMapping("/makeAReservationForNonLoggedInUser")
+    public void makeAReservationForNonLoggedInUser(@RequestBody ReservationRequest request) {
+        reservationService.makeAReservationForNonLoggedInUser(request);
+    }
+
 }

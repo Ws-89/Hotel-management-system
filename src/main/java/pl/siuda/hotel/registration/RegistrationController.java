@@ -14,7 +14,6 @@ public class RegistrationController {
 
     @PostMapping
     public void register(@RequestBody RegistrationRequest request){
-
         registrationService.register(request);
     }
 }

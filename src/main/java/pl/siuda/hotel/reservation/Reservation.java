@@ -22,6 +22,9 @@ public class Reservation {
     private LocalDateTime to_date;
     private BigDecimal price;
 
+    public Reservation() {
+    }
+
     public Reservation(long hotel_id,
                        String hotel_name,
                        String city,

@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 public class AvailabilityRequest {
 
     private String city;
-    private Integer roomAmmount;
+    private Integer numberOfRooms;
     private Integer partySize;
     private LocalDateTime from_date;
     private LocalDateTime to_date;
 
-    public AvailabilityRequest(String city, Integer roomAmmount, Integer partySize, LocalDateTime from_date, LocalDateTime to_date) {
+    public AvailabilityRequest(String city, Integer numberOfRooms, Integer partySize, LocalDateTime from_date, LocalDateTime to_date) {
         this.city = city;
-        this.roomAmmount = roomAmmount;
+        this.numberOfRooms = numberOfRooms;
         this.partySize = partySize;
         this.from_date = from_date;
         this.to_date = to_date;
@@ -29,12 +29,10 @@ public class AvailabilityRequest {
         this.city = city;
     }
 
-    public Integer getRoomAmmount() {
-        return roomAmmount;
-    }
+    public Integer getNumberOfRooms() { return numberOfRooms; }
 
-    public void setRoomAmmount(Integer roomAmmount) {
-        this.roomAmmount = roomAmmount;
+    public void setNumberOfRooms(Integer numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
     }
 
     public Integer getPartySize() {

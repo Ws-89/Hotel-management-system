@@ -10,6 +10,9 @@ public class JwtRequest {
         this.userPassword = userPassword;
     }
 
+    public JwtRequest() {
+    }
+
     public String getUserName() {
         return userName;
     }

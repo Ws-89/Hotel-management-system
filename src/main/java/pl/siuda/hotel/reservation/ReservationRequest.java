@@ -17,6 +17,9 @@ public class ReservationRequest {
     boolean confirmed;
     BigDecimal price;
 
+    public ReservationRequest() {
+    }
+
     public ReservationRequest(int partySize, int numberOfRooms, Set<Reservation> reservations, String email, boolean confirmed, BigDecimal price) {
         this.partySize = partySize;
         this.numberOfRooms = numberOfRooms;
