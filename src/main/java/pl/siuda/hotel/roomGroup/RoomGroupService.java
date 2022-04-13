@@ -65,6 +65,9 @@ public class RoomGroupService {
     }
 
     public void updateRoomGroup(RoomGroup roomGroupRequest){
+//        RoomGroup roomGroup = roomGroupRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
+//        roomGroup.setRoomType(roomGroupRequest.getRoomType());
+//        roomGroup.setDescription(roomGroupRequest.getDescription());
         roomGroupRepository.save(roomGroupRequest);
     }
 
