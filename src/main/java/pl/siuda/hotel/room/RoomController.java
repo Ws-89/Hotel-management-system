@@ -26,28 +26,23 @@ public class RoomController {
         return RoomDto.RoomToDto(roomService.getRoomById(id));
     }
 
-    @GetMapping("/number/{number}")
-    public RoomDto getRoomByNumber(@PathVariable("number") Integer number) {
-        return RoomDto.RoomToDto(roomService.getRoomByNumber(number));
-    }
-
     @DeleteMapping("{id}")
     public void deleteRoom(@PathVariable Long id){
         roomService.deleteRoom(id);
     }
 
-    @PutMapping("{id}")
-    public RoomDto updateRoom(@PathVariable("id") Long id, @RequestBody RoomRequest roomRequest){
-        return RoomDto.RoomToDto(roomService.updateRoom(id, roomRequest));
-    }
+//    @PutMapping("{id}")
+//    public RoomDto updateRoom(@PathVariable("id") Long id, @RequestBody RoomRequest roomRequest){
+//        return RoomDto.RoomToDto(roomService.updateRoom(id, roomRequest));
+//    }
 
     @GetMapping("/hotel/{id}")
     public List<RoomDto> roomList(@PathVariable("id")Long id){
         return roomService.findByHotelId(id).stream().map(RoomDto::RoomToDto).collect(Collectors.toList()); }
 
-    @PostMapping("{id}")
-    public void createRoomAtSpecifiedHotel(@PathVariable("id") Long id, @RequestBody RoomRequest roomRequest){
-        roomService.createRoomAtSpecifiedHotel(id, roomRequest);
-    }
+//    @PostMapping("{id}")
+//    public void createRoomAtSpecifiedHotel(@PathVariable("id") Long id, @RequestBody RoomRequest roomRequest){
+//        roomService.createRoomAtSpecifiedHotel(id, roomRequest);
+//    }
 
 }

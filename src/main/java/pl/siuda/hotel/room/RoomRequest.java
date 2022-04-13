@@ -6,10 +6,6 @@ public class RoomRequest {
     private Integer number;
     private RoomType roomType;
 
-    public void copyRequestToEntity(Room room){
-        room.setNumber(number);
-        room.setRoomType(roomType);
-    }
 
     public Integer getNumber() {
         return number;
@@ -26,4 +22,5 @@ public class RoomRequest {
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
+
 }

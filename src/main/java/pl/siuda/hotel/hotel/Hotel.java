@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
-import pl.siuda.hotel.room.Room;
+import pl.siuda.hotel.roomGroup.RoomGroup;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ public class Hotel implements Serializable {
     private Contact contact;
     private Grade grade;
     @MappedCollection(idColumn = "HOTEL_ID")
-    private Set<Room> rooms = new HashSet<>();
+    private Set<RoomGroup> room_group = new HashSet<>();
     private String image;
 
     public Hotel() {
@@ -84,12 +84,12 @@ public class Hotel implements Serializable {
         this.address = address;
     }
 
-    public Set<Room> getRooms() {
-        return rooms;
+    public Set<RoomGroup> getRooms() {
+        return room_group;
     }
 
-    public void addRoom(Room room) {
-        this.rooms.add(room);
+    public void addRoomGroup(RoomGroup roomGroup) {
+        this.room_group.add(roomGroup);
     }
 
     public Grade getGrade() {
@@ -144,7 +144,7 @@ public class Hotel implements Serializable {
                 ", address=" + address +
                 ", contact=" + contact +
                 ", grade=" + grade +
-                ", rooms=" + rooms +
+                ", rooms=" + room_group +
                 '}';
     }
 }

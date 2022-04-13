@@ -10,9 +10,6 @@ public class Room implements Serializable {
 
     @Id
     private Long room_id;
-    private Integer number;
-    private String description;
-    private RoomType roomType;
 
     public Room() {
     }
@@ -25,40 +22,13 @@ public class Room implements Serializable {
         this.room_id = room_id;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
 
     @Override
     public String toString() {
         return "Room{" +
                 "room_id=" + room_id +
-                ", number=" + number +
-                ", description='" + description + '\'' +
-                ", roomType=" + roomType +
                 '}';
     }
 }

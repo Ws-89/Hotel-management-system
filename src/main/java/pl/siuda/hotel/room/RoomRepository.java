@@ -12,13 +12,15 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends CrudRepository<Room, Long> {
 
-    public Optional<Room> findByNumber(Integer id);
-
     @Query("SELECT * FROM room WHERE hotel_id = :id")
     public List<Room> findByHotelId(@Param("id") Long id);
 
     @Query("SELECT * FROM room WHERE number = :room_number AND hotel_id = :hotel_id")
     public Optional<Room> findByRoomNumberAndHotelId(@Param("room_number") Integer room_number,@Param("id") Long hotel_id);
 
-
+    @Query("SELECT * FROM room INNER JOIN room_group " +
+            "ON room.room_group_id = room_group.room_group_id " +
+            "INNER JOIN hotel ON room_group.hotel_id = hotel.hotel_id " +
+            "WHERE hotel.hotel_id = :hotel_id")
+    public List<Room> getRoomListByHotelId(@Param("hotel_id") Long id);
 }

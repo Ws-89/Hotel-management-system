@@ -19,6 +19,7 @@ public class AvailabilityRowMapper implements RowMapper<Availability> {
         availability.setImage(rs.getString("image"));
         availability.setGrade(Grade.valueOf(rs.getString("grade")));
         availability.setRoom_id(rs.getLong("room_id"));
+        availability.setRoom_group_id(rs.getLong("room_group_id"));
         availability.setRoomType(RoomType.valueOf(rs.getString("room_type")));
         availability.setAvailability_id(rs.getLong("reservation_id"));
         if(rs.getTimestamp("from_date") != null)

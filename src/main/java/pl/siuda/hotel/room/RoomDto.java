@@ -8,13 +8,11 @@ public class RoomDto implements Serializable {
 
     private Long room_id;
     private Integer number;
-    private RoomType roomType;
 
     public static RoomDto RoomToDto(Room room){
         RoomDto roomDto = new RoomDto();
         roomDto.room_id = room.getRoom_id();
-        roomDto.number = room.getNumber();
-        roomDto.roomType = room.getRoomType();
+
         return roomDto;
     }
 
@@ -34,11 +32,6 @@ public class RoomDto implements Serializable {
         this.number = number;
     }
 
-    public RoomType getRoomType() {
-        return roomType;
-    }
 
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
-    }
+
 }

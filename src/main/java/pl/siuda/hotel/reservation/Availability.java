@@ -13,12 +13,13 @@ public class Availability {
 
     @Id
     private Long availability_id;
-    private long hotel_id;
+    private Long hotel_id;
     private String hotel_name;
     private String city;
     private Grade grade;
     private String image;
-    private long room_id;
+    private Long room_id;
+    private Long room_group_id;
     private RoomType roomType;
     private LocalDateTime from_date;
     private LocalDateTime to_date;
@@ -30,33 +31,12 @@ public class Availability {
     public Availability(
                         long hotel_id,
                         String hotel_name,
-                        String city, Grade grade,
-                        String image,
-                        long room_id,
-                        RoomType roomType,
-                        LocalDateTime from_date,
-                        LocalDateTime to_date,
-                        BigDecimal price) {
-        this.hotel_id = hotel_id;
-        this.hotel_name = hotel_name;
-        this.city = city;
-        this.grade = grade;
-        this.image = image;
-        this.room_id = room_id;
-        this.roomType = roomType;
-        this.from_date = from_date;
-        this.to_date = to_date;
-        this.price = price;
-    }
-
-    public Availability(long hotel_id,
-                        String hotel_name,
                         String city,
                         Grade grade,
                         String image,
                         long room_id,
+                        Long room_group_id,
                         RoomType roomType,
-                        Long availability_id,
                         LocalDateTime from_date,
                         LocalDateTime to_date,
                         BigDecimal price) {
@@ -66,8 +46,8 @@ public class Availability {
         this.grade = grade;
         this.image = image;
         this.room_id = room_id;
+        this.room_group_id = room_group_id;
         this.roomType = roomType;
-        this.availability_id = availability_id;
         this.from_date = from_date;
         this.to_date = to_date;
         this.price = price;
@@ -159,6 +139,22 @@ public class Availability {
 
     public void setAvailability_id(Long availability_id) {
         this.availability_id = availability_id;
+    }
+
+    public void setHotel_id(Long hotel_id) {
+        this.hotel_id = hotel_id;
+    }
+
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
+    }
+
+    public Long getRoom_group_id() {
+        return room_group_id;
+    }
+
+    public void setRoom_group_id(Long room_group_id) {
+        this.room_group_id = room_group_id;
     }
 
     @Override
