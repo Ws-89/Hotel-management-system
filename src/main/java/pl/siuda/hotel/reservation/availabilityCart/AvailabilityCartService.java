@@ -25,11 +25,17 @@ public class AvailabilityCartService {
         this.guestService = guestService;
     }
 
-    public void addToCart(Availability availability) {
+    public void addToCart(Availability[] availability) {
         Guest guest = guestService.getGuestById(getUserId());
         guest.getAvailabilityCart().addCartItem(availability);
         guestService.save(guest);
     }
+
+//    public void addToCart(Availability availability) {
+//        Guest guest = guestService.getGuestById(getUserId());
+//        guest.getAvailabilityCart().addCartItem(availability);
+//        guestService.save(guest);
+//    }
 
     public Set<Availability> getAvailabilityCart() {
         Guest guest = guestService.getGuestById(getUserId());

@@ -20,7 +20,7 @@ public interface ReservationRepository extends CrudRepository<ReservationArrange
 
 
     @Query(rowMapperClass = AvailabilityRowMapper.class, value = "SELECT hotel.hotel_id, hotel.name AS hotel_name, hotel.city, hotel.grade, \n" +
-            "hotel.image, room.room_id, room_group.room_group_id,\n " +
+            "hotel.image, room.room_id, room_group.room_group_id, room_group.description, \n " +
             "room_group.room_type, reservation.reservation_id, \n" +
             "reservation.from_date, reservation.to_date \n" +
             "FROM hotel INNER JOIN room_group ON room_group.hotel_id = hotel.hotel_id \n" +
