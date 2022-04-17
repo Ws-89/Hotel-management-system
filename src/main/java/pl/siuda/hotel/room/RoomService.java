@@ -3,7 +3,7 @@ package pl.siuda.hotel.room;
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.hotel.HotelRepository;
 import pl.siuda.hotel.exception.NotFoundException;
-import pl.siuda.hotel.hotel.Hotel;
+import pl.siuda.hotel.roomGroup.RoomGroupRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +15,12 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository;
+    private final RoomGroupRepository roomGroupRepository;
 
-    public RoomService(RoomRepository roomRepository, HotelRepository hotelRepository) {
+    public RoomService(RoomRepository roomRepository, HotelRepository hotelRepository, RoomGroupRepository roomGroupRepository) {
         this.roomRepository = roomRepository;
         this.hotelRepository = hotelRepository;
+        this.roomGroupRepository = roomGroupRepository;
     }
 
     public List<Room> getAllRooms(){
@@ -29,16 +31,11 @@ public class RoomService {
         return getRoomByIdOrElseThrowException(id);
     }
 
-    public Room getRoomByNumber(Integer number){
-        return roomRepository.findByNumber(number)
-                .orElseThrow(() -> new NotFoundException(String.format("Room with number %s not found", number)));
-    }
-
-    public Room updateRoom(Long id, RoomRequest roomRequest){
-        Room room = getRoomByIdOrElseThrowException(id);
-        roomRequest.copyRequestToEntity(room);
-        return roomRepository.save(room);
-    }
+//    public Room updateRoom(Long id, RoomRequest roomRequest){
+//        Room room = getRoomByIdOrElseThrowException(id);
+//        roomRequest.copyRequestToEntity(room);
+//        return roomRepository.save(room);
+//    }
 
     public void deleteRoom(Long id){
         Optional<Room> room = roomRepository.findById(id);
@@ -51,24 +48,29 @@ public class RoomService {
     }
 
     public List<Room> findByHotelId(Long id){
-        return roomRepository.findByHotelId(id);
+        return roomRepository.getRoomListByHotelId(id);
     }
 
-    public void createRoomAtSpecifiedHotel(Long id, RoomRequest roomRequest){
-        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
-        if(roomRepository.findByHotelId(id).stream().anyMatch(t -> t.getNumber().equals(roomRequest.getNumber()))){
-            throw new IllegalStateException("Room already exists");
-        }
-        Room room = new Room();
-        roomRequest.copyRequestToEntity(room);
-        hotel.addRoom(room);
-        hotelRepository.save(hotel);
-    }
+//    public void createRoomAtSpecifiedHotel(Long id, RoomRequest roomRequest){
+//        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
+//
+//        RoomGroup roomGroup = new RoomGroup();
+//        for(int i = 0; i < roomRequest.getNumber(); i++){
+//            Room room = new Room();
+//            roomRequest.copyRequestToEntity(room);
+//            roomGroup.addRoom(room);
+//        }
+//
+//        hotel.addRoomGroup(roomGroup);
+//        hotelRepository.save(hotel);
+//    }
 
-    public Room findByRoomNumberAndHotelId(Integer room_number, Long hotel_id){
-        return roomRepository.findByRoomNumberAndHotelId(room_number, hotel_id)
-                .orElseThrow(() -> new NotFoundException(String.format("Room with number %s not found in hotel with %s id", room_number, hotel_id)));
-    }
+//    public void addRoomToGroup(Long id, RoomRequest roomRequest){
+//        Room room = getRoomByIdOrElseThrowException(id);
+//        RoomGroup roomGroup = roomGroupRepository.findById(room.getRoom_group()).orElseThrow(
+//                () -> new NotFoundException("Group with id %s not found " + room.getRoom_group()));
+//
+//    }
 
     private Room getRoomByIdOrElseThrowException(Long id) {
         return roomRepository.findById(id)

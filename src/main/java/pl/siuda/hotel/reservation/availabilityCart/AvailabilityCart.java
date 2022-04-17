@@ -44,6 +44,12 @@ public class AvailabilityCart {
         this.cartItems.add(availability);
     }
 
+    public void addCartItem(Availability[] availability){
+        for(int i = 0; i < availability.length; i++) {
+            this.cartItems.add(availability[i]);
+        }
+    }
+
     public void removeFromCartItems(Long id){
         this.cartItems.stream().filter(item -> item.getAvailability_id() != id);
     }
