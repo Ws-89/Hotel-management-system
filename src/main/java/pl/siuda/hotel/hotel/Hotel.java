@@ -15,7 +15,7 @@ import java.util.Set;
 public class Hotel implements Serializable {
 
     @Id
-    private Long hotel_id;
+    private Long hotelId;
     private String name;
     @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private Address address;
@@ -23,14 +23,14 @@ public class Hotel implements Serializable {
     private Contact contact;
     private Grade grade;
     @MappedCollection(idColumn = "HOTEL_ID")
-    private Set<RoomGroup> room_group = new HashSet<>();
+    private Set<RoomGroup> roomGroup = new HashSet<>();
     private String image;
 
     public Hotel() {
     }
 
-    public Hotel(Long hotel_id, String name, Address address, Contact contact, Grade grade) {
-        this.hotel_id = hotel_id;
+    public Hotel(Long hotelId, String name, Address address, Contact contact, Grade grade) {
+        this.hotelId = hotelId;
         this.name = name;
         this.address = address;
         this.contact = contact;
@@ -44,12 +44,12 @@ public class Hotel implements Serializable {
         this.grade = grade;
     }
 
-    public Long getHotel_id() {
-        return hotel_id;
+    public Long getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel_id(Long hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotelId(Long hotelId) {
+        this.hotelId = hotelId;
     }
 
     public String getName() {
@@ -85,11 +85,11 @@ public class Hotel implements Serializable {
     }
 
     public Set<RoomGroup> getRooms() {
-        return room_group;
+        return roomGroup;
     }
 
     public void addRoomGroup(RoomGroup roomGroup) {
-        this.room_group.add(roomGroup);
+        this.roomGroup.add(roomGroup);
     }
 
     public Grade getGrade() {
@@ -139,12 +139,12 @@ public class Hotel implements Serializable {
     @Override
     public String toString() {
         return "Hotel{" +
-                "hotel_id=" + hotel_id +
+                "hotel_id=" + hotelId +
                 ", name='" + name + '\'' +
                 ", address=" + address +
                 ", contact=" + contact +
                 ", grade=" + grade +
-                ", rooms=" + room_group +
+                ", rooms=" + roomGroup +
                 '}';
     }
 }

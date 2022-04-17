@@ -37,7 +37,7 @@ public class HotelService {
     }
 
     public void createHotel(HotelRequest hotelRequest){
-        Optional<Hotel> ifExists = hotelRepository.findByName(hotelRequest.getName());
+        Optional<Hotel> ifExists = hotelRepository.findByName(hotelRequest.getHotel_name());
         if(ifExists.isPresent()) {
             throw new IllegalStateException("Hotel already exists");
         }

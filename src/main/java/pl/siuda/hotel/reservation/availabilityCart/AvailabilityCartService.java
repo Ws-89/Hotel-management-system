@@ -56,6 +56,6 @@ public class AvailabilityCartService {
         }else {
             throw new IllegalArgumentException();
         }
-        return guest.getGuest_id();
+        return guest.getGuestId();
     }
 }

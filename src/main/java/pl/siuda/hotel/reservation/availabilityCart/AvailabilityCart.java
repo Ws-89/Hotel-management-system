@@ -4,15 +4,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.reservation.Availability;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class AvailabilityCart {
 
     @Id
-    private Long availability_cart_id;
+    private Long availabilityCartId;
     @MappedCollection(idColumn = "AVAILABILITY_CART_ID")
     private Set<Availability> cartItems = new HashSet<>();
 
@@ -20,16 +18,16 @@ public class AvailabilityCart {
     }
 
     public AvailabilityCart(Long id, Set<Availability> cartItems) {
-        this.availability_cart_id = id;
+        this.availabilityCartId = id;
         this.cartItems = cartItems;
     }
 
     public Long getId() {
-        return availability_cart_id;
+        return availabilityCartId;
     }
 
     public void setId(Long id) {
-        this.availability_cart_id = id;
+        this.availabilityCartId = id;
     }
 
     public Set<Availability> getCartItems() {

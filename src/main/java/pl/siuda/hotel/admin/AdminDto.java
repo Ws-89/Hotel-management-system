@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class AdminDto implements Serializable {
 
-    private Long admin_id;
+    private Long adminId;
     private String firstName;
     private String lastName;
     private String email;
@@ -14,7 +14,7 @@ public class AdminDto implements Serializable {
 
     public static AdminDto adminToDto(Admin admin){
         AdminDto adminDto = new AdminDto();
-        adminDto.admin_id = admin.getAdmin_id();
+        adminDto.adminId = admin.getAdminId();
         adminDto.firstName = admin.getFirstName();
         adminDto.lastName = admin.getLastName();
         adminDto.email = admin.getEmail();
@@ -22,8 +22,8 @@ public class AdminDto implements Serializable {
         return adminDto;
     }
 
-    public Long getAdmin_id() {
-        return admin_id;
+    public Long getAdminId() {
+        return adminId;
     }
 
     public String getFirstName() {

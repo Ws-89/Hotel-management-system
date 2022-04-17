@@ -1,21 +1,17 @@
 package pl.siuda.hotel.admin;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
 
 public class Admin implements UserDetails, Serializable {
 
     @Id
-    private Long admin_id;
+    private Long adminId;
     private String firstName;
     private String lastName;
     private String email;
@@ -27,8 +23,8 @@ public class Admin implements UserDetails, Serializable {
     public Admin() {
     }
 
-    public Admin(Long admin_id, String firstName, String lastName, String email, String password, ApplicationUserRole applicationUserRole) {
-        this.admin_id = admin_id;
+    public Admin(Long adminId, String firstName, String lastName, String email, String password, ApplicationUserRole applicationUserRole) {
+        this.adminId = adminId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -57,8 +53,8 @@ public class Admin implements UserDetails, Serializable {
         return applicationUserRole.getGrantedAuthorities();
     }
 
-    public Long getAdmin_id() {
-        return admin_id;
+    public Long getAdminId() {
+        return adminId;
     }
 
     public String getFirstName() {
@@ -103,8 +99,8 @@ public class Admin implements UserDetails, Serializable {
         return enabled;
     }
 
-    public void setAdmin_id(Long admin_id) {
-        this.admin_id = admin_id;
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
     }
 
     public void setFirstName(String firstName) {
@@ -126,7 +122,7 @@ public class Admin implements UserDetails, Serializable {
     @Override
     public String toString() {
         return "Admin{" +
-                "admin_id=" + admin_id +
+                "admin_id=" + adminId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

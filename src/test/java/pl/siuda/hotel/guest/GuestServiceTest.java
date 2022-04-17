@@ -78,7 +78,7 @@ class GuestServiceTest {
         when(guestRepository.findById(1L)).thenReturn(java.util.Optional.of(John));
         Guest guest = guestService.getGuestById(1L);
         // then
-        assertThat(guest.getGuest_id()).isEqualTo(John.getGuest_id());
+        assertThat(guest.getGuestId()).isEqualTo(John.getGuestId());
         assertThat(guest.getFirstName()).isEqualTo(John.getFirstName());
         assertThat(guest.getLastName()).isEqualTo(John.getLastName());
         assertThat(guest.getEmail()).isEqualTo(John.getEmail());

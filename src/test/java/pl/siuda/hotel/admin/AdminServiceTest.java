@@ -85,7 +85,7 @@ class AdminServiceTest {
        AdminDto admin = adminService.getAdminById(2L);
         // then
 
-        assertThat(admin.getAdmin_id()).isEqualTo(2L);
+        assertThat(admin.getAdminId()).isEqualTo(2L);
         assertThat(admin.getFirstName()).isEqualTo("Kevin");
         assertThat(admin.getLastName()).isEqualTo("Smith");
         assertThat(admin.getEmail()).isEqualTo("kevinsmith@gmail.com");

@@ -82,8 +82,8 @@ class HotelServiceTest {
         when(hotelRepository.findById(1L)).thenReturn(java.util.Optional.of(pokojeWMiescie));
         HotelDto hotel = hotelService.getHotelById(1L);
         // then
-        assertThat(hotel.getHotel_id()).isEqualTo(pokojeWMiescie.getHotel_id());
-        assertThat(hotel.getName()).isEqualTo(pokojeWMiescie.getName());
+        assertThat(hotel.getHotelId()).isEqualTo(pokojeWMiescie.getHotelId());
+        assertThat(hotel.getHotelName()).isEqualTo(pokojeWMiescie.getName());
 //        assertThat(hotel.getAddress()).isEqualTo(pokojeWMiescie.getAddress());
 //        assertThat(hotel.getContact()).isEqualTo(pokojeWMiescie.getContact());
         assertThat(hotel.getGrade()).isEqualTo(pokojeWMiescie.getGrade());
@@ -112,7 +112,7 @@ class HotelServiceTest {
 
         Hotel hotelArgumentCaptorValue = hotelArgumentCaptor.getValue();
 
-        assertThat(hotelArgumentCaptorValue.getName()).isEqualTo(hotelRequest.getName());
+        assertThat(hotelArgumentCaptorValue.getName()).isEqualTo(hotelRequest.getHotel_name());
         assertThat(hotelArgumentCaptorValue.getStreet()).isEqualTo(hotelRequest.getStreet());
         assertThat(hotelArgumentCaptorValue.getCity()).isEqualTo(hotelRequest.getCity());
         assertThat(hotelArgumentCaptorValue.getState()).isEqualTo(hotelRequest.getState());
@@ -154,8 +154,8 @@ class HotelServiceTest {
         verify(hotelRepository).save(argumentCaptor.capture());
 
         Hotel hotelArgumentCaptor = argumentCaptor.getValue();
-        assertThat(hotelArgumentCaptor.getHotel_id()).isEqualTo(pokojeWMiescie.getHotel_id());
-        assertThat(hotelArgumentCaptor.getName()).isEqualTo(hotelRequest.getName());
+        assertThat(hotelArgumentCaptor.getHotelId()).isEqualTo(pokojeWMiescie.getHotelId());
+        assertThat(hotelArgumentCaptor.getName()).isEqualTo(hotelRequest.getHotel_name());
         assertThat(hotelArgumentCaptor.getStreet()).isEqualTo(hotelRequest.getStreet());
         assertThat(hotelArgumentCaptor.getCity()).isEqualTo(hotelRequest.getCity());
         assertThat(hotelArgumentCaptor.getState()).isEqualTo(hotelRequest.getState());
@@ -189,7 +189,7 @@ class HotelServiceTest {
         verify(hotelRepository).delete(argumentCaptor.capture());
 
         Hotel hotelArgumentCaptor = argumentCaptor.getValue();
-        assertThat(hotelArgumentCaptor.getHotel_id()).isEqualTo(pokojeWMiescie.getHotel_id());
+        assertThat(hotelArgumentCaptor.getHotelId()).isEqualTo(pokojeWMiescie.getHotelId());
         assertThat(hotelArgumentCaptor.getName()).isEqualTo(pokojeWMiescie.getName());
         assertThat(hotelArgumentCaptor.getStreet()).isEqualTo(pokojeWMiescie.getStreet());
         assertThat(hotelArgumentCaptor.getCity()).isEqualTo(pokojeWMiescie.getCity());

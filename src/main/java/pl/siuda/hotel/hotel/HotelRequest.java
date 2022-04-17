@@ -5,7 +5,7 @@ import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 
 public class HotelRequest {
-    private String name;
+    private String hotel_name;
     private String street;
     private String city;
     private String state;
@@ -18,8 +18,8 @@ public class HotelRequest {
     public HotelRequest() {
     }
 
-    public HotelRequest(String name, String street, String city, String state, String country, String zipcode, String phoneNumber, String email, Grade grade) {
-        this.name = name;
+    public HotelRequest(String hotel_name, String street, String city, String state, String country, String zipcode, String phoneNumber, String email, Grade grade) {
+        this.hotel_name = hotel_name;
         this.street = street;
         this.city = city;
         this.state = state;
@@ -31,7 +31,7 @@ public class HotelRequest {
     }
 
     public void copyRequestToEntity(Hotel hotel){
-        hotel.setName(name);
+        hotel.setName(hotel_name);
         Address address = new Address();
         address.setStreet(street);
         address.setCity(city);
@@ -46,12 +46,12 @@ public class HotelRequest {
         hotel.setGrade(grade);
     }
 
-    public String getName() {
-        return name;
+    public String getHotel_name() {
+        return hotel_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setHotel_name(String hotel_name) {
+        this.hotel_name = hotel_name;
     }
 
     public String getStreet() {

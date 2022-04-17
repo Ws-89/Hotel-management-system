@@ -3,7 +3,7 @@ package pl.siuda.hotel.guest;
 import java.io.Serializable;
 
 public class GuestDto implements Serializable {
-    private Long guest_id;
+    private Long guestId;
     private String firstName;
     private String lastName;
     private String email;
@@ -16,7 +16,7 @@ public class GuestDto implements Serializable {
 
     public static GuestDto guestToDto (Guest guest){
         GuestDto guestDto = new GuestDto();
-        guestDto.guest_id = guest.getGuest_id();
+        guestDto.guestId = guest.getGuestId();
         guestDto.firstName = guest.getFirstName();
         guestDto.lastName = guest.getLastName();
         guestDto.email = guest.getEmail();
@@ -37,12 +37,12 @@ public class GuestDto implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getGuest_id() {
-        return guest_id;
+    public Long getGuestId() {
+        return guestId;
     }
 
-    public void setGuest_id(Long guest_id) {
-        this.guest_id = guest_id;
+    public void setGuestId(Long guestId) {
+        this.guestId = guestId;
     }
 
     public String getFirstName() {

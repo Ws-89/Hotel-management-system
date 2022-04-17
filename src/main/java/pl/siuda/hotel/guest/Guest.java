@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.siuda.hotel.embeddedClasses.Address;
 
-import pl.siuda.hotel.reservation.Availability;
 import pl.siuda.hotel.reservation.availabilityCart.AvailabilityCart;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
@@ -19,7 +18,7 @@ public class Guest implements UserDetails, Serializable {
 
     @Id
     @Column("GUEST_ID")
-    private Long guest_id;
+    private Long guestId;
     private String firstName;
     private String lastName;
     private String email;
@@ -36,8 +35,8 @@ public class Guest implements UserDetails, Serializable {
     public Guest() {
     }
 
-    public Guest(Long guest_id, String firstName, String lastName, String email, String password, Address address, String phoneNumber, ApplicationUserRole applicationUserRole) {
-        this.guest_id = guest_id;
+    public Guest(Long guestId, String firstName, String lastName, String email, String password, Address address, String phoneNumber, ApplicationUserRole applicationUserRole) {
+        this.guestId = guestId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -69,8 +68,8 @@ public class Guest implements UserDetails, Serializable {
         this.applicationUserRole = applicationUserRole;
     }
 
-    public Guest(Long guest_id, String firstName, String lastName, String email, String password, boolean locked, boolean enabled, ApplicationUserRole applicationUserRole, Address address, String phoneNumber, AvailabilityCart availabilityCart) {
-        this.guest_id = guest_id;
+    public Guest(Long guestId, String firstName, String lastName, String email, String password, boolean locked, boolean enabled, ApplicationUserRole applicationUserRole, Address address, String phoneNumber, AvailabilityCart availabilityCart) {
+        this.guestId = guestId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -91,12 +90,12 @@ public class Guest implements UserDetails, Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getGuest_id() {
-        return guest_id;
+    public Long getGuestId() {
+        return guestId;
     }
 
-    public void setGuest_id(Long guest_id) {
-        this.guest_id = guest_id;
+    public void setGuestId(Long guestId) {
+        this.guestId = guestId;
     }
 
     public String getFirstName() {

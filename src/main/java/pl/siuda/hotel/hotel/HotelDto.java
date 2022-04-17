@@ -4,8 +4,8 @@ import pl.siuda.hotel.enums.Grade;
 import java.io.Serializable;
 
 public class HotelDto implements Serializable {
-    private Long hotel_id;
-    private String name;
+    private Long hotelId;
+    private String hotelName;
     private String street;
     private String city;
     private String state;
@@ -18,8 +18,8 @@ public class HotelDto implements Serializable {
 
     public static HotelDto hotelToDto(Hotel hotel){
         HotelDto hotelDto = new HotelDto();
-        hotelDto.hotel_id = hotel.getHotel_id();
-        hotelDto.name = hotel.getName();
+        hotelDto.hotelId = hotel.getHotelId();
+        hotelDto.hotelName = hotel.getName();
         hotelDto.street = hotel.getStreet();
         hotelDto.city = hotel.getCity();
         hotelDto.state = hotel.getState();
@@ -32,12 +32,12 @@ public class HotelDto implements Serializable {
         return hotelDto;
     }
 
-    public Long getHotel_id() {
-        return hotel_id;
+    public Long getHotelId() {
+        return hotelId;
     }
 
-    public String getName() {
-        return name;
+    public String getHotelName() {
+        return hotelName;
     }
 
     public String getStreet() {
