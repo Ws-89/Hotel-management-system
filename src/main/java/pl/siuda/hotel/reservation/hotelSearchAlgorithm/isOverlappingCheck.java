@@ -8,7 +8,7 @@ public class isOverlappingCheck implements AvailabilityCheckProcessingAlgorithm{
 
     @Override
     public boolean isOverlapping(Availability availability, AvailabilityRequest availabilityRequest) {
-        if(availability.getFrom_date() != null || availability.getTo_date() != null)
+        if(availability.getStartDate() != null || availability.getEndDate() != null)
             return  isRequestStartDateInsideAnyReservationDate(availability, availabilityRequest)
                     || (isRequestEndDateInsideReservationDate(availability, availabilityRequest))
                     || isRequestOutsideOfReservationDate(availability, availabilityRequest)
@@ -18,22 +18,22 @@ public class isOverlappingCheck implements AvailabilityCheckProcessingAlgorithm{
     }
 
     boolean isRequestStartDateInsideAnyReservationDate(Availability availability, AvailabilityRequest request){
-        return (request.getFrom_date().isAfter(availability.getFrom_date()) || request.getFrom_date().isEqual(availability.getFrom_date()))
-                && (request.getFrom_date().isBefore(availability.getTo_date()) || request.getFrom_date().isEqual(availability.getTo_date()));
+        return (request.getStartDate().isAfter(availability.getStartDate()) || request.getStartDate().isEqual(availability.getStartDate()))
+                && (request.getStartDate().isBefore(availability.getEndDate()) || request.getStartDate().isEqual(availability.getEndDate()));
     }
 
     boolean isRequestEndDateInsideReservationDate(Availability availability, AvailabilityRequest request){
-        return (request.getTo_date().isAfter(availability.getFrom_date()) || request.getTo_date().isEqual(availability.getFrom_date()))
-                && (request.getTo_date().isBefore(availability.getTo_date()) || request.getTo_date().isEqual(availability.getTo_date()));
+        return (request.getEndDate().isAfter(availability.getStartDate()) || request.getEndDate().isEqual(availability.getStartDate()))
+                && (request.getEndDate().isBefore(availability.getEndDate()) || request.getEndDate().isEqual(availability.getEndDate()));
     }
 
     boolean isRequestOutsideOfReservationDate(Availability availability, AvailabilityRequest request){
-        return (request.getFrom_date().isBefore(availability.getFrom_date()) || request.getFrom_date().isEqual(availability.getFrom_date()))
-                && (request.getTo_date().isAfter(availability.getTo_date()) || request.getTo_date().isEqual(availability.getTo_date()));
+        return (request.getStartDate().isBefore(availability.getStartDate()) || request.getStartDate().isEqual(availability.getStartDate()))
+                && (request.getEndDate().isAfter(availability.getEndDate()) || request.getEndDate().isEqual(availability.getEndDate()));
     }
 
     boolean isRequestDateInsideReservationDate(Availability availability, AvailabilityRequest request){
-        return (request.getFrom_date().isAfter(availability.getFrom_date()) || request.getFrom_date().isEqual(availability.getFrom_date()))
-                && (request.getTo_date().isBefore(availability.getTo_date()) || request.getTo_date().isEqual(availability.getTo_date()));
+        return (request.getStartDate().isAfter(availability.getStartDate()) || request.getStartDate().isEqual(availability.getStartDate()))
+                && (request.getEndDate().isBefore(availability.getEndDate()) || request.getEndDate().isEqual(availability.getEndDate()));
     }
 }

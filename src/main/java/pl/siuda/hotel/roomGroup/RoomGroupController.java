@@ -31,7 +31,7 @@ public class RoomGroupController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteRoomGroup(@PathVariable("id")Long id){
+    public void deleteFromGroup(@PathVariable("id")Long id){
         this.roomGroupService.removeFromGroup(id);
     }
 

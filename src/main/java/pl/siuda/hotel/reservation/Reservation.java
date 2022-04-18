@@ -10,65 +10,65 @@ import java.time.LocalDateTime;
 public class Reservation {
 
     @Id
-    private Long reservation_id;
-    private long hotel_id;
-    private String hotel_name;
+    private Long reservationId;
+    private long hotelId;
+    private String hotelName;
     private String city;
     private Grade grade;
     private String image;
-    private long room_id;
+    private long roomId;
     private RoomType roomType;
-    private LocalDateTime from_date;
-    private LocalDateTime to_date;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private BigDecimal price;
 
     public Reservation() {
     }
 
-    public Reservation(long hotel_id,
-                       String hotel_name,
+    public Reservation(long hotelId,
+                       String hotelName,
                        String city,
                        Grade grade,
                        String image,
-                       long room_id,
+                       long roomId,
                        RoomType roomType,
-                       LocalDateTime from_date,
-                       LocalDateTime to_date,
+                       LocalDateTime startDate,
+                       LocalDateTime endDate,
                        BigDecimal price) {
-        this.hotel_id = hotel_id;
-        this.hotel_name = hotel_name;
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
         this.city = city;
         this.grade = grade;
         this.image = image;
-        this.room_id = room_id;
+        this.roomId = roomId;
         this.roomType = roomType;
-        this.from_date = from_date;
-        this.to_date = to_date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.price = price;
     }
 
-    public Long getReservation_id() {
-        return reservation_id;
+    public Long getReservationId() {
+        return reservationId;
     }
 
-    public void setReservation_id(Long reservation_id) {
-        this.reservation_id = reservation_id;
+    public void setReservationId(Long reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public long getHotel_id() {
-        return hotel_id;
+    public long getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel_id(long hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotelId(long hotelId) {
+        this.hotelId = hotelId;
     }
 
-    public String getHotel_name() {
-        return hotel_name;
+    public String getHotelName() {
+        return hotelName;
     }
 
-    public void setHotel_name(String hotel_name) {
-        this.hotel_name = hotel_name;
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 
     public String getCity() {
@@ -95,12 +95,12 @@ public class Reservation {
         this.image = image;
     }
 
-    public long getRoom_id() {
-        return room_id;
+    public long getRoomId() {
+        return roomId;
     }
 
-    public void setRoom_id(long room_id) {
-        this.room_id = room_id;
+    public void setRoomId(long roomId) {
+        this.roomId = roomId;
     }
 
     public RoomType getRoomType() {
@@ -111,20 +111,20 @@ public class Reservation {
         this.roomType = roomType;
     }
 
-    public LocalDateTime getFrom_date() {
-        return from_date;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setFrom_date(LocalDateTime from_date) {
-        this.from_date = from_date;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getTo_date() {
-        return to_date;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setTo_date(LocalDateTime to_date) {
-        this.to_date = to_date;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public BigDecimal getPrice() {

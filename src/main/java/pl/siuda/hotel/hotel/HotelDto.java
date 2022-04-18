@@ -10,7 +10,7 @@ public class HotelDto implements Serializable {
     private String city;
     private String state;
     private String country;
-    private String zipcode;
+    private String zipCode;
     private String phoneNumber;
     private String email;
     private Grade grade;
@@ -24,7 +24,7 @@ public class HotelDto implements Serializable {
         hotelDto.city = hotel.getCity();
         hotelDto.state = hotel.getState();
         hotelDto.country = hotel.getCountry();
-        hotelDto.zipcode = hotel.getZipcode();
+        hotelDto.zipCode = hotel.getZipcode();
         hotelDto.phoneNumber = hotel.getPhoneNumber();
         hotelDto.email = hotel.getEmail();
         hotelDto.grade = hotel.getGrade();
@@ -56,8 +56,8 @@ public class HotelDto implements Serializable {
         return country;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public String getZipCode() {
+        return zipCode;
     }
 
     public String getPhoneNumber() {

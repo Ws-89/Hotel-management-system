@@ -3,7 +3,6 @@ package pl.siuda.hotel.roomGroup;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import pl.siuda.hotel.enums.RoomType;
-import pl.siuda.hotel.room.Room;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,30 +11,30 @@ import java.util.Set;
 public class RoomGroup {
 
     @Id
-    private Long room_group_id;
+    private Long roomGroupId;
     @MappedCollection(idColumn = "ROOM_GROUP_ID")
     private Set<Room> rooms = new HashSet<>();
     private String description;
     private RoomType roomType;
-    private int quantity_of_rooms;
+    private int quantityOfRooms;
 
     public RoomGroup() {
     }
 
-    public int getQuantity_of_rooms() {
-        return quantity_of_rooms;
+    public int getQuantityOfRooms() {
+        return quantityOfRooms;
     }
 
-    public void setQuantity_of_rooms(int quantity_of_rooms) {
-        this.quantity_of_rooms = quantity_of_rooms;
+    public void setQuantityOfRooms(int quantityOfRooms) {
+        this.quantityOfRooms = quantityOfRooms;
     }
 
-    public long getRoom_group_id() {
-        return room_group_id;
+    public long getRoomGroupId() {
+        return roomGroupId;
     }
 
-    public void setRoom_group_id(long room_group_id) {
-        this.room_group_id = room_group_id;
+    public void setRoomGroupId(long roomGroupId) {
+        this.roomGroupId = roomGroupId;
     }
 
     public Set<Room> getRooms() {
@@ -56,12 +55,12 @@ public class RoomGroup {
         if(i.hasNext()){
             r = i.next();
             rooms.remove(r);
-            quantity_of_rooms = quantity_of_rooms -1;
+            quantityOfRooms = quantityOfRooms -1;
         }
     }
 
     public void setRoom_group_id(Long room_group_id) {
-        this.room_group_id = room_group_id;
+        this.roomGroupId = room_group_id;
     }
 
     public String getDescription() {

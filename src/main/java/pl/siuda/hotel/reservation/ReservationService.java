@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.reservation.hotelSearchAlgorithm.AvailabilityCheckProcessingAlgorithm;
 import pl.siuda.hotel.reservation.pricingAlgorithm.CalculatePriceAlgorithm;
-import pl.siuda.hotel.room.RoomService;
-import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.util.*;
@@ -23,14 +21,14 @@ import java.util.stream.Collectors;
 public class ReservationService{
 
     @Autowired
-    private final RoomService roomService;
+
     private final ReservationRepository reservationRepository;
     private final AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm;
     private final CalculatePriceAlgorithm calculatePriceAlgorithm;
     private final CustomUserDetailsService customUserDetailsService;
 
-    public ReservationService(RoomService roomService, ReservationRepository reservationRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm, CalculatePriceAlgorithm calculatePriceAlgorithm, CustomUserDetailsService customUserDetailsService) {
-        this.roomService = roomService;
+    public ReservationService(ReservationRepository reservationRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm, CalculatePriceAlgorithm calculatePriceAlgorithm, CustomUserDetailsService customUserDetailsService) {
+
         this.reservationRepository = reservationRepository;
         this.availabilityCheckProcessingAlgorithm = availabilityCheckProcessingAlgorithm;
         this.calculatePriceAlgorithm = calculatePriceAlgorithm;
@@ -93,13 +91,13 @@ public class ReservationService{
 
     private List<Availability> getOfferts(List<Availability> availabilitiesAndReservations, List<Long> takenRooms) {
         List<Availability> availabilities = availabilitiesAndReservations.stream()
-                .filter(availability -> !takenRooms.contains(availability.getRoom_id()))
-                .filter(distinctByKey(p -> p.getRoom_id()))
+                .filter(availability -> !takenRooms.contains(availability.getRoomId()))
+                .filter(distinctByKey(p -> p.getRoomId()))
                 .collect(Collectors.toList());
 
         availabilities.forEach(availability -> {
             availability.setPrice(calculatePriceAlgorithm.getPrice(availability));
-            availability.setAvailability_id(0L);
+            availability.setAvailabilityId(0L);
         });
         return availabilities;
     }
@@ -107,7 +105,7 @@ public class ReservationService{
     private List<Long> filterTakenRooms(AvailabilityRequest request, List<Availability> availabilitiesAndReservations) {
         return availabilitiesAndReservations.stream()
                 .filter(availability -> availabilityCheckProcessingAlgorithm.isOverlapping(availability, request))
-                .map(item -> item.getRoom_id())
+                .map(item -> item.getRoomId())
                 .collect(Collectors.toList());
     }
 }

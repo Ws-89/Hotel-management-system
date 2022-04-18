@@ -12,48 +12,48 @@ import java.time.LocalDateTime;
 public class Availability {
 
     @Id
-    private Long availability_id;
-    private Long hotel_id;
-    private String hotel_name;
+    private Long availabilityId;
+    private Long hotelId;
+    private String hotelName;
     private String city;
     private Grade grade;
     private String image;
-    private Long room_id;
-    private Long room_group_id;
+    private Long roomId;
+    private Long roomGroupId;
     private RoomType roomType;
     private String description;
-    private LocalDateTime from_date;
-    private LocalDateTime to_date;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private BigDecimal price;
 
     public Availability() {
     }
 
-    public Availability(Long availability_id,
-                        Long hotel_id,
-                        String hotel_name,
+    public Availability(Long availabilityId,
+                        Long hotelId,
+                        String hotelName,
                         String city,
                         Grade grade,
                         String image,
-                        Long room_id,
-                        Long room_group_id,
+                        Long roomId,
+                        Long roomGroupId,
                         RoomType roomType,
                         String description,
-                        LocalDateTime from_date,
-                        LocalDateTime to_date,
+                        LocalDateTime startDate,
+                        LocalDateTime endDate,
                         BigDecimal price) {
-        this.availability_id = availability_id;
-        this.hotel_id = hotel_id;
-        this.hotel_name = hotel_name;
+        this.availabilityId = availabilityId;
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
         this.city = city;
         this.grade = grade;
         this.image = image;
-        this.room_id = room_id;
-        this.room_group_id = room_group_id;
+        this.roomId = roomId;
+        this.roomGroupId = roomGroupId;
         this.roomType = roomType;
         this.description = description;
-        this.from_date = from_date;
-        this.to_date = to_date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.price = price;
     }
 
@@ -65,12 +65,12 @@ public class Availability {
         this.description = description;
     }
 
-    public long getRoom_id() {
-        return room_id;
+    public long getRoomId() {
+        return roomId;
     }
 
-    public void setRoom_id(long room_id) {
-        this.room_id = room_id;
+    public void setRoomId(long roomId) {
+        this.roomId = roomId;
     }
 
     public RoomType getRoomType() {
@@ -81,20 +81,20 @@ public class Availability {
         this.roomType = roomType;
     }
 
-    public long getHotel_id() {
-        return hotel_id;
+    public long getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel_id(long hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotelId(long hotelId) {
+        this.hotelId = hotelId;
     }
 
-    public String getHotel_name() {
-        return hotel_name;
+    public String getHotelName() {
+        return hotelName;
     }
 
-    public void setHotel_name(String hotel_name) {
-        this.hotel_name = hotel_name;
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 
     public String getCity() {
@@ -113,20 +113,20 @@ public class Availability {
         this.grade = grade;
     }
 
-    public LocalDateTime getFrom_date() {
-        return from_date;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setFrom_date(LocalDateTime from_date) {
-        this.from_date = from_date;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getTo_date() {
-        return to_date;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setTo_date(LocalDateTime to_date) {
-        this.to_date = to_date;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public String getImage() {
@@ -145,43 +145,43 @@ public class Availability {
         this.price = price;
     }
 
-    public Long getAvailability_id() {
-        return availability_id;
+    public Long getAvailabilityId() {
+        return availabilityId;
     }
 
-    public void setAvailability_id(Long availability_id) {
-        this.availability_id = availability_id;
+    public void setAvailabilityId(Long availabilityId) {
+        this.availabilityId = availabilityId;
     }
 
     public void setHotel_id(Long hotel_id) {
-        this.hotel_id = hotel_id;
+        this.hotelId = hotel_id;
     }
 
     public void setRoom_id(Long room_id) {
-        this.room_id = room_id;
+        this.roomId = room_id;
     }
 
-    public Long getRoom_group_id() {
-        return room_group_id;
+    public Long getRoomGroupId() {
+        return roomGroupId;
     }
 
-    public void setRoom_group_id(Long room_group_id) {
-        this.room_group_id = room_group_id;
+    public void setRoomGroupId(Long roomGroupId) {
+        this.roomGroupId = roomGroupId;
     }
 
     @Override
     public String toString() {
         return "Availability{" +
-                "availability_id=" + availability_id +
-                ", hotel_id=" + hotel_id +
-                ", hotel_name='" + hotel_name + '\'' +
+                "availability_id=" + availabilityId +
+                ", hotel_id=" + hotelId +
+                ", hotel_name='" + hotelName + '\'' +
                 ", city='" + city + '\'' +
                 ", grade=" + grade +
                 ", image='" + image + '\'' +
-                ", room_id=" + room_id +
+                ", room_id=" + roomId +
                 ", roomType=" + roomType +
-                ", from_date=" + from_date +
-                ", to_date=" + to_date +
+                ", from_date=" + startDate +
+                ", to_date=" + endDate +
                 ", price=" + price +
                 '}';
     }

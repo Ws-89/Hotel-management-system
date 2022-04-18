@@ -7,15 +7,15 @@ public class AvailabilityRequest {
     private String city;
     private Integer numberOfRooms;
     private Integer partySize;
-    private LocalDateTime from_date;
-    private LocalDateTime to_date;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
-    public AvailabilityRequest(String city, Integer numberOfRooms, Integer partySize, LocalDateTime from_date, LocalDateTime to_date) {
+    public AvailabilityRequest(String city, Integer numberOfRooms, Integer partySize, LocalDateTime startDate, LocalDateTime endDate) {
         this.city = city;
         this.numberOfRooms = numberOfRooms;
         this.partySize = partySize;
-        this.from_date = from_date;
-        this.to_date = to_date;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public AvailabilityRequest() {
@@ -43,19 +43,19 @@ public class AvailabilityRequest {
         this.partySize = partySize;
     }
 
-    public LocalDateTime getFrom_date() {
-        return from_date;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setFrom_date(LocalDateTime from_date) {
-        this.from_date = from_date;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getTo_date() {
-        return to_date;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setTo_date(LocalDateTime to_date) {
-        this.to_date = to_date;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 }

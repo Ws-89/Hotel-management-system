@@ -117,7 +117,7 @@ public class Hotel implements Serializable {
     }
 
     public String getZipcode(){
-        return address.getZipcode();
+        return address.getZipCode();
     }
 
     public String getPhoneNumber(){

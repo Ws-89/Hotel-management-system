@@ -206,7 +206,7 @@ public class Guest implements UserDetails, Serializable {
     }
 
     public String getZipcode(){
-        return this.address.getZipcode();
+        return this.address.getZipCode();
     }
 
     public AvailabilityCart getAvailabilityCart() {

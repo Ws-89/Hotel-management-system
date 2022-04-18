@@ -31,12 +31,6 @@ public class AvailabilityCartService {
         guestService.save(guest);
     }
 
-//    public void addToCart(Availability availability) {
-//        Guest guest = guestService.getGuestById(getUserId());
-//        guest.getAvailabilityCart().addCartItem(availability);
-//        guestService.save(guest);
-//    }
-
     public Set<Availability> getAvailabilityCart() {
         Guest guest = guestService.getGuestById(getUserId());
         return guest.getAvailabilityCart().getCartItems();

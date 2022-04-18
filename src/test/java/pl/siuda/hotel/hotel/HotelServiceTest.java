@@ -12,7 +12,6 @@ import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.embeddedClasses.Contact;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.exception.NotFoundException;
-import pl.siuda.hotel.room.RoomRepository;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,15 +32,10 @@ class HotelServiceTest {
     @Mock
     HotelRepository hotelRepository;
 
-    @Mock
-    RoomRepository roomRepository;
-
-
-
     @Test
     void injectedComponentsAreNotNull(){
         assertThat(hotelService).isNotNull();
-        assertThat(roomRepository).isNotNull();
+
 
         assertThat(hotelRepository).isNotNull();
     }
@@ -112,15 +106,15 @@ class HotelServiceTest {
 
         Hotel hotelArgumentCaptorValue = hotelArgumentCaptor.getValue();
 
-        assertThat(hotelArgumentCaptorValue.getName()).isEqualTo(hotelRequest.getHotel_name());
-        assertThat(hotelArgumentCaptorValue.getStreet()).isEqualTo(hotelRequest.getStreet());
-        assertThat(hotelArgumentCaptorValue.getCity()).isEqualTo(hotelRequest.getCity());
-        assertThat(hotelArgumentCaptorValue.getState()).isEqualTo(hotelRequest.getState());
-        assertThat(hotelArgumentCaptorValue.getCountry()).isEqualTo(hotelRequest.getCountry());
-        assertThat(hotelArgumentCaptorValue.getZipcode()).isEqualTo(hotelRequest.getZipcode());
-        assertThat(hotelArgumentCaptorValue.getPhoneNumber()).isEqualTo(hotelRequest.getPhoneNumber());
-        assertThat(hotelArgumentCaptorValue.getEmail()).isEqualTo(hotelRequest.getEmail());
-        assertThat(hotelArgumentCaptorValue.getGrade()).isEqualTo(hotelRequest.getGrade());
+        assertThat(hotelArgumentCaptorValue.getName()).isEqualTo(hotelRequest.getHotelName());
+        assertThat(hotelArgumentCaptorValue.getStreet()).isEqualTo(hotelRequest.getHotelStreet());
+        assertThat(hotelArgumentCaptorValue.getCity()).isEqualTo(hotelRequest.getHotelCity());
+        assertThat(hotelArgumentCaptorValue.getState()).isEqualTo(hotelRequest.getHotelState());
+        assertThat(hotelArgumentCaptorValue.getCountry()).isEqualTo(hotelRequest.getHotelCountry());
+        assertThat(hotelArgumentCaptorValue.getZipcode()).isEqualTo(hotelRequest.getHotelZipCode());
+        assertThat(hotelArgumentCaptorValue.getPhoneNumber()).isEqualTo(hotelRequest.getHotelPhone());
+        assertThat(hotelArgumentCaptorValue.getEmail()).isEqualTo(hotelRequest.getHotelEmail());
+        assertThat(hotelArgumentCaptorValue.getGrade()).isEqualTo(hotelRequest.getHotelGrade());
     }
 
     @Test
@@ -155,15 +149,15 @@ class HotelServiceTest {
 
         Hotel hotelArgumentCaptor = argumentCaptor.getValue();
         assertThat(hotelArgumentCaptor.getHotelId()).isEqualTo(pokojeWMiescie.getHotelId());
-        assertThat(hotelArgumentCaptor.getName()).isEqualTo(hotelRequest.getHotel_name());
-        assertThat(hotelArgumentCaptor.getStreet()).isEqualTo(hotelRequest.getStreet());
-        assertThat(hotelArgumentCaptor.getCity()).isEqualTo(hotelRequest.getCity());
-        assertThat(hotelArgumentCaptor.getState()).isEqualTo(hotelRequest.getState());
-        assertThat(hotelArgumentCaptor.getCountry()).isEqualTo(hotelRequest.getCountry());
-        assertThat(hotelArgumentCaptor.getZipcode()).isEqualTo(hotelRequest.getZipcode());
-        assertThat(hotelArgumentCaptor.getPhoneNumber()).isEqualTo(hotelRequest.getPhoneNumber());
-        assertThat(hotelArgumentCaptor.getEmail()).isEqualTo(hotelRequest.getEmail());
-        assertThat(hotelArgumentCaptor.getGrade()).isEqualTo(hotelRequest.getGrade());
+        assertThat(hotelArgumentCaptor.getName()).isEqualTo(hotelRequest.getHotelName());
+        assertThat(hotelArgumentCaptor.getStreet()).isEqualTo(hotelRequest.getHotelStreet());
+        assertThat(hotelArgumentCaptor.getCity()).isEqualTo(hotelRequest.getHotelCity());
+        assertThat(hotelArgumentCaptor.getState()).isEqualTo(hotelRequest.getHotelState());
+        assertThat(hotelArgumentCaptor.getCountry()).isEqualTo(hotelRequest.getHotelCountry());
+        assertThat(hotelArgumentCaptor.getZipcode()).isEqualTo(hotelRequest.getHotelZipCode());
+        assertThat(hotelArgumentCaptor.getPhoneNumber()).isEqualTo(hotelRequest.getHotelPhone());
+        assertThat(hotelArgumentCaptor.getEmail()).isEqualTo(hotelRequest.getHotelEmail());
+        assertThat(hotelArgumentCaptor.getGrade()).isEqualTo(hotelRequest.getHotelGrade());
     }
 
     @Test

@@ -11,10 +11,10 @@ public class RegistrationRequest {
     private String city;
     private String state;
     private String country;
-    private String zipcode;
+    private String zipCode;
     private String phoneNumber;
 
-    public RegistrationRequest(String firstName, String lastName, String email, String password, String street, String city, String state, String country, String zipcode, String phoneNumber) {
+    public RegistrationRequest(String firstName, String lastName, String email, String password, String street, String city, String state, String country, String zipCode, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -23,7 +23,7 @@ public class RegistrationRequest {
         this.city = city;
         this.state = state;
         this.country = country;
-        this.zipcode = zipcode;
+        this.zipCode = zipCode;
         this.phoneNumber = phoneNumber;
     }
 
@@ -62,8 +62,8 @@ public class RegistrationRequest {
         return country;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public String getZipCode() {
+        return zipCode;
     }
 
     public String getPhoneNumber() {
@@ -75,12 +75,12 @@ public class RegistrationRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegistrationRequest that = (RegistrationRequest) o;
-        return firstName.equals(that.firstName) && lastName.equals(that.lastName) && email.equals(that.email) && password.equals(that.password) && street.equals(that.street) && city.equals(that.city) && state.equals(that.state) && country.equals(that.country) && zipcode.equals(that.zipcode);
+        return firstName.equals(that.firstName) && lastName.equals(that.lastName) && email.equals(that.email) && password.equals(that.password) && street.equals(that.street) && city.equals(that.city) && state.equals(that.state) && country.equals(that.country) && zipCode.equals(that.zipCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, password, street, city, state, country, zipcode);
+        return Objects.hash(firstName, lastName, email, password, street, city, state, country, zipCode);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class RegistrationRequest {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", country='" + country + '\'' +
-                ", zipcode='" + zipcode + '\'' +
+                ", zipcode='" + zipCode + '\'' +
                 '}';
     }
 }

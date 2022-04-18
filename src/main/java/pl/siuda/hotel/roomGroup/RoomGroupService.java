@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.hotel.Hotel;
 import pl.siuda.hotel.hotel.HotelRepository;
-import pl.siuda.hotel.room.Room;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,9 +34,9 @@ public class RoomGroupService {
         RoomGroup roomGroup = new RoomGroup();
         roomGroup.setDescription(roomGroupRequest.getDescription());
         roomGroup.setRoomType(roomGroupRequest.getRoomType());
-        roomGroup.setQuantity_of_rooms(roomGroupRequest.getQuantity_of_rooms());
+        roomGroup.setQuantityOfRooms(roomGroupRequest.getQuantityOfRooms());
 
-        for(int i = 0; i < roomGroupRequest.getQuantity_of_rooms(); i++){
+        for(int i = 0; i < roomGroupRequest.getQuantityOfRooms(); i++){
             Room room = new Room();
             roomGroup.addRoom(room);
         }
@@ -49,7 +48,7 @@ public class RoomGroupService {
         RoomGroup roomGroup = roomGroupRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
         Room room = new Room();
         roomGroup.addRoom(room);
-        roomGroup.setQuantity_of_rooms(roomGroup.getQuantity_of_rooms() + 1);
+        roomGroup.setQuantityOfRooms(roomGroup.getQuantityOfRooms() + 1);
         return roomGroupRepository.save(roomGroup);
     }
 

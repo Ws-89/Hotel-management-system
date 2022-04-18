@@ -11,7 +11,7 @@ public class GuestDto implements Serializable {
     private String city;
     private String state;
     private String country;
-    private String zipcode;
+    private String zipCode;
     private String phoneNumber;
 
     public static GuestDto guestToDto (Guest guest){
@@ -24,7 +24,7 @@ public class GuestDto implements Serializable {
         guestDto.city = guest.getCity();
         guestDto.state = guest.getState();
         guestDto.country = guest.getCountry();
-        guestDto.zipcode = guest.getZipcode();
+        guestDto.zipCode = guest.getZipcode();
         guestDto.phoneNumber = guest.getPhoneNumber();
         return guestDto;
     }
@@ -101,11 +101,11 @@ public class GuestDto implements Serializable {
         this.country = country;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 }

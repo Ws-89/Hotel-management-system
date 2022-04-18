@@ -4,10 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.siuda.hotel.embeddedClasses.Address;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestService;
-import pl.siuda.hotel.reservation.availabilityCart.AvailabilityCart;
 import pl.siuda.hotel.security.ApplicationUserRole;
-
-import java.time.LocalDateTime;
 
 @Service
 public class RegistrationService {
@@ -36,7 +33,7 @@ public class RegistrationService {
                                 request.getCity(),
                                 request.getState(),
                                 request.getCountry(),
-                                request.getZipcode()),
+                                request.getZipCode()),
                         request.getPhoneNumber(),
                         ApplicationUserRole.GUEST
                 )

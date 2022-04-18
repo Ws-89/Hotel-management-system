@@ -49,6 +49,6 @@ public class AvailabilityCart {
     }
 
     public void removeFromCartItems(Long id){
-        this.cartItems.stream().filter(item -> item.getAvailability_id() != id);
+        this.cartItems.stream().filter(item -> item.getAvailabilityId() != id);
     }
 }

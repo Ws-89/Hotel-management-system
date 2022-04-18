@@ -22,11 +22,6 @@ public class AvailabilityCartController {
         this.availabilityCartService.addToCart(availability);
     }
 
-//    @PostMapping
-//    public void addToCart(@RequestBody Availability availability){
-//        this.availabilityCartService.addToCart(availability);
-//    }
-
     @GetMapping
     public Set<Availability> getAvailabilityCart(){
         return this.availabilityCartService.getAvailabilityCart();
