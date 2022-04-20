@@ -19,6 +19,7 @@ public class ReservationArrangement {
     boolean confirmed;
     BigDecimal price;
 
+
     public ReservationArrangement() {
     }
 

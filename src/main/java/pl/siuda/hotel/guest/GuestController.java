@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/guests")
+@RequestMapping("/api/v1/user-management/users")
 public class GuestController {
 
     private final GuestService guestService;
@@ -15,7 +15,7 @@ public class GuestController {
         this.guestService = guestService;
     }
 
-    @GetMapping("{email}")
+    @GetMapping("/{email}")
     public Guest getById(@PathVariable("email") String email){
         return guestService.findByEmail(email);
     }

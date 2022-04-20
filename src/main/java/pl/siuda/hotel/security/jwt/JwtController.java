@@ -6,7 +6,7 @@ import pl.siuda.hotel.security.CustomUserDetailsService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping
+@RequestMapping("api/v1")
 public class JwtController {
 
     @Autowired

@@ -3,10 +3,9 @@ package pl.siuda.hotel.reservation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping("/api/v1/reservations")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -15,19 +14,19 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping
-    public List<Availability> getAvailability(@RequestBody AvailabilityRequest request){
-        return reservationService.getAvailability(request);
+    @PostMapping("/available-rooms")
+    public List<Availability> availableRooms(@RequestBody AvailabilityRequest request){
+        return reservationService.availableRooms(request);
     }
 
-    @PostMapping("/makeAReservation")
-    public void makeAReservation(@RequestBody ReservationRequest request) {
-        reservationService.makeAReservation(request);
+    @PostMapping("/user/place-a-booking")
+    public void userPlaceABooking(@RequestBody ReservationRequest request) {
+        reservationService.userPlaceABooking(request);
     }
 
-    @PostMapping("/makeAReservationForNonLoggedInUser")
-    public void makeAReservationForNonLoggedInUser(@RequestBody ReservationRequest request) {
-        reservationService.makeAReservationForNonLoggedInUser(request);
+    @PostMapping("/place-a-booking")
+    public void placeABooking(@RequestBody ReservationRequest request) {
+        reservationService.placeABooking(request);
     }
 
 }

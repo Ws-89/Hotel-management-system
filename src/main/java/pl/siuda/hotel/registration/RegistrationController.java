@@ -3,7 +3,7 @@ package pl.siuda.hotel.registration;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/registration")
+@RequestMapping("/api/v1")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -12,7 +12,7 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping
+    @PostMapping("/registration")
     public void register(@RequestBody RegistrationRequest request){
         registrationService.register(request);
     }

@@ -8,7 +8,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/availabilityCart")
+@RequestMapping("/api/v1/reservations/user/bookmarks")
 public class AvailabilityCartController {
 
     private final AvailabilityCartService availabilityCartService;
@@ -24,6 +24,7 @@ public class AvailabilityCartController {
 
     @GetMapping
     public Set<Availability> getAvailabilityCart(){
+
         return this.availabilityCartService.getAvailabilityCart();
     }
 

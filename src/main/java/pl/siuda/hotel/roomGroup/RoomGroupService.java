@@ -63,11 +63,11 @@ public class RoomGroupService {
         roomGroupRepository.delete(roomGroup);
     }
 
-    public void updateRoomGroup(RoomGroup roomGroupRequest){
-//        RoomGroup roomGroup = roomGroupRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
-//        roomGroup.setRoomType(roomGroupRequest.getRoomType());
-//        roomGroup.setDescription(roomGroupRequest.getDescription());
-        roomGroupRepository.save(roomGroupRequest);
+    public void updateRoomGroup(Long id, RoomGroup roomGroupRequest){
+        RoomGroup roomGroup = roomGroupRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
+        roomGroup.setRoomType(roomGroupRequest.getRoomType());
+        roomGroup.setDescription(roomGroupRequest.getDescription());
+        roomGroupRepository.save(roomGroup);
     }
 
     public RoomGroup getRoomGroupById(Long id){

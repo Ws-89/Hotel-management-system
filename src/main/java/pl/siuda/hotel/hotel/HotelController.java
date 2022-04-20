@@ -7,7 +7,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/admin/management/hotels")
+@RequestMapping("/api/v1/hotel-management/hotels")
 public class HotelController {
 
     private final HotelService hotelService;
@@ -42,7 +42,7 @@ public class HotelController {
         hotelService.deleteHotel(id);
     }
 
-    @PostMapping("images/upload/{id}")
+    @PostMapping("{id}/images/upload")
     public void uploadImage(@PathVariable("id")Long id, @RequestParam("file") MultipartFile file){
         hotelService.uploadImage(id, file);
     }

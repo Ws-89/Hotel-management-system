@@ -35,7 +35,7 @@ public class ReservationService{
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    public List<Availability> getAvailability(AvailabilityRequest request){
+    public List<Availability> availableRooms(AvailabilityRequest request){
         List<Availability> getPossibleAvailabilities = reservationRepository.findRoomsByCity(request.getCity());
         List<Long> takenRooms = filterTakenRooms(request, getPossibleAvailabilities);
 
@@ -49,7 +49,7 @@ public class ReservationService{
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    public void makeAReservation(ReservationRequest request) {
+    public void userPlaceABooking(ReservationRequest request) {
         String userName = getUserName();
         ReservationArrangement reservation = new ReservationArrangement();
         reservation.setPartySize(request.getPartySize());
@@ -61,7 +61,7 @@ public class ReservationService{
         reservationRepository.save(reservation);
     }
 
-    public void makeAReservationForNonLoggedInUser(ReservationRequest request) {
+    public void placeABooking(ReservationRequest request) {
         ReservationArrangement reservation = new ReservationArrangement();
         reservation.setPartySize(request.getPartySize());
         reservation.setNumberOfRooms(request.getNumberOfRooms());
@@ -81,12 +81,6 @@ public class ReservationService{
             throw new IllegalArgumentException();
         }
         return userName;
-    }
-
-
-    public boolean cancelReservation(Long reservation_id) {
-        Optional.ofNullable(reservationRepository.findById(reservation_id)).orElseThrow(()-> new NotFoundException(""));
-        return true;
     }
 
     private List<Availability> getOfferts(List<Availability> availabilitiesAndReservations, List<Long> takenRooms) {

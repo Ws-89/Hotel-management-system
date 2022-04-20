@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("management/admins")
+@RequestMapping("/api/v1/admin-management")
 public class AdminController {
 
     private final AdminService adminService;

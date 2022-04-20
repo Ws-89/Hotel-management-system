@@ -3,10 +3,8 @@ package pl.siuda.hotel.payment;
 public class CheckoutPayment {
     private String name;
     private String currency;
-    private String successUrl;
-    private String cancelUrl;
     private long amount;
-    private long quantity;
+    private String paymentType;
 
     public String getName() {
         return name;
@@ -24,35 +22,11 @@ public class CheckoutPayment {
         this.currency = currency;
     }
 
-    public String getSuccessUrl() {
-        return successUrl;
-    }
-
-    public void setSuccessUrl(String successUrl) {
-        this.successUrl = successUrl;
-    }
-
-    public String getCancelUrl() {
-        return cancelUrl;
-    }
-
-    public void setCancelUrl(String cancelUrl) {
-        this.cancelUrl = cancelUrl;
-    }
-
     public long getAmount() {
         return amount;
     }
 
     public void setAmount(long amount) {
         this.amount = amount;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
     }
 }
