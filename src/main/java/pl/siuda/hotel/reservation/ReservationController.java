@@ -16,7 +16,7 @@ public class ReservationController {
 
     @PostMapping("/available-rooms")
     public List<Availability> availableRooms(@RequestBody AvailabilityRequest request){
-        return reservationService.availableRooms(request);
+        return reservationService.getAvailableRooms(request);
     }
 
     @PostMapping("/user/place-a-booking")

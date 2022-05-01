@@ -47,7 +47,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors()
                 .and()
-                .authorizeRequests().antMatchers("/", "index", "/api/v1/authenticate", "/api/v1/registration", "/api/v1/reservations/available-rooms", "/api/v1/reservations/place-a-booking",  "/images/**").permitAll()
+                .authorizeRequests().antMatchers("/", "/stripe/events", "/api/v1/authenticate", "/api/v1/registration", "/api/v1/reservations/available-rooms", "/api/v1/reservations/place-a-booking",  "/images/**").permitAll()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/hotel-management/hotels/**").hasAuthority(HOTEL_READ.getPermission())
                 .antMatchers(HttpMethod.POST, "/api/v1/hotel-management/hotels/**").hasAuthority(HOTEL_WRITE.getPermission())

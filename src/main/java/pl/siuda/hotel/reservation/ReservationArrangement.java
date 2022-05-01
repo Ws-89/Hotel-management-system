@@ -2,6 +2,7 @@ package pl.siuda.hotel.reservation;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
+import pl.siuda.hotel.payment.CheckoutPayment;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -10,24 +11,23 @@ import java.util.Set;
 public class ReservationArrangement {
 
     @Id
-    long reservation_arrangement_id;
-    int partySize;
-    int numberOfRooms;
+    private Long reservation_arrangement_id;
+    private Integer partySize;
+    private Integer numberOfRooms;
     @MappedCollection(idColumn = "RESERVATION_ARRANGEMENT_ID")
-    Set<Reservation> reservations = new HashSet<>();
-    String email;
-    boolean confirmed;
-    BigDecimal price;
-
+    private Set<Reservation> reservations = new HashSet<>();
+    private String email;
+    private Boolean confirmed;
+    private BigDecimal price;
 
     public ReservationArrangement() {
     }
 
-    public ReservationArrangement(long reservation_arrangement_id,
-                                  int partySize,
-                                  int numberOfRooms,
+    public ReservationArrangement(Long reservation_arrangement_id,
+                                  Integer partySize,
+                                  Integer numberOfRooms,
                                   Set<Reservation> reservations,
-                                  String email, boolean confirmed,
+                                  String email, Boolean confirmed,
                                   BigDecimal price) {
         this.reservation_arrangement_id = reservation_arrangement_id;
         this.partySize = partySize;
@@ -38,11 +38,11 @@ public class ReservationArrangement {
         this.price = price;
     }
 
-    public long getReservation_arrangement_id() {
+    public Long getReservation_arrangement_id() {
         return reservation_arrangement_id;
     }
 
-    public void setReservation_arrangement_id(long reservation_arrangement_id) {
+    public void setReservation_arrangement_id(Long reservation_arrangement_id) {
         this.reservation_arrangement_id = reservation_arrangement_id;
     }
 
@@ -50,7 +50,7 @@ public class ReservationArrangement {
         return partySize;
     }
 
-    public void setPartySize(int partySize) {
+    public void setPartySize(Integer partySize) {
         this.partySize = partySize;
     }
 
@@ -58,7 +58,7 @@ public class ReservationArrangement {
         return numberOfRooms;
     }
 
-    public void setNumberOfRooms(int numberOfRooms) {
+    public void setNumberOfRooms(Integer numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
     }
 

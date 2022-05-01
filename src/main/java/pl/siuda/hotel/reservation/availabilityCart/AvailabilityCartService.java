@@ -7,6 +7,7 @@ import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.guest.Guest;
 import pl.siuda.hotel.guest.GuestService;
 import pl.siuda.hotel.reservation.Availability;
+import pl.siuda.hotel.reservation.AvailabilityRepository;
 
 import java.util.Set;
 

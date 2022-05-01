@@ -10,39 +10,26 @@ import java.util.Set;
 
 public class ReservationRequest {
 
-    int partySize;
-    int numberOfRooms;
-    Set<Reservation> reservations = new HashSet<>();
-    String email;
-    boolean confirmed;
-    BigDecimal price;
+    private Integer partySize;
+    private Integer numberOfRooms;
+    private Set<Reservation> reservations = new HashSet<>();
+    private String email;
+    private boolean confirmed;
+    private BigDecimal price;
+    private String currency;
+
 
     public ReservationRequest() {
     }
 
-    public ReservationRequest(int partySize, int numberOfRooms, Set<Reservation> reservations, String email, boolean confirmed, BigDecimal price) {
+    public ReservationRequest(int partySize, int numberOfRooms, Set<Reservation> reservations, String email, boolean confirmed, BigDecimal price, String currency) {
         this.partySize = partySize;
         this.numberOfRooms = numberOfRooms;
         this.reservations = reservations;
         this.email = email;
         this.confirmed = confirmed;
         this.price = price;
-    }
-
-    public int getPartySize() {
-        return partySize;
-    }
-
-    public void setPartySize(int partySize) {
-        this.partySize = partySize;
-    }
-
-    public int getNumberOfRooms() {
-        return numberOfRooms;
-    }
-
-    public void setNumberOfRooms(int numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
+        this.currency = currency;
     }
 
     public Set<Reservation> getReservations() {
@@ -75,5 +62,29 @@ public class ReservationRequest {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getPartySize() {
+        return partySize;
+    }
+
+    public void setPartySize(Integer partySize) {
+        this.partySize = partySize;
+    }
+
+    public Integer getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public void setNumberOfRooms(Integer numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

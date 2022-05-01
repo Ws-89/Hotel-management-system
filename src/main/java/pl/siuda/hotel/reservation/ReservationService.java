@@ -5,7 +5,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.reservation.hotelSearchAlgorithm.AvailabilityCheckProcessingAlgorithm;
 import pl.siuda.hotel.reservation.pricingAlgorithm.CalculatePriceAlgorithm;
 import pl.siuda.hotel.security.CustomUserDetailsService;
@@ -23,26 +22,28 @@ public class ReservationService{
     @Autowired
 
     private final ReservationRepository reservationRepository;
+    private final AvailabilityRepository availabilityRepository;
     private final AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm;
     private final CalculatePriceAlgorithm calculatePriceAlgorithm;
     private final CustomUserDetailsService customUserDetailsService;
 
-    public ReservationService(ReservationRepository reservationRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm, CalculatePriceAlgorithm calculatePriceAlgorithm, CustomUserDetailsService customUserDetailsService) {
+    public ReservationService(ReservationRepository reservationRepository, AvailabilityRepository availabilityRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm, CalculatePriceAlgorithm calculatePriceAlgorithm, CustomUserDetailsService customUserDetailsService) {
 
         this.reservationRepository = reservationRepository;
+        this.availabilityRepository = availabilityRepository;
         this.availabilityCheckProcessingAlgorithm = availabilityCheckProcessingAlgorithm;
         this.calculatePriceAlgorithm = calculatePriceAlgorithm;
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    public List<Availability> availableRooms(AvailabilityRequest request){
-        List<Availability> getPossibleAvailabilities = reservationRepository.findRoomsByCity(request.getCity());
+    public List<Availability> getAvailableRooms(AvailabilityRequest request){
+        List<Availability> getPossibleAvailabilities = availabilityRepository.findRoomsByCity(request.getCity());
         List<Long> takenRooms = filterTakenRooms(request, getPossibleAvailabilities);
 
         return getOfferts(getPossibleAvailabilities, takenRooms);
     }
 
-    public static <T> Predicate<T> distinctByKey(
+    private <T> Predicate<T> distinctByKey(
             Function<? super T, ?> keyExtractor) {
 
         Map<Object, Boolean> seen = new ConcurrentHashMap<>();
@@ -66,7 +67,7 @@ public class ReservationService{
         reservation.setPartySize(request.getPartySize());
         reservation.setNumberOfRooms(request.getNumberOfRooms());
         reservation.setReservations(request.getReservations());
-        reservation.setEmail(request.email);
+        reservation.setEmail(request.getEmail());
         reservation.setConfirmed(true);
         reservation.setPrice(request.getPrice());
         reservationRepository.save(reservation);

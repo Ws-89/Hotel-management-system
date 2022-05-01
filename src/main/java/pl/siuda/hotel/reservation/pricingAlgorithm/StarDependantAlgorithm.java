@@ -3,6 +3,7 @@ package pl.siuda.hotel.reservation.pricingAlgorithm;
 import org.springframework.stereotype.Component;
 import pl.siuda.hotel.enums.Grade;
 import pl.siuda.hotel.reservation.Availability;
+import pl.siuda.hotel.reservation.Reservation;
 
 import java.math.BigDecimal;
 
@@ -35,6 +36,36 @@ public class StarDependantAlgorithm implements CalculatePriceAlgorithm {
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + availability.getGrade().toString());
+        }
+        return price;
+    }
+
+    public Long getPriceForReservation(Reservation reservation){
+        Long price;
+        switch(reservation.getRoomType().toString()){
+            case "SINGLE":
+                price = 5000L * (rate(reservation.getGrade())).longValue();
+                break;
+            case "DOUBLE":
+                price = 8000L * (rate(reservation.getGrade())).longValue();
+                break;
+            case "TRIPLE":
+                price = 12000L * (rate(reservation.getGrade())).longValue();
+                break;
+            case "QUAD":
+                price = 15000L * (rate(reservation.getGrade())).longValue();
+                break;
+            case "QUEEN":
+                price = 20000L * (rate(reservation.getGrade())).longValue();
+                break;
+            case "KING":
+                price = 20000L * (rate(reservation.getGrade())).longValue();
+                break;
+            case "DOUBLEDOUBLE":
+                price = 15000L * (rate(reservation.getGrade())).longValue();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + reservation.getGrade().toString());
         }
         return price;
     }
