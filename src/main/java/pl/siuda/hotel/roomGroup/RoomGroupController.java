@@ -20,10 +20,10 @@ public class RoomGroupController {
         return roomGroupService.getRoomGroupById(id);
     }
 
-    @GetMapping("/by-hotel/{id}")
-    public List<RoomGroup> findRoomGroupsByHotelId(@PathVariable("id")Long id){
-        return roomGroupService.findRoomGroupsByHotelId(id);
-    }
+//    @GetMapping("/by-hotel/{id}")
+//    public List<RoomGroup> findRoomGroupsByHotelId(@PathVariable("id")Long id){
+//        return roomGroupService.findRoomGroupsByHotelId(id);
+//    }
 
     @PostMapping("/by-hotel/{id}")
     public void createRoomGroup(@PathVariable("id")Long id, @RequestBody RoomGroup roomGroup) {

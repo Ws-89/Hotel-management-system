@@ -3,13 +3,13 @@ package pl.siuda.hotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.siuda.hotel.admin.AdminRepository;
-import pl.siuda.hotel.guest.GuestService;
-import pl.siuda.hotel.hotel.HotelRepository;
-import pl.siuda.hotel.reservation.ReservationService;
-import pl.siuda.hotel.guest.GuestRepository;
-import pl.siuda.hotel.hotel.HotelService;
-import pl.siuda.hotel.reservation.ReservationRepository;
+import pl.siuda.hotel.repositories.AdminRepository;
+import pl.siuda.hotel.services.GuestService;
+import pl.siuda.hotel.repositories.HotelRepository;
+import pl.siuda.hotel.services.ReservationService;
+import pl.siuda.hotel.repositories.GuestRepository;
+import pl.siuda.hotel.services.HotelService;
+import pl.siuda.hotel.repositories.ReservationRepository;
 
 
 @SpringBootTest

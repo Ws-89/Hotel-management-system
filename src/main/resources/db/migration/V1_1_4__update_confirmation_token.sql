@@ -1,2 +1,0 @@
-ALTER TABLE confirmation_token
-ADD CONFIRMED_AT DATETIME;

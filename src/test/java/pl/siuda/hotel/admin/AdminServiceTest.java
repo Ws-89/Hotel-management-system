@@ -8,10 +8,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pl.siuda.hotel.dto.AdminDto;
+import pl.siuda.hotel.dto.AdminRequest;
 import pl.siuda.hotel.exception.NotFoundException;
-import pl.siuda.hotel.registration.EmailValidator;
+import pl.siuda.hotel.models.Admin;
+import pl.siuda.hotel.util.EmailValidator;
+import pl.siuda.hotel.repositories.AdminRepository;
 import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
+import pl.siuda.hotel.services.AdminService;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,10 +57,15 @@ class AdminServiceTest {
     void adminListReturnsCorrectSize() {
         // given
         List<Admin> adminList = Arrays.asList(
-                new Admin("Jon", "Doe", "jondoe@gmail.com", "pass123", ApplicationUserRole.ADMIN),
-                new Admin( "Kevin", "Smith", "kevinsmith@gmail.com", "pass123", ApplicationUserRole.ADMIN),
-                new Admin( "Anna", "Adams", "annadams@gmail.com", "pass123", ApplicationUserRole.ADMIN),
-                new Admin("Kathrine", "Brown", "katherinebrown@gmail.com", "pass123", ApplicationUserRole.ADMIN)
+
+                Admin.builder().firstName("Jon").lastName("Doe").email("jondoe@gmail.com")
+                        .password("pass123").applicationUserRole(ApplicationUserRole.ADMIN).build(),
+                Admin.builder().firstName("Kevin").lastName("Smith").email("kevinsmith@gmail.com")
+                        .password("pass123").applicationUserRole(ApplicationUserRole.ADMIN).build(),
+                Admin.builder().firstName("Anna").lastName("Adams").email("annadams@gmail.com")
+                        .password("pass123").applicationUserRole(ApplicationUserRole.ADMIN).build(),
+                Admin.builder().firstName("Kathrine").lastName("Brown").email("katherinebrown@gmail.com")
+                        .password("pass123").applicationUserRole(ApplicationUserRole.ADMIN).build()
         );
 
         // when
@@ -78,17 +89,18 @@ class AdminServiceTest {
     @Test
     void findAdminById() {
         // given
-        Admin Kevin = new Admin(2L, "Kevin", "Smith", "kevinsmith@gmail.com", "password123", ApplicationUserRole.ADMIN);
+        Admin admin = Admin.builder().adminId(2L).firstName("Jon").lastName("Doe").email("jondoe@gmail.com")
+                .password("pass123").applicationUserRole(ApplicationUserRole.ADMIN).build();
         // when
         when(adminRepository.findById(2L)).thenReturn(java.util.Optional
-                .of(Kevin));
-       AdminDto admin = adminService.getAdminById(2L);
+                .of(admin));
+       AdminDto result = adminService.getAdminById(2L);
         // then
 
-        assertThat(admin.getAdminId()).isEqualTo(2L);
-        assertThat(admin.getFirstName()).isEqualTo("Kevin");
-        assertThat(admin.getLastName()).isEqualTo("Smith");
-        assertThat(admin.getEmail()).isEqualTo("kevinsmith@gmail.com");
+        assertThat(admin.getAdminId()).isEqualTo(result.getAdminId());
+        assertThat(admin.getFirstName()).isEqualTo(result.getFirstName());
+        assertThat(admin.getLastName()).isEqualTo(result.getLastName());
+        assertThat(admin.getEmail()).isEqualTo(result.getEmail());
         assertThat(admin.getApplicationUserRole()).isEqualTo(ApplicationUserRole.ADMIN);
     }
 
@@ -149,8 +161,10 @@ class AdminServiceTest {
     @Test
     void updateAdmin() {
         // given
-        Admin Kevin = new Admin(2L, "Kevin", "Smith", "kevinsmith@gmail.com", "pass123", ApplicationUserRole.ADMIN);
-        Admin updatedKevin = new Admin(2L, "updatedKevin", "updatedSmith", "updatedkevinsmith@gmail.com", "pass1234", ApplicationUserRole.ADMIN);
+        Admin Kevin = Admin.builder().adminId(2L).firstName("Kevin").lastName("Smith").email("kevinsmith@gmail.com")
+                .password("pass123").applicationUserRole(ApplicationUserRole.ADMIN).build();
+        Admin updatedKevin = Admin.builder().adminId(2L).firstName("updatedKevin").lastName("updatedSmith").email("updatedkevinsmith@gmail.com")
+                .password("pass1234").applicationUserRole(ApplicationUserRole.ADMIN).build();
         AdminRequest adminRequest = new AdminRequest("updatedKevin", "updatedSmith", "updatedkevinsmith@gmail.com", "pass1234");
         // when
         when(adminRepository.findById(2L)).thenReturn(Optional.of(Kevin));
@@ -170,7 +184,8 @@ class AdminServiceTest {
     @Test
     void deleteAdmin() {
         // given
-        Admin Kevin = new Admin(2L, "Kevin", "Smith", "kevinsmith@gmail.com", "pass123", ApplicationUserRole.ADMIN);
+        Admin Kevin = Admin.builder().adminId(2L).firstName("Kevin").lastName("Smith").email("kevinsmith@gmail.com")
+                .password("pass123").applicationUserRole(ApplicationUserRole.ADMIN).build();
 
         // when
         when(adminRepository.findById(2L)).thenReturn(Optional.of(Kevin));

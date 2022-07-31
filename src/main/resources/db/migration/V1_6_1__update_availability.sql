@@ -1,5 +1,0 @@
-ALTER TABLE availability
-RENAME COLUMN from_date TO START_DATE;
-
-ALTER TABLE availability
-RENAME COLUMN to_date TO END_DATE;

@@ -1,8 +1,8 @@
 package pl.siuda.hotel.roomGroup;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import pl.siuda.hotel.enums.RoomType;
+
+import pl.siuda.hotel.models.enums.RoomType;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,7 +12,7 @@ public class RoomGroup {
 
     @Id
     private Long roomGroupId;
-    @MappedCollection(idColumn = "ROOM_GROUP_ID")
+
     private Set<Room> rooms = new HashSet<>();
     private String description;
     private RoomType roomType;

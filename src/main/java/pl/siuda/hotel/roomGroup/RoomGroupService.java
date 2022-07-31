@@ -2,8 +2,8 @@ package pl.siuda.hotel.roomGroup;
 
 import org.springframework.stereotype.Service;
 import pl.siuda.hotel.exception.NotFoundException;
-import pl.siuda.hotel.hotel.Hotel;
-import pl.siuda.hotel.hotel.HotelRepository;
+import pl.siuda.hotel.models.Hotel;
+import pl.siuda.hotel.repositories.HotelRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,9 +24,9 @@ public class RoomGroupService {
         return StreamSupport.stream(roomGroupRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public List<RoomGroup> findRoomGroupsByHotelId(Long id){
-        return this.roomGroupRepository.findRoomGroupsByHotelId(id);
-    }
+//    public List<RoomGroup> findRoomGroupsByHotelId(Long id){
+//        return this.roomGroupRepository.findRoomGroupsByHotelId(id);
+//    }
 
     public void createRoomGroup(Long id, RoomGroup roomGroupRequest){
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));

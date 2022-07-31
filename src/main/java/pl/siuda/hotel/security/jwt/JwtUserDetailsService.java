@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.admin.Admin;
-import pl.siuda.hotel.admin.AdminRepository;
-import pl.siuda.hotel.guest.Guest;
-import pl.siuda.hotel.guest.GuestRepository;
+import pl.siuda.hotel.models.Admin;
+import pl.siuda.hotel.repositories.AdminRepository;
+import pl.siuda.hotel.models.Guest;
+import pl.siuda.hotel.repositories.GuestRepository;
 import pl.siuda.hotel.security.CustomUserDetails;
 import pl.siuda.hotel.util.JwtUtil;
 

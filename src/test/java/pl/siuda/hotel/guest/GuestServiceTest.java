@@ -7,10 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import pl.siuda.hotel.embeddedClasses.Address;
+import pl.siuda.hotel.models.Guest;
+import pl.siuda.hotel.models.embeddedClasses.Address;
 import pl.siuda.hotel.exception.NotFoundException;
+import pl.siuda.hotel.repositories.GuestRepository;
 import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
+import pl.siuda.hotel.services.GuestService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,10 +51,11 @@ class GuestServiceTest {
     void guestList() {
         // given
         Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
-        List<Guest> guestList = Arrays.asList(new Guest("John", "Doe", "johndoe@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST),
-                new Guest("Kevin", "Smith", "kevinsmith@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST),
-                new Guest("Anna", "Adams", "annaadams@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST),
-                new Guest("Katherine", "Brown", "katherinebrown@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST));
+        List<Guest> guestList = Arrays.asList(
+                Guest.builder().firstName("John").lastName("Doe").email("johndoe@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
+                Guest.builder().firstName("Kevin").lastName("Smith").email("kevinsmith@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
+                Guest.builder().firstName("Anna").lastName("Adams").email("annaadams@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
+                Guest.builder().firstName("Katherine").lastName("Brown").email("katherinebrown@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build());
         // when
         when(guestRepository.findAll()).thenReturn(guestList);
         // then
@@ -73,7 +77,7 @@ class GuestServiceTest {
     void getGuestById() {
         // given
         Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
-        Guest John = new Guest(1L, "John", "Doe", "johndoe@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST);
+        Guest John = Guest.builder().firstName("John").lastName("Doe").email("johndoe@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build();
         // when
         when(guestRepository.findById(1L)).thenReturn(java.util.Optional.of(John));
         Guest guest = guestService.getGuestById(1L);
@@ -99,7 +103,7 @@ class GuestServiceTest {
     void signUpGuest() {
         // given
         Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
-        Guest John = new Guest("John", "Doe", "johndoe@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST);
+        Guest John = Guest.builder().firstName("John").lastName("Doe").email("johndoe@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build();
         // when
         when(customUserDetailsService.userNotExists("johndoe@gmail.com")).thenReturn(true);
         when(bCryptPasswordEncoder.encode("pass123")).thenReturn("1");
@@ -121,7 +125,7 @@ class GuestServiceTest {
     void signUpGuestThrowsExceptionEmailTaken() {
         // given
         Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
-        Guest John = new Guest(1L, "John", "Doe", "johndoe@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST);
+        Guest John = Guest.builder().firstName("John").lastName("Doe").email("johndoe@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build();
         // when
         when(customUserDetailsService.userNotExists("johndoe@gmail.com")).thenReturn(false);
         // then
@@ -132,7 +136,7 @@ class GuestServiceTest {
     void findByEmailReturnsGuest() {
         // given
         Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
-        Guest John = new Guest(1L, "John", "Doe", "johndoe@gmail.com", "pass123", address, "123456789", ApplicationUserRole.GUEST);
+        Guest John = Guest.builder().firstName("John").lastName("Doe").email("johndoe@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build();
         // when
         when(guestRepository.findByEmail("johndoe@gmail.com")).thenReturn(John);
         Guest guest = guestService.findByEmail("johndoe@gmail.com");

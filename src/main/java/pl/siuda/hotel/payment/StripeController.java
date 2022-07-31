@@ -2,29 +2,17 @@ package pl.siuda.hotel.payment;
 
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.annotations.SerializedName;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.*;
-import com.stripe.model.checkout.Session;
-import com.stripe.net.ApiResource;
-import com.stripe.param.CustomerCreateParams;
-import com.stripe.param.WebhookEndpointCreateParams;
-import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import pl.siuda.hotel.reservation.Reservation;
-import pl.siuda.hotel.reservation.ReservationRequest;
-import pl.siuda.hotel.reservation.ReservationService;
-import pl.siuda.hotel.reservation.pricingAlgorithm.CalculatePriceAlgorithm;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import pl.siuda.hotel.models.embeddedClasses.BookingDetails;
+import pl.siuda.hotel.dto.ReservationRequest;
+import pl.siuda.hotel.services.ReservationService;
+import pl.siuda.hotel.pricingAlgorithm.CalculatePriceAlgorithm;
 
 @RestController
 @RequestMapping("/api")
@@ -56,38 +44,39 @@ public class StripeController {
     @PostMapping("/payment")
     @Transactional
     public String paymentWithCheckoutPage(@RequestBody ReservationRequest payment) throws StripeException {
-        init(appStripeKey);
-
-        List<SessionCreateParams.LineItem> lineItems = new ArrayList<SessionCreateParams.LineItem>();
-        payment.getReservations().forEach(item -> {
-            SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder().setQuantity(1L)
-                    .setPriceData(
-                            SessionCreateParams.LineItem.PriceData.builder()
-                                    .setCurrency(payment.getCurrency()).setUnitAmount(calculatePriceAlgorithm.getPriceForReservation(item))
-                                    .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
-                                            .builder().setName(lineItemNameBuilder(item)).build())
-                                    .build())
-                    .build();
-            lineItems.add(lineItem);
-            }
-        );
-
-        SessionCreateParams params = SessionCreateParams.builder()
-                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                .setMode(SessionCreateParams.Mode.PAYMENT).setSuccessUrl(successUrl)
-                .setCancelUrl(cancelUrl)
-                .addAllLineItem(lineItems)
-                .build();
-
-        Session session = Session.create(params);
-        Map<String, String> responseData = new HashMap<>();
-        responseData.put("id", session.getId());
-        System.out.println("Session: ");
-        System.out.println(session);
-        System.out.println("Response data: ");
-        System.out.println(responseData);
-
-        return gson.toJson(responseData);
+//        init(appStripeKey);
+//
+//        List<SessionCreateParams.LineItem> lineItems = new ArrayList<SessionCreateParams.LineItem>();
+//        payment.getReservations().forEach(item -> {
+//            SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder().setQuantity(1L)
+//                    .setPriceData(
+//                            SessionCreateParams.LineItem.PriceData.builder()
+//                                    .setCurrency(payment.getCurrency()).setUnitAmount(calculatePriceAlgorithm.getPriceForReservation(item.getBookingDetails()))
+//                                    .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
+//                                            .builder().setName(lineItemNameBuilder(item.getBookingDetails())).build())
+//                                    .build())
+//                    .build();
+//            lineItems.add(lineItem);
+//            }
+//        );
+//
+//        SessionCreateParams params = SessionCreateParams.builder()
+//                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+//                .setMode(SessionCreateParams.Mode.PAYMENT).setSuccessUrl(successUrl)
+//                .setCancelUrl(cancelUrl)
+//                .addAllLineItem(lineItems)
+//                .build();
+//
+//        Session session = Session.create(params);
+//        Map<String, String> responseData = new HashMap<>();
+//        responseData.put("id", session.getId());
+//        System.out.println("Session: ");
+//        System.out.println(session);
+//        System.out.println("Response data: ");
+//        System.out.println(responseData);
+//
+//        return gson.toJson(responseData);
+        return paymentService.payWithStripe(payment);
     }
 
     @GetMapping("{id}")
@@ -107,7 +96,7 @@ public class StripeController {
         Stripe.apiKey = appStripeKey;
     }
 
-    private String lineItemNameBuilder(Reservation reservation) {
+    private String lineItemNameBuilder(BookingDetails reservation) {
         StringBuilder lineItemName = new StringBuilder();
         lineItemName.append(reservation.getHotelName() + ", ");
         lineItemName.append(reservation.getCity()+ ", ");

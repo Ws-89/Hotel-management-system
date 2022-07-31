@@ -8,10 +8,15 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.siuda.hotel.embeddedClasses.Address;
-import pl.siuda.hotel.embeddedClasses.Contact;
-import pl.siuda.hotel.enums.Grade;
+import pl.siuda.hotel.dto.HotelDto;
+import pl.siuda.hotel.dto.HotelRequest;
+import pl.siuda.hotel.models.Hotel;
+import pl.siuda.hotel.models.embeddedClasses.Address;
+import pl.siuda.hotel.models.embeddedClasses.Contact;
+import pl.siuda.hotel.models.enums.Grade;
 import pl.siuda.hotel.exception.NotFoundException;
+import pl.siuda.hotel.repositories.HotelRepository;
+import pl.siuda.hotel.services.HotelService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,13 +48,14 @@ class HotelServiceTest {
     @Test
     void getAllHotels() {
         // given
-        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        List<Hotel> hotelList = Arrays.asList(new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR),
-                new Hotel(2L, "Pokoje na wsi", address, contact, Grade.TWOSTARS),
-                new Hotel(3L, "Pokoje nad morzem", address, contact, Grade.THREESTARS),
-                new Hotel(4L, "Hotel", address, contact, Grade.FOURSTARS),
-                new Hotel(5L, "Hotel w górach", address, contact, Grade.FIVESTARS));
+        List<Hotel> hotelList = Arrays.asList(
+                Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build(),
+                Hotel.builder().hotelId(2L).name("Pokoje na wsi").address(address).contact(contact).grade(Grade.TWOSTARS).build(),
+                Hotel.builder().hotelId(3L).name("Pokoje nad morzem").address(address).contact(contact).grade(Grade.THREESTARS).build(),
+                Hotel.builder().hotelId(4L).name("Hotel").address(address).contact(contact).grade(Grade.FOURSTARS).build(),
+                Hotel.builder().hotelId(5L).name("Hotel w górach").address(address).contact(contact).grade(Grade.FIVESTARS).build());
         // when
         when(hotelRepository.findAll()).thenReturn(hotelList);
         List<HotelDto> hotels = hotelService.getAllHotels();
@@ -69,9 +75,9 @@ class HotelServiceTest {
     @Test
     void getHotelById() {
         // given
-        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build();
         // when
         when(hotelRepository.findById(1L)).thenReturn(java.util.Optional.of(pokojeWMiescie));
         HotelDto hotel = hotelService.getHotelById(1L);
@@ -122,9 +128,9 @@ class HotelServiceTest {
         HotelRequest hotelRequest = new HotelRequest("Pokoje w miescie", "Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie",
                 "Polska", "85-021", "123456789", "hotel@gmail.com", Grade.TWOSTARS);
 
-        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build();
 
         when(hotelRepository.findByName("Pokoje w miescie")).thenReturn(Optional.of(pokojeWMiescie));
 
@@ -139,7 +145,7 @@ class HotelServiceTest {
 
         Address address = new Address("Wilcza", "Warszawa", "Mazowieckie", "Polska", "85-021");
         Contact contact = new Contact("987654321", "pokojenastrychu@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build();
         // when
         when(hotelRepository.findById(1L)).thenReturn(Optional.of(pokojeWMiescie));
         hotelService.updateHotel(1L, hotelRequest);
@@ -174,7 +180,7 @@ class HotelServiceTest {
         // given
         Address address = new Address("Kujawska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build();
         // when
         when(hotelRepository.findById(1L)).thenReturn(Optional.of(pokojeWMiescie));
         hotelService.deleteHotel(1L);

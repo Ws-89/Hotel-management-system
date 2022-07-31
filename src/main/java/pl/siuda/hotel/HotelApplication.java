@@ -1,38 +1,16 @@
 package pl.siuda.hotel;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import com.google.gson.JsonSyntaxException;
-import com.stripe.exception.SignatureVerificationException;
-import com.stripe.model.Customer;
-import com.stripe.model.Event;
-import com.stripe.model.EventDataObjectDeserializer;
-import com.stripe.model.StripeObject;
-import com.stripe.net.ApiResource;
-import com.stripe.net.Webhook;
+
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import pl.siuda.hotel.admin.AdminRequest;
-import pl.siuda.hotel.admin.AdminService;
-import pl.siuda.hotel.security.CustomUserDetailsService;
+
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
 
 @SpringBootApplication
-@EnableJdbcRepositories
 @EnableSwagger2
 @EnableEncryptableProperties
 public class HotelApplication {

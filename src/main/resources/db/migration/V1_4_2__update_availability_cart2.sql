@@ -1,1 +1,0 @@
-ALTER TABLE availability_cart MODIFY GUEST_ID INT;
