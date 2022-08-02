@@ -1,4 +1,4 @@
-package pl.siuda.hotel.dto;
+package pl.siuda.hotel.requests;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +29,9 @@ public class AvailabilityRequest {
         this.city = city;
     }
 
-    public Integer getNumberOfRooms() { return numberOfRooms; }
+    public Integer getNumberOfRooms() {
+        return numberOfRooms;
+    }
 
     public void setNumberOfRooms(Integer numberOfRooms) {
         this.numberOfRooms = numberOfRooms;

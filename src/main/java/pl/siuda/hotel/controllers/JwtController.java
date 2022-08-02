@@ -1,8 +1,10 @@
-package pl.siuda.hotel.security.jwt;
+package pl.siuda.hotel.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.siuda.hotel.security.CustomUserDetailsService;
+import pl.siuda.hotel.requests.JwtRequest;
+import pl.siuda.hotel.security.jwt.JwtResponse;
+import pl.siuda.hotel.services.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")

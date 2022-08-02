@@ -1,7 +1,7 @@
 package pl.siuda.hotel.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import pl.siuda.hotel.dto.RegistrationRequest;
+import pl.siuda.hotel.requests.RegistrationRequest;
 import pl.siuda.hotel.services.RegistrationService;
 
 @RestController

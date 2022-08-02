@@ -9,7 +9,7 @@ import pl.siuda.hotel.repositories.HotelRepository;
 import pl.siuda.hotel.services.ReservationService;
 import pl.siuda.hotel.repositories.GuestRepository;
 import pl.siuda.hotel.services.HotelService;
-import pl.siuda.hotel.repositories.ReservationRepository;
+//import pl.siuda.hotel.repositories.ReservationRepository;
 
 
 @SpringBootTest
@@ -22,8 +22,8 @@ class HotelApplicationTests {
 	@Autowired
     HotelService hotelService;
 
-	@Autowired
-	ReservationRepository reservationRepository;
+//	@Autowired
+//	ReservationRepository reservationRepository;
 
 	@Autowired
     GuestRepository guestRepository;

@@ -1,4 +1,4 @@
-package pl.siuda.hotel.security.jwt;
+package pl.siuda.hotel.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +14,8 @@ import pl.siuda.hotel.repositories.AdminRepository;
 import pl.siuda.hotel.models.Guest;
 import pl.siuda.hotel.repositories.GuestRepository;
 import pl.siuda.hotel.security.CustomUserDetails;
+import pl.siuda.hotel.requests.JwtRequest;
+import pl.siuda.hotel.security.jwt.JwtResponse;
 import pl.siuda.hotel.util.JwtUtil;
 
 @Service

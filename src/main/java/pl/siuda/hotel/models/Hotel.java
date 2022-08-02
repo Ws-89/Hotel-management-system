@@ -1,14 +1,15 @@
 package pl.siuda.hotel.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import pl.siuda.hotel.models.embeddedClasses.Address;
 import pl.siuda.hotel.models.embeddedClasses.Contact;
 import pl.siuda.hotel.models.enums.Grade;
-import pl.siuda.hotel.roomGroup.RoomGroup;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,10 +18,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tbl_hotel")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@NamedEntityGraph(name = "graph.availableHotels",
+        attributeNodes = {
+        @NamedAttributeNode(value = "rooms", subgraph = "subgraph.rooms")
+        }, subgraphs = {
+        @NamedSubgraph(name = "subgraph.room", attributeNodes = {@NamedAttributeNode(value = "reservations")})
+})
 public class Hotel implements Serializable {
 
     @Id
@@ -30,14 +34,51 @@ public class Hotel implements Serializable {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE, generator = "tbl_hotel_sequence"
     )
+    @Column(name = "hotel_id")
     private Long hotelId;
     private String name;
+    @Embedded
     private Address address;
+    @Embedded
     private Contact contact;
+    @Enumerated(EnumType.ORDINAL)
     private Grade grade;
-    private Set<RoomGroup> roomGroup = new HashSet<>();
+    @OneToMany(mappedBy = "hotel")
+    private Set<Room> rooms = new HashSet<>();
     private String image;
 
+    public Hotel() {
+    }
+
+    public Hotel(Long hotelId, String name, Address address, Contact contact, Grade grade, Set<Room> rooms, String image) {
+        this.hotelId = hotelId;
+        this.name = name;
+        this.address = address;
+        this.contact = contact;
+        this.grade = grade;
+        this.rooms = rooms;
+        this.image = image;
+    }
+
+    public void addRoom(Room room){
+        if(rooms == null){
+            this.rooms = new HashSet<>();
+        }
+        if(!rooms.add(room))
+           throw new IllegalArgumentException("Something went wrong. Cannot add room to this hotel");
+
+        room.setHotel(this);
+    }
+
+    public void removeRoom(Room room){
+        if(rooms == null){
+            this.rooms = new HashSet<>();
+        }
+        if(!rooms.remove(room))
+            throw new IllegalArgumentException("Something went wrong. Cannot remove room from this hotel");
+
+        room.setHotel(null);
+    }
 
     public Long getHotelId() {
         return hotelId;
@@ -59,32 +100,16 @@ public class Hotel implements Serializable {
         return address;
     }
 
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public Contact getContact() {
         return contact;
     }
 
     public void setContact(Contact contact) {
         this.contact = contact;
-    }
-
-    public void setPhoneNumber(String phoneNumber){
-        this.contact.setPhoneNumber(phoneNumber);
-    }
-
-    public void setEmail(String email){
-        this.contact.setEmail(email);
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Set<RoomGroup> getRooms() {
-        return roomGroup;
-    }
-
-    public void addRoomGroup(RoomGroup roomGroup) {
-        this.roomGroup.add(roomGroup);
     }
 
     public Grade getGrade() {
@@ -95,40 +120,20 @@ public class Hotel implements Serializable {
         this.grade = grade;
     }
 
-    public String getStreet(){
-        return address.getStreet();
+    public Set<Room> getRooms() {
+        return rooms;
     }
 
-    public String getCity(){
-        return address.getCity();
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
     }
 
-    public String getState(){
-        return address.getState();
-    }
-
-    public String getCountry(){
-        return address.getCountry();
-    }
-
-    public String getZipcode(){
-        return address.getZipCode();
-    }
-
-    public String getPhoneNumber(){
-        return contact.getPhoneNumber();
-    }
-
-    public String getEmail(){
-        return contact.getEmail();
-    }
-
-    public String getImageUrl() {
+    public String getImage() {
         return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.image = imageUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
@@ -139,7 +144,7 @@ public class Hotel implements Serializable {
                 ", address=" + address +
                 ", contact=" + contact +
                 ", grade=" + grade +
-                ", rooms=" + roomGroup +
+                ", rooms=" + rooms +
                 '}';
     }
 }

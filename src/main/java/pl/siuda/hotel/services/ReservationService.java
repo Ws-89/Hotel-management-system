@@ -5,21 +5,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.siuda.hotel.dto.AvailabilityRequest;
-import pl.siuda.hotel.dto.ReservationRequest;
-import pl.siuda.hotel.models.Availability;
-import pl.siuda.hotel.models.ReservationArrangement;
-import pl.siuda.hotel.repositories.AvailabilityRepository;
+import pl.siuda.hotel.exception.NotFoundException;
+import pl.siuda.hotel.models.AvailabilityResponse;
+import pl.siuda.hotel.models.Reservation;
+import pl.siuda.hotel.models.Room;
 import pl.siuda.hotel.repositories.ReservationRepository;
+import pl.siuda.hotel.repositories.RoomRepository;
+import pl.siuda.hotel.requests.AvailabilityRequest;
+import pl.siuda.hotel.models.Hotel;
+import pl.siuda.hotel.repositories.HotelRepository;
 import pl.siuda.hotel.hotelSearchAlgorithm.AvailabilityCheckProcessingAlgorithm;
-import pl.siuda.hotel.pricingAlgorithm.CalculatePriceAlgorithm;
+import pl.siuda.hotel.requests.ReservationRequest;
 import pl.siuda.hotel.security.CustomUserDetailsService;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,54 +29,61 @@ public class ReservationService{
     @Autowired
 
     private final ReservationRepository reservationRepository;
-    private final AvailabilityRepository availabilityRepository;
+    private final HotelRepository hotelRepository;
+    private final RoomRepository roomRepository;
     private final AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm;
-    private final CalculatePriceAlgorithm calculatePriceAlgorithm;
+//    private final CalculatePriceAlgorithm calculatePriceAlgorithm;
     private final CustomUserDetailsService customUserDetailsService;
 
-    public ReservationService(ReservationRepository reservationRepository, AvailabilityRepository availabilityRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm, CalculatePriceAlgorithm calculatePriceAlgorithm, CustomUserDetailsService customUserDetailsService) {
+    public ReservationService(
+            ReservationRepository reservationRepository,
+            HotelRepository hotelRepository, RoomRepository roomRepository, AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm,
+//            CalculatePriceAlgorithm calculatePriceAlgorithm,
+            CustomUserDetailsService customUserDetailsService) {
 
         this.reservationRepository = reservationRepository;
-        this.availabilityRepository = availabilityRepository;
+        this.hotelRepository = hotelRepository;
+        this.roomRepository = roomRepository;
         this.availabilityCheckProcessingAlgorithm = availabilityCheckProcessingAlgorithm;
-        this.calculatePriceAlgorithm = calculatePriceAlgorithm;
+//        this.calculatePriceAlgorithm = calculatePriceAlgorithm;
         this.customUserDetailsService = customUserDetailsService;
     }
 
-//    public List<Availability> getAvailableRooms(AvailabilityRequest request){
-//        List<Availability> getPossibleAvailabilities = availabilityRepository.findRoomsByCity(request.getCity());
-//        List<Long> takenRooms = filterTakenRooms(request, getPossibleAvailabilities);
-//
-//        return getOfferts(getPossibleAvailabilities, takenRooms);
+    public AvailabilityResponse getAvailableRooms(AvailabilityRequest request){
+         List<Hotel> listOfHotelsFromAGivenCity = hotelRepository.findByAddressCity(request.getCity());
+
+         List<Hotel> result = filterAvailableRooms(request, listOfHotelsFromAGivenCity);
+
+        return AvailabilityResponse.builder()
+                .data(Map.of("availableHotels", result))
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
+                .numberOfRooms(request.getNumberOfRooms())
+                .city(request.getCity())
+                .partySize(request.getPartySize())
+                .build();
+    }
+
+//    public void userPlaceABooking(ReservationRequest request) {
+//        String userName = getUserName();
+//        ReservationArrangement reservation = new ReservationArrangement();
+//        reservation.setPartySize(request.getPartySize());
+//        reservation.setNumberOfRooms(request.getNumberOfRooms());
+//        reservation.setReservations(request.getReservations());
+//        reservation.setEmail(userName);
+//        reservation.setConfirmed(true);
+//        reservation.setPrice(request.getPrice());
+//        reservationRepository.save(reservation);
 //    }
-
-    private <T> Predicate<T> distinctByKey(
-            Function<? super T, ?> keyExtractor) {
-
-        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
-    public void userPlaceABooking(ReservationRequest request) {
-        String userName = getUserName();
-        ReservationArrangement reservation = new ReservationArrangement();
-        reservation.setPartySize(request.getPartySize());
-        reservation.setNumberOfRooms(request.getNumberOfRooms());
-        reservation.setReservations(request.getReservations());
-        reservation.setEmail(userName);
-        reservation.setConfirmed(true);
-        reservation.setPrice(request.getPrice());
-        reservationRepository.save(reservation);
-    }
-
+//
     public void placeABooking(ReservationRequest request) {
-        ReservationArrangement reservation = new ReservationArrangement();
-        reservation.setPartySize(request.getPartySize());
-        reservation.setNumberOfRooms(request.getNumberOfRooms());
-        reservation.setReservations(request.getReservations());
-        reservation.setEmail(request.getEmail());
-        reservation.setConfirmed(true);
-        reservation.setPrice(request.getPrice());
+        Room room = this.roomRepository.findById(request.getRoom().getRoomId()).orElseThrow(() -> new NotFoundException("Room not found"));
+
+        Reservation reservation = new Reservation();
+        reservation.setRoom(request.getRoom());
+        reservation.setStartDate(request.getStartDate());
+        reservation.setEndDate(request.getEndDate());
+        room.addReservation(reservation);
         reservationRepository.save(reservation);
     }
 
@@ -90,24 +98,26 @@ public class ReservationService{
         return userName;
     }
 
-    private List<Availability> getOfferts(List<Availability> availabilitiesAndReservations, List<Long> takenRooms) {
-        List<Availability> availabilities = availabilitiesAndReservations.stream()
-                .filter(availability -> !takenRooms.contains(availability.getBookingDetails().getRoomId()))
-                .filter(distinctByKey(p -> p.getBookingDetails().getRoomId()))
-                .collect(Collectors.toList());
+//    private List<Availability> getOfferts(List<Availability> availabilitiesAndReservations, List<Long> takenRooms) {
+//        List<Availability> availabilities = availabilitiesAndReservations.stream()
+//                .filter(availability -> !takenRooms.contains(availability.getBookingDetails().getRoomId()))
+//                .filter(distinctByKey(p -> p.getBookingDetails().getRoomId()))
+//                .collect(Collectors.toList());
+//
+//        availabilities.forEach(availability -> {
+//            availability.getBookingDetails().setPrice(calculatePriceAlgorithm.getPrice(availability.getBookingDetails()));
+//            availability.setAvailabilityId(0L);
+//        });
+//        return availabilities;
+//    }
+//
 
-        availabilities.forEach(availability -> {
-            availability.getBookingDetails().setPrice(calculatePriceAlgorithm.getPrice(availability.getBookingDetails()));
-            availability.setAvailabilityId(0L);
-        });
-        return availabilities;
-    }
 
-    private List<Long> filterTakenRooms(AvailabilityRequest request, List<Availability> availabilitiesAndReservations) {
-        return availabilitiesAndReservations.stream()
-                .filter(availability -> availabilityCheckProcessingAlgorithm.isOverlapping(availability.getBookingDetails(), request))
-                .map(item -> item.getBookingDetails().getRoomId())
-                .collect(Collectors.toList());
+
+    private List<Hotel> filterAvailableRooms(AvailabilityRequest request, List<Hotel> hotels) {
+       hotels.forEach(hotel -> hotel.getRooms().removeIf(room -> room.getReservations().stream()
+               .anyMatch(reservation -> availabilityCheckProcessingAlgorithm.isOverlapping(reservation, request))));
+        return hotels;
     }
 }
 

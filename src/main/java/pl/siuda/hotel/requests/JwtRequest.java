@@ -1,4 +1,4 @@
-package pl.siuda.hotel.security.jwt;
+package pl.siuda.hotel.requests;
 
 public class JwtRequest {
 

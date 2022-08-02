@@ -1,4 +1,4 @@
-package pl.siuda.hotel.dto;
+package pl.siuda.hotel.requests;
 
 import java.util.Objects;
 

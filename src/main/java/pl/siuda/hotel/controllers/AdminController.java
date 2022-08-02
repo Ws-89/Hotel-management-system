@@ -2,7 +2,7 @@ package pl.siuda.hotel.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import pl.siuda.hotel.dto.AdminDto;
-import pl.siuda.hotel.dto.AdminRequest;
+import pl.siuda.hotel.requests.AdminRequest;
 import pl.siuda.hotel.services.AdminService;
 
 import java.util.List;

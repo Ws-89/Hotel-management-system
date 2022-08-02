@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.siuda.hotel.dto.AdminDto;
-import pl.siuda.hotel.dto.AdminRequest;
+import pl.siuda.hotel.requests.AdminRequest;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.models.Admin;
 import pl.siuda.hotel.util.EmailValidator;

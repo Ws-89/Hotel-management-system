@@ -6,7 +6,6 @@ import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.models.Guest;
 import pl.siuda.hotel.util.EmailValidator;
 import pl.siuda.hotel.repositories.GuestRepository;
-import pl.siuda.hotel.models.AvailabilityCart;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.util.List;
@@ -45,9 +44,6 @@ public class GuestService {
 
         String encodedPassword = bCryptPasswordEncoder.encode(guest.getPassword());
         guest.setPassword(encodedPassword);
-
-        AvailabilityCart availabilityCart = new AvailabilityCart();
-        guest.setAvailabilityCart(availabilityCart);
 
         return guestRepository.save(guest);
     }

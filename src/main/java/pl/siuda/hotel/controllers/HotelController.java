@@ -3,7 +3,7 @@ package pl.siuda.hotel.controllers;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.siuda.hotel.dto.HotelDto;
-import pl.siuda.hotel.dto.HotelRequest;
+import pl.siuda.hotel.requests.HotelRequest;
 import pl.siuda.hotel.services.HotelService;
 
 import java.util.List;

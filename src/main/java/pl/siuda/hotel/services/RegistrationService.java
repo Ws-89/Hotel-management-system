@@ -1,7 +1,7 @@
 package pl.siuda.hotel.services;
 
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.dto.RegistrationRequest;
+import pl.siuda.hotel.requests.RegistrationRequest;
 import pl.siuda.hotel.models.embeddedClasses.Address;
 import pl.siuda.hotel.models.Guest;
 import pl.siuda.hotel.security.ApplicationUserRole;

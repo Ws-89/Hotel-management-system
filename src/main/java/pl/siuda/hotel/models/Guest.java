@@ -37,7 +37,6 @@ public class Guest implements UserDetails, Serializable {
     private ApplicationUserRole applicationUserRole;
     private Address address;
     private String phoneNumber;
-    private AvailabilityCart availabilityCart;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -164,13 +163,5 @@ public class Guest implements UserDetails, Serializable {
 
     public String getZipcode(){
         return this.address.getZipCode();
-    }
-
-    public AvailabilityCart getAvailabilityCart() {
-        return availabilityCart;
-    }
-
-    public void setAvailabilityCart(AvailabilityCart availabilityCart) {
-        this.availabilityCart = availabilityCart;
     }
 }

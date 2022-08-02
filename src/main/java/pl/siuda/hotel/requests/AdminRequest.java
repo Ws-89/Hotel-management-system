@@ -1,20 +1,21 @@
-package pl.siuda.hotel.dto;
+package pl.siuda.hotel.requests;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.siuda.hotel.models.Admin;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class AdminRequest {
 
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final String password;
-
-    public AdminRequest(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
 
     public void copyDtoToEntity(Admin admin){
         admin.setFirstName(this.firstName);

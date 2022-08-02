@@ -1,9 +1,9 @@
 package pl.siuda.hotel.hotelSearchAlgorithm;
 
-import pl.siuda.hotel.models.embeddedClasses.BookingDetails;
-import pl.siuda.hotel.dto.AvailabilityRequest;
+import pl.siuda.hotel.requests.AvailabilityRequest;
+import pl.siuda.hotel.models.Reservation;
 
 public interface AvailabilityCheckProcessingAlgorithm  {
 
-    boolean isOverlapping(BookingDetails availability, AvailabilityRequest availabilityRequest);
+    boolean isOverlapping(Reservation reservation, AvailabilityRequest availabilityRequest);
 }

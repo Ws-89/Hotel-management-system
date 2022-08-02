@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import pl.siuda.hotel.services.JwtUserDetailsService;
 import pl.siuda.hotel.util.JwtUtil;
 
 import javax.servlet.FilterChain;

@@ -1,7 +1,7 @@
 package pl.siuda.hotel.payment;
 
 import com.stripe.exception.StripeException;
-import pl.siuda.hotel.dto.ReservationRequest;
+import pl.siuda.hotel.requests.ReservationRequest;
 
 public interface PaymentService {
 
