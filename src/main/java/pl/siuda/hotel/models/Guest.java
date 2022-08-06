@@ -1,10 +1,8 @@
 package pl.siuda.hotel.models;
 
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.siuda.hotel.models.embeddedClasses.Address;
@@ -17,26 +15,70 @@ import java.util.*;
 
 @Entity
 @Table(name = "tbl_guest")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "graph.guestProfile", attributeNodes = {
+                @NamedAttributeNode(value = "reservations")
+        })
+})
 public class Guest implements UserDetails, Serializable {
 
     @Id
     @SequenceGenerator(name = "tbl_guest_sequence", sequenceName = "tbl_guest_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_guest_sequence")
+    @Column(name = "guest_id")
     private Long guestId;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
+    private List<Reservation> reservations = new ArrayList<Reservation>();
     private boolean locked = false;
     private boolean enabled = true;
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole applicationUserRole;
-    private Address address;
+    @Embedded
+    private Address guestAddress;
     private String phoneNumber;
+
+    public Guest(Long guestId, String firstName, String lastName, String email, String password, List<Reservation> reservations, boolean locked, boolean enabled, ApplicationUserRole applicationUserRole, Address guestAddress, String phoneNumber) {
+        this.guestId = guestId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.reservations = reservations;
+        this.locked = false;
+        this.enabled = true;
+        this.applicationUserRole = applicationUserRole;
+        this.guestAddress = guestAddress;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Guest() {
+    }
+
+    public void addReservation(Reservation reservation) {
+        if(this.reservations == null)
+            this.reservations = new ArrayList<>();
+
+        if(!reservations.add(reservation))
+            throw new IllegalArgumentException("System was not able to add reservation to guest");
+
+        reservation.setGuest(this);
+    }
+
+    public void removeReservation(Reservation reservation) {
+        if(this.reservations == null)
+            this.reservations = new ArrayList<>();
+
+        if(!reservations.remove(reservation))
+            throw new IllegalArgumentException("System was not able to remove reservation of guest");
+
+        reservation.setGuest(null);
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -102,12 +144,12 @@ public class Guest implements UserDetails, Serializable {
         this.applicationUserRole = applicationUserRole;
     }
 
-    public Address getAddress() {
-        return address;
+    public Address getGuestAddress() {
+        return guestAddress;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setGuestAddress(Address guestAddress) {
+        this.guestAddress = guestAddress;
     }
 
     @Override
@@ -146,22 +188,30 @@ public class Guest implements UserDetails, Serializable {
     }
 
     public String getStreet(){
-        return this.address.getStreet();
+        return this.guestAddress.getStreet();
     }
 
     public String getCity(){
-        return this.address.getCity();
+        return this.guestAddress.getCity();
     }
 
     public String getState(){
-        return this.address.getState();
+        return this.guestAddress.getState();
     }
 
     public String getCountry(){
-        return this.address.getCountry();
+        return this.guestAddress.getCountry();
     }
 
     public String getZipcode(){
-        return this.address.getZipCode();
+        return this.guestAddress.getZipCode();
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

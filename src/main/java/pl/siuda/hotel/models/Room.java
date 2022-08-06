@@ -1,8 +1,7 @@
 package pl.siuda.hotel.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,15 +10,18 @@ import pl.siuda.hotel.models.enums.RoomType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "tbl_room")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "graph.roomWReservationsWoGuest", attributeNodes = {
+                @NamedAttributeNode(value = "reservations")
+        })
+})
 public class Room implements Serializable {
 
     @Id
@@ -37,8 +39,45 @@ public class Room implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name ="hotel_id", referencedColumnName = "hotel_id")
     private Hotel hotel;
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservation> reservations;
+    private BigDecimal price;
+
+    public Room(Long roomId, String description, RoomType roomType, Hotel hotel, Set<Reservation> reservations, BigDecimal price) {
+        this.roomId = roomId;
+        this.description = description;
+        this.roomType = roomType;
+        this.hotel = hotel;
+        this.reservations = reservations;
+        this.price = price;
+    }
+
+    public Room() {
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
     public Long getRoomId() {
         return roomId;
@@ -63,6 +102,8 @@ public class Room implements Serializable {
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
+
+
 
     public void addReservation(Reservation reservation) {
         if(this.reservations == null){

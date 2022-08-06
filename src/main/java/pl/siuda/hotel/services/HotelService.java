@@ -1,8 +1,13 @@
 package pl.siuda.hotel.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.siuda.hotel.dto.HotelDto;
+import pl.siuda.hotel.dto.HotelDTO;
+import pl.siuda.hotel.dto.HotelWithoutRoomsDTO;
+import pl.siuda.hotel.mappers.HotelMapper;
+import pl.siuda.hotel.mappers.HotelsWithoutRoomsMapper;
 import pl.siuda.hotel.requests.HotelRequest;
 import pl.siuda.hotel.imageService.ImageService;
 import pl.siuda.hotel.exception.NotFoundException;
@@ -10,8 +15,6 @@ import pl.siuda.hotel.models.Hotel;
 import pl.siuda.hotel.repositories.HotelRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class HotelService {
@@ -25,15 +28,13 @@ public class HotelService {
         this.imageService = imageService;
     }
 
-    public List<HotelDto> getAllHotels(){
-        return StreamSupport.stream(hotelRepository.findAll().spliterator(), false)
-                .map(hotel -> HotelDto.hotelToDto(hotel))
-                .collect(Collectors.toList());
+    public Page<HotelWithoutRoomsDTO> getHotelsByCity(int page, int size){
+        return hotelRepository.findAll(PageRequest.of(page, size)).map(h -> HotelsWithoutRoomsMapper.INSTANCE.entityToDTO(h));
     }
 
-    public HotelDto getHotelById(Long hotel_id) {
+    public HotelWithoutRoomsDTO getHotelById(Long hotel_id) {
         return hotelRepository.findById(hotel_id)
-                .map(hotel -> HotelDto.hotelToDto(hotel))
+                .map(h -> HotelsWithoutRoomsMapper.INSTANCE.entityToDTO(h))
                 .orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotel_id)));
     }
 

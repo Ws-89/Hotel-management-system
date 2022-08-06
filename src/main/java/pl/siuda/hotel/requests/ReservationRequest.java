@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.siuda.hotel.models.Room;
+import pl.siuda.hotel.models.embeddedClasses.Address;
 
+import javax.persistence.Embedded;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,5 +26,8 @@ public class ReservationRequest {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String currency;
-
+    private String guestName;
+    private String guestLastName;
+    private String requestMessage;
+    private Address guestAddress;
 }

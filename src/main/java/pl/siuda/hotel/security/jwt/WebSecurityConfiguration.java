@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +21,7 @@ import static pl.siuda.hotel.security.ApplicationUserPermission.*;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -65,11 +67,12 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/v1/admin-management/admins/**").hasAuthority(ADMIN_WRITE.getPermission())
                 .antMatchers(HttpMethod.DELETE, "/api/v1/admin-management/admins/**").hasAuthority(ADMIN_WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT, "/api/v1/admin-management/admins/**").hasAuthority(ADMIN_UPDATE.getPermission())
-                .antMatchers(HttpMethod.GET, "/api/v1/user-management/users/**").hasAuthority(GUEST_READ.getPermission())
+                .antMatchers(HttpMethod.GET, "/api/v1/user-management/users/**").hasAuthority(RESERVATION_GUEST.getPermission())
                 .antMatchers(HttpMethod.POST, "/api/v1/reservations/user/bookmarks").hasAuthority(RESERVATION_GUEST.getPermission())
                 .antMatchers(HttpMethod.DELETE, "/api/v1/reservations/user/bookmarks").hasAuthority(RESERVATION_GUEST.getPermission())
                 .antMatchers(HttpMethod.PUT, "/api/v1/reservations/user/bookmarks").hasAuthority(RESERVATION_GUEST.getPermission())
                 .antMatchers(HttpMethod.GET, "/api/v1/reservations/user/bookmarks").hasAuthority(RESERVATION_GUEST.getPermission())
+                .antMatchers(HttpMethod.POST, "/api/v1/reservations/place-a-booking-logged-in").hasRole("GUEST")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

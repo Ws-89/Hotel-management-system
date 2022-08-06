@@ -1,12 +1,6 @@
 package pl.siuda.hotel.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import org.springframework.data.jpa.repository.EntityGraph;
 import pl.siuda.hotel.models.embeddedClasses.Address;
 import pl.siuda.hotel.models.embeddedClasses.Contact;
 import pl.siuda.hotel.models.enums.Grade;
@@ -19,12 +13,16 @@ import java.util.Set;
 @Entity
 @Table(name = "tbl_hotel")
 @Builder
-@NamedEntityGraph(name = "graph.availableHotels",
-        attributeNodes = {
-        @NamedAttributeNode(value = "rooms", subgraph = "subgraph.rooms")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "graph.availableHotels", attributeNodes = {
+                @NamedAttributeNode(value = "rooms", subgraph = "subgraph.rooms")
         }, subgraphs = {
-        @NamedSubgraph(name = "subgraph.room", attributeNodes = {@NamedAttributeNode(value = "reservations")})
-})
+                @NamedSubgraph(name = "subgraph.rooms",
+                        attributeNodes = {@NamedAttributeNode(value = "reservations")})
+        }),
+        @NamedEntityGraph(name = "graph.hotelsAndRooms", attributeNodes = {
+                @NamedAttributeNode(value = "rooms")
+        })})
 public class Hotel implements Serializable {
 
     @Id
@@ -43,7 +41,7 @@ public class Hotel implements Serializable {
     private Contact contact;
     @Enumerated(EnumType.ORDINAL)
     private Grade grade;
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
     private String image;
 
@@ -60,21 +58,21 @@ public class Hotel implements Serializable {
         this.image = image;
     }
 
-    public void addRoom(Room room){
-        if(rooms == null){
+    public void addRoom(Room room) {
+        if (rooms == null) {
             this.rooms = new HashSet<>();
         }
-        if(!rooms.add(room))
-           throw new IllegalArgumentException("Something went wrong. Cannot add room to this hotel");
+        if (!rooms.add(room))
+            throw new IllegalArgumentException("Something went wrong. Cannot add room to this hotel");
 
         room.setHotel(this);
     }
 
-    public void removeRoom(Room room){
-        if(rooms == null){
+    public void removeRoom(Room room) {
+        if (rooms == null) {
             this.rooms = new HashSet<>();
         }
-        if(!rooms.remove(room))
+        if (!rooms.remove(room))
             throw new IllegalArgumentException("Something went wrong. Cannot remove room from this hotel");
 
         room.setHotel(null);
