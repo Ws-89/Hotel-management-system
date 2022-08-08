@@ -1,7 +1,9 @@
 package pl.siuda.hotel.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,8 +21,19 @@ import java.util.*;
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "graph.guestProfile", attributeNodes = {
                 @NamedAttributeNode(value = "reservations")
+        }),
+        @NamedEntityGraph(name = "graph.userReservationsRooms",
+                attributeNodes = {
+                    @NamedAttributeNode(value = "reservations", subgraph = "subgraph.reservations")
+                }, subgraphs = {
+                    @NamedSubgraph(name = "subgraph.reservations", attributeNodes = {
+                        @NamedAttributeNode(value = "room")
+                })
         })
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "guestId")
 public class Guest implements UserDetails, Serializable {
 
     @Id

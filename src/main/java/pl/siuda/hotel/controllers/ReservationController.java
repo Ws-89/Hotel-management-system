@@ -47,18 +47,4 @@ public class ReservationController {
     }
 
 
-
-    @GetMapping("/get-principal")
-    public ResponseEntity<HttpResponse> getPrincipal(){
-        return ResponseEntity.ok().body(
-                HttpResponse.builder().timeStamp(now().toString())
-                        .data(Map.of("object", bookingService.getPrincipal()))
-                        .message("Current guest profile retrieved")
-                        .status(OK)
-                        .statusCode(OK.value())
-                        .build()
-        );
-    }
-
-
 }

@@ -17,5 +17,6 @@ public interface HotelsWithoutRoomsMapper {
     @Mapping(source = "contact", target = "contact")
     @Mapping(source = "grade", target = "grade")
     @Mapping(source = "image", target = "image")
+    @Mapping(source = "enabled", target = "enabled")
     HotelWithoutRoomsDTO entityToDTO(Hotel hotel);
 }

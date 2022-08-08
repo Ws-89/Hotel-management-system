@@ -44,11 +44,12 @@ public class Hotel implements Serializable {
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
     private String image;
+    private Boolean enabled;
 
     public Hotel() {
     }
 
-    public Hotel(Long hotelId, String name, Address address, Contact contact, Grade grade, Set<Room> rooms, String image) {
+    public Hotel(Long hotelId, String name, Address address, Contact contact, Grade grade, Set<Room> rooms, String image, Boolean enabled) {
         this.hotelId = hotelId;
         this.name = name;
         this.address = address;
@@ -56,6 +57,7 @@ public class Hotel implements Serializable {
         this.grade = grade;
         this.rooms = rooms;
         this.image = image;
+        this.enabled = enabled;
     }
 
     public void addRoom(Room room) {
@@ -132,6 +134,14 @@ public class Hotel implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

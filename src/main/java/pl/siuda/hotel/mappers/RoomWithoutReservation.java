@@ -15,6 +15,7 @@ public interface RoomWithoutReservation {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "roomType", target = "roomType")
     @Mapping(source = "price", target = "price")
+    @Mapping(source = "enabled", target = "enabled")
     RoomWithoutReservationsDTO entityToDTO(Room room);
 
 }

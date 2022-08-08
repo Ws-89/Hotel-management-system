@@ -16,4 +16,5 @@ public class RoomWithoutReservationsDTO {
     private String description;
     private RoomType roomType;
     private BigDecimal price;
+    private Boolean enabled;
 }

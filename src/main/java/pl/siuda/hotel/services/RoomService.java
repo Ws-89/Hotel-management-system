@@ -33,6 +33,7 @@ public class RoomService {
         room.setDescription(roomRequest.getDescription());
         room.setRoomType(roomRequest.getRoomType());
         room.setPrice(roomRequest.getPrice());
+        room.setEnabled(false);
         hotel.addRoom(room);
         roomRepository.save(room);
     }
@@ -48,6 +49,12 @@ public class RoomService {
         room.setRoomType(roomRequest.getRoomType());
         room.setDescription(roomRequest.getDescription());
         room.setPrice(roomRequest.getPrice());
+        roomRepository.save(room);
+    }
+
+    public void switchRoomActivation(Long id, Boolean state){
+        Room room = roomRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
+        room.setEnabled(state);
         roomRepository.save(room);
     }
 

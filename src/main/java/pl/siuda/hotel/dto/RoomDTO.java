@@ -18,4 +18,5 @@ public class RoomDTO {
     private RoomType roomType;
     private Set<ReservationDTO> reservations;
     private BigDecimal price;
+    private Boolean enabled;
 }

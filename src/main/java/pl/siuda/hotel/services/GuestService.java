@@ -43,9 +43,10 @@ public class GuestService {
     }
 
 
-//    public Page<GuestDTO> guestListByHotel(Long hotelId, ReservationStatus status, int page, int size){
-//        return guestRepository.getCurrentHotelGuests(hotelId, status, PageRequest.of(page, size)).map(g -> GuestMapper.INSTANCE.entityToDTO(g));
-//    }
+    public Page<GuestDTO> guestListByHotel(Long hotelId, ReservationStatus status, int page, int size){
+        return guestRepository.getCurrentHotelGuests(hotelId, status, PageRequest.of(page, size))
+                .map(g -> GuestMapper.INSTANCE.entityToDTO(g));
+    }
 
     public GuestDTO getGuestById(Long id){
         return guestRepository.findById(id).map(g -> GuestMapper.INSTANCE.entityToDTO(g))
@@ -95,7 +96,9 @@ public class GuestService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
 
-        return GuestMapper.INSTANCE.entityToDTO(guestRepository.getPrincipal(currentPrincipalName));
+        Guest guest = guestRepository.getPrincipal(currentPrincipalName).orElseThrow(() -> new NotFoundException(String.format("User not found")));
+
+        return GuestMapper.INSTANCE.entityToDTO(guest);
     }
 
     public void deleteGuest(Long id){
@@ -106,7 +109,7 @@ public class GuestService {
     private void checkAccesToGuestInformation(Long guestId) throws IllegalAccessException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-        Guest principal = guestRepository.getPrincipal(currentPrincipalName);
+        Guest principal = guestRepository.getPrincipal(currentPrincipalName).orElseThrow(() -> new NotFoundException(String.format("User not found")));
         if(principal.getGuestId() != guestId)
             throw new IllegalAccessException("You don't have permission to access this user account informations");
     }

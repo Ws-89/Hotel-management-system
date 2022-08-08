@@ -20,4 +20,5 @@ public class RoomRequest {
     private RoomType roomType;
     private Set<ReservationDTO> reservations;
     private BigDecimal price;
+
 }

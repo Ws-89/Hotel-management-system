@@ -1,15 +1,11 @@
 package pl.siuda.hotel.services;
 
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.siuda.hotel.dto.GuestDTO;
 import pl.siuda.hotel.dto.HotelDTO;
 import pl.siuda.hotel.exception.NotFoundException;
 import pl.siuda.hotel.hotelSearchAlgorithm.AvailabilityCheckProcessingAlgorithm;
-import pl.siuda.hotel.mappers.GuestMapper;
 import pl.siuda.hotel.mappers.HotelMapper;
 import pl.siuda.hotel.models.*;
 import pl.siuda.hotel.repositories.GuestRepository;
@@ -19,10 +15,11 @@ import pl.siuda.hotel.repositories.RoomRepository;
 import pl.siuda.hotel.requests.AvailabilityRequest;
 import pl.siuda.hotel.requests.ReservationRequest;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 @Service
 public class BookingService {
@@ -69,11 +66,12 @@ public class BookingService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
 
-        return guestRepository.getPrincipal(currentPrincipalName);
+        return guestRepository.getPrincipal(currentPrincipalName)
+                .orElseThrow(() -> new NotFoundException(String.format("User with email %s not found", currentPrincipalName)));
     }
 
     public AvailabilityResponse getAvailableRooms(AvailabilityRequest request){
-        List<Hotel> listOfHotelsFromAGivenCity = hotelRepository.findByAddressCity(request.getCity());
+        List<Hotel> listOfHotelsFromAGivenCity = hotelRepository.findByAddressCityAndEnabled(request.getCity(), true);
 
         List<HotelDTO> result = filterAvailableRooms(request, listOfHotelsFromAGivenCity)
                 .stream()
@@ -90,8 +88,15 @@ public class BookingService {
     }
 
     private List<Hotel> filterAvailableRooms(AvailabilityRequest request, List<Hotel> hotels) {
-        hotels.forEach(hotel -> hotel.getRooms().removeIf(room -> room.getReservations().stream()
-                .anyMatch(reservation -> availabilityCheckProcessingAlgorithm.isOverlapping(reservation, request))));
+        hotels.forEach(hotel -> hotel.getRooms()
+                .stream().filter(x -> x.getEnabled() == true));
+
+        hotels.forEach(hotel -> hotel.getRooms()
+                .removeIf(room -> room.getReservations().stream()
+                        .anyMatch(reservation -> availabilityCheckProcessingAlgorithm.isOverlapping(reservation, request))));
+
+        hotels.removeIf(hotel -> hotel.getRooms().size() == 0);
+
         return hotels;
     }
 

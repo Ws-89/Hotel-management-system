@@ -21,7 +21,7 @@ public class GuestDTO implements Serializable {
     private String email;
     private Address address;
     private String phoneNumber;
-    private List<Reservation> reservations;
+    private List<ReservationDTO> reservations;
 
 
 

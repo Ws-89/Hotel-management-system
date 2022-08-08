@@ -13,7 +13,9 @@ import static pl.siuda.hotel.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
     GUEST(Sets.newHashSet(
-            RESERVATION_GUEST
+            RESERVATION_GUEST,
+            GUEST_PROFILE_READ,
+            GUEST_PROFILE_WRITE
     )),
 
     EMPLOYEE(Sets.newHashSet(

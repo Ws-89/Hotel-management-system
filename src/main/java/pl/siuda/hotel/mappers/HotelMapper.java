@@ -18,5 +18,6 @@ public interface HotelMapper {
     @Mapping(source = "grade", target = "grade")
     @Mapping(source = "image", target = "image")
     @Mapping(source = "rooms", target = "rooms")
+    @Mapping(source = "enabled", target = "enabled")
     HotelDTO entityToDTO(Hotel hotel);
 }

@@ -1,11 +1,10 @@
 package pl.siuda.hotel.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import pl.siuda.hotel.models.enums.RoomType;
 
 import javax.persistence.*;
@@ -22,6 +21,9 @@ import java.util.Set;
                 @NamedAttributeNode(value = "reservations")
         })
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "roomId")
 public class Room implements Serializable {
 
     @Id
@@ -34,22 +36,26 @@ public class Room implements Serializable {
     @Column(name = "room_id")
     private Long roomId;
     private String description;
+    @Enumerated
     private RoomType roomType;
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name ="hotel_id", referencedColumnName = "hotel_id")
     private Hotel hotel;
+    @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservation> reservations;
     private BigDecimal price;
+    private Boolean enabled;
 
-    public Room(Long roomId, String description, RoomType roomType, Hotel hotel, Set<Reservation> reservations, BigDecimal price) {
+    public Room(Long roomId, String description, RoomType roomType, Hotel hotel, Set<Reservation> reservations, BigDecimal price, Boolean enabled) {
         this.roomId = roomId;
         this.description = description;
         this.roomType = roomType;
         this.hotel = hotel;
         this.reservations = reservations;
         this.price = price;
+        this.enabled = enabled;
     }
 
     public Room() {
@@ -103,7 +109,13 @@ public class Room implements Serializable {
         this.roomType = roomType;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public void addReservation(Reservation reservation) {
         if(this.reservations == null){

@@ -85,4 +85,16 @@ public class RoomController {
                         .build()
         );
     }
+
+    @GetMapping("/switch-room-state/{id}")
+    public ResponseEntity<HttpResponse> switchRoomActivation(@PathVariable("id")Long id, @RequestParam Boolean state){
+        this.roomService.switchRoomActivation(id, state);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder().timeStamp(now().toString())
+                        .message("switched room activation")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
 }

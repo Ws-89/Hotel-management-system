@@ -1,6 +1,8 @@
 package pl.siuda.hotel.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Builder;
 import pl.siuda.hotel.models.embeddedClasses.Address;
 
@@ -14,8 +16,14 @@ import java.time.LocalDateTime;
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "graph.reservationWithGuest", attributeNodes = {
                 @NamedAttributeNode(value = "guest")
+        }),
+        @NamedEntityGraph(name = "graph.reservationWithRoom", attributeNodes = {
+                @NamedAttributeNode(value = "room")
         })
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "reservationId")
 public class Reservation {
 
     @Id
@@ -27,7 +35,7 @@ public class Reservation {
     )
     @Column(name = "reservation_id")
     private Long reservationId;
-    @JsonIgnore
+
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", referencedColumnName = "room_id")
     private Room room;

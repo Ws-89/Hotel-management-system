@@ -16,5 +16,6 @@ public interface RoomMapper {
     @Mapping(source = "roomType", target = "roomType")
     @Mapping(source = "reservations", target = "reservations")
     @Mapping(source = "price", target = "price")
+    @Mapping(source = "enabled", target = "enabled")
     RoomDTO entityToDTO(Room room);
 }

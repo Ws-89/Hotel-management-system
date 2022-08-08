@@ -62,6 +62,21 @@ public class ReservationManagementController {
         );
     }
 
+    @GetMapping("/current-user-reservations")
+    public ResponseEntity<HttpResponse> findReservationsOfCurrentUser(
+                                                         @RequestParam Optional<ReservationStatus> status,
+                                                         @RequestParam Optional<Integer> page,
+                                                         @RequestParam Optional<Integer> size){
+        return ResponseEntity.ok().body(
+                HttpResponse.builder().timeStamp(now().toString())
+                        .data(Map.of("page", reservationService.findAllReservationsOfCurrentUser(status.orElse(ReservationStatus.Initialized),  page.orElse(0), size.orElse(10))))
+                        .message(String.format("Current user reservation list retrieved"))
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
     @GetMapping("/by-hotel-id/{hotelId}")
     public ResponseEntity<HttpResponse> findAllByRoom_Hotel_HotelId(@PathVariable("hotelId") Long hotelId,
                                                                     @RequestParam Optional<ReservationStatus> status,
@@ -69,7 +84,7 @@ public class ReservationManagementController {
                                                                     @RequestParam Optional<Integer> size){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
-                        .data(Map.of("page", reservationService.findAllByRoom_Hotel_HotelId(status.orElse(ReservationStatus.Active), hotelId, page.orElse(0), size.orElse(10))))
+                        .data(Map.of("page", reservationService.findAllByRoom_Hotel_HotelId(status.orElse(ReservationStatus.Initialized), hotelId, page.orElse(0), size.orElse(10))))
                         .message(String.format("Reservations of hotel with id %d retrieved", hotelId))
                         .status(OK)
                         .statusCode(OK.value())
@@ -104,4 +119,21 @@ public class ReservationManagementController {
                         .build()
         );
     }
+
+    @GetMapping("/search-by-hotel-id/{hotelId}")
+    public ResponseEntity<HttpResponse> findAllByNameStatusAndHotelId(@PathVariable("hotelId") Long hotelId,
+                                                                    @RequestParam Optional<ReservationStatus> status,
+                                                                    @RequestParam Optional<String> lastName,
+                                                                    @RequestParam Optional<Integer> page,
+                                                                    @RequestParam Optional<Integer> size){
+        return ResponseEntity.ok().body(
+                HttpResponse.builder().timeStamp(now().toString())
+                        .data(Map.of("page", reservationService.findAllByReservationStatusAndHotelIdAndGuestLastName(status.orElse(ReservationStatus.Initialized), lastName.orElse(""), hotelId, page.orElse(0), size.orElse(10))))
+                        .message(String.format("Reservations of hotel with id %d retrieved", hotelId))
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
 }

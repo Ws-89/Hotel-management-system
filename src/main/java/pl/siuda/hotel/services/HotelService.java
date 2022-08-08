@@ -4,9 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.siuda.hotel.dto.HotelDTO;
 import pl.siuda.hotel.dto.HotelWithoutRoomsDTO;
-import pl.siuda.hotel.mappers.HotelMapper;
 import pl.siuda.hotel.mappers.HotelsWithoutRoomsMapper;
 import pl.siuda.hotel.requests.HotelRequest;
 import pl.siuda.hotel.imageService.ImageService;
@@ -48,6 +46,7 @@ public class HotelService {
                         .name(request.getName())
                         .address(request.getAddress())
                         .contact(request.getContact())
+                        .enabled(false)
                         .grade(request.getGrade()).build()
         );
     }
@@ -67,7 +66,10 @@ public class HotelService {
         hotelRepository.save(hotel);
     }
 
-    public void updateHotel(Hotel hotel){ hotelRepository.save(hotel);
+    public void switchHotelActivation(Long hotelId, boolean status){
+        Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotelId)));
+        hotel.setEnabled(status);
+        hotelRepository.save(hotel);
     }
 
     public void deleteHotel(Long id){

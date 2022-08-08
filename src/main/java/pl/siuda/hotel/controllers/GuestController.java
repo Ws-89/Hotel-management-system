@@ -97,18 +97,18 @@ public class GuestController {
         );
     }
 
-//    @GetMapping("/by-hotel-id/{hotelId}")
-//    public ResponseEntity<HttpResponse> findAllByRoom_Hotel_HotelId(@PathVariable("hotelId") Long hotelId,
-//                                                                    @RequestParam Optional<ReservationStatus> status,
-//                                                                    @RequestParam Optional<Integer> page,
-//                                                                    @RequestParam Optional<Integer> size){
-//        return ResponseEntity.ok().body(
-//                HttpResponse.builder().timeStamp(now().toString())
-//                        .data(Map.of("page", guestService.guestListByHotel(hotelId, status.orElse(ReservationStatus.Initialized),  page.orElse(0), size.orElse(10))))
-//                        .message(String.format("Guests of hotel with id %d retrieved", hotelId))
-//                        .status(OK)
-//                        .statusCode(OK.value())
-//                        .build()
-//        );
-//    }
+    @GetMapping("/by-hotel-id/{hotelId}")
+    public ResponseEntity<HttpResponse> findAllByRoom_Hotel_HotelId(@PathVariable("hotelId") Long hotelId,
+                                                                    @RequestParam Optional<ReservationStatus> status,
+                                                                    @RequestParam Optional<Integer> page,
+                                                                    @RequestParam Optional<Integer> size){
+        return ResponseEntity.ok().body(
+                HttpResponse.builder().timeStamp(now().toString())
+                        .data(Map.of("page", guestService.guestListByHotel(hotelId, status.orElse(ReservationStatus.Initialized),  page.orElse(0), size.orElse(10))))
+                        .message(String.format("Guests of hotel with id %d retrieved", hotelId))
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
 }

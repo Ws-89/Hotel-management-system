@@ -19,7 +19,10 @@ public enum ApplicationUserPermission {
 
     GUEST_WRITE("guest:write"),
     GUEST_READ("guest:read"),
-    GUEST_UPDATE("guest:update");
+    GUEST_UPDATE("guest:update"),
+
+    GUEST_PROFILE_READ("guest:profile_read"),
+    GUEST_PROFILE_WRITE("guest:profile_write");
 
     private final String permission;
 

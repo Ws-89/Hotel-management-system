@@ -96,6 +96,16 @@ public class HotelController {
                         .build()
         );
     }
-
+    @GetMapping("/switch-hotel-state/{id}")
+    public ResponseEntity<HttpResponse> updateHotel(@PathVariable("id")Long id, @RequestParam Boolean state){
+        hotelService.switchHotelActivation(id, state);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder().timeStamp(now().toString())
+                        .message("hotel updated")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
 
 }

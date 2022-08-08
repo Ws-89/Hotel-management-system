@@ -19,8 +19,9 @@ public interface HotelRepository extends PagingAndSortingRepository<Hotel, Long>
 
 
     @EntityGraph(value = "graph.availableHotels", type = FETCH)
-    List<Hotel> findByAddressCity(String city);
+    List<Hotel> findByAddressCityAndEnabled(String city, boolean enabled);
 
+    @EntityGraph(value = "graph.availableHotels", type = FETCH)
     Optional<Hotel> findById(Long id);
 
     Optional<Hotel> findByName(String name);

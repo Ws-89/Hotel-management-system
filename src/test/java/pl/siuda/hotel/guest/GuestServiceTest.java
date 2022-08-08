@@ -6,6 +6,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.siuda.hotel.dto.GuestDTO;
 import pl.siuda.hotel.models.Guest;
@@ -15,6 +18,10 @@ import pl.siuda.hotel.repositories.GuestRepository;
 import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 import pl.siuda.hotel.services.GuestService;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,27 +53,27 @@ class GuestServiceTest {
 
     @Test
     void guestList() {
-//        // given
-//        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
-//        List<Guest> guestList = Arrays.asList(
-//                Guest.builder().firstName("John").lastName("Doe").email("johndoe@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
-//                Guest.builder().firstName("Kevin").lastName("Smith").email("kevinsmith@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
-//                Guest.builder().firstName("Anna").lastName("Adams").email("annaadams@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
-//                Guest.builder().firstName("Katherine").lastName("Brown").email("katherinebrown@gmail.com").password("pass123").address(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build());
-//        // when
-//        when(guestRepository.findAll()).thenReturn(guestList);
-//        // then
-//        List<Guest> guestListToAssert = guestService.guestList();
-//        assertThat(guestListToAssert.size()).isEqualTo(4);
+        // given
+        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
+        Page<Guest> guestList = new PageImpl<>(Arrays.asList(
+                Guest.builder().firstName("John").lastName("Doe").email("johndoe@gmail.com").password("pass123").guestAddress(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
+                Guest.builder().firstName("Kevin").lastName("Smith").email("kevinsmith@gmail.com").password("pass123").guestAddress(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
+                Guest.builder().firstName("Anna").lastName("Adams").email("annaadams@gmail.com").password("pass123").guestAddress(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build(),
+                Guest.builder().firstName("Katherine").lastName("Brown").email("katherinebrown@gmail.com").password("pass123").guestAddress(address).phoneNumber("123456789").applicationUserRole(ApplicationUserRole.GUEST).build()));
+        // when
+        when(guestRepository.findAll(PageRequest.of(0, 10))).thenReturn(guestList);
+        // then
+        Page<GuestDTO> guestListToAssert = guestService.guestList(0 , 10);
+        assertThat(guestListToAssert.getTotalElements()).isEqualTo(4);
     }
 
     @Test
     void guestListIsEmpty() {
-//        // when
-//        when(guestRepository.findAll()).thenReturn(Collections.emptyList());
-//        // then
-//        List<Guest> guestListToAssert = guestService.guestList();
-//        assertThat(guestListToAssert.size()).isEqualTo(0);
+        // when
+        when(guestRepository.findAll(PageRequest.of(0, 10))).thenReturn(new PageImpl<>(Collections.emptyList()));
+        // then
+        Page<GuestDTO> guestListToAssert = guestService.guestList(0, 10);
+        assertThat(guestListToAssert.getTotalElements()).isEqualTo(0);
     }
 
 
@@ -83,10 +90,8 @@ class GuestServiceTest {
         assertThat(guest.getFirstName()).isEqualTo(John.getFirstName());
         assertThat(guest.getLastName()).isEqualTo(John.getLastName());
         assertThat(guest.getEmail()).isEqualTo(John.getEmail());
-//        assertThat(guest.getPassword()).isEqualTo(John.getPassword());
         assertThat(guest.getAddress()).isEqualTo(John.getGuestAddress());
         assertThat(guest.getPhoneNumber()).isEqualTo(John.getPhoneNumber());
-//        assertThat(guest.getApplicationUserRole()).isEqualTo(John.getApplicationUserRole());
     }
 
     @Test
