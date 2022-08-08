@@ -1,58 +1,34 @@
-package pl.siuda.hotel.payment;
-
-public class CheckoutPayment {
-    private String name;
-    private String currency;
-    private String successUrl;
-    private String cancelUrl;
-    private long amount;
-    private long quantity;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getSuccessUrl() {
-        return successUrl;
-    }
-
-    public void setSuccessUrl(String successUrl) {
-        this.successUrl = successUrl;
-    }
-
-    public String getCancelUrl() {
-        return cancelUrl;
-    }
-
-    public void setCancelUrl(String cancelUrl) {
-        this.cancelUrl = cancelUrl;
-    }
-
-    public long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(long amount) {
-        this.amount = amount;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-}
+//package pl.siuda.hotel.payment;
+//
+//import org.springframework.data.annotation.Id;
+//
+//import pl.siuda.hotel.models.ReservationArrangement;
+//
+//public class CheckoutPayment {
+//
+//
+//    @Id
+//    private Long paymentId;
+//    private String currency;
+//    private Long amount;
+//
+//    private ReservationArrangement reservationArrangement;
+//
+//    public String getCurrency() {
+//        return currency;
+//    }
+//
+//    public void setCurrency(String currency) {
+//        this.currency = currency;
+//    }
+//
+//    public long getAmount() {
+//        return amount;
+//    }
+//
+//    public void setAmount(Long amount) {
+//        this.amount = amount;
+//    }
+//
+//
+//}

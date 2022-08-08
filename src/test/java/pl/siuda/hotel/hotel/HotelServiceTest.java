@@ -8,15 +8,21 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.siuda.hotel.embeddedClasses.Address;
-import pl.siuda.hotel.embeddedClasses.Contact;
-import pl.siuda.hotel.enums.Grade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import pl.siuda.hotel.dto.HotelWithoutRoomsDTO;
+import pl.siuda.hotel.requests.HotelRequest;
+import pl.siuda.hotel.models.Hotel;
+import pl.siuda.hotel.models.embeddedClasses.Address;
+import pl.siuda.hotel.models.embeddedClasses.Contact;
+import pl.siuda.hotel.models.enums.Grade;
 import pl.siuda.hotel.exception.NotFoundException;
-import pl.siuda.hotel.room.RoomRepository;
+import pl.siuda.hotel.repositories.HotelRepository;
+import pl.siuda.hotel.services.HotelService;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -33,15 +39,10 @@ class HotelServiceTest {
     @Mock
     HotelRepository hotelRepository;
 
-    @Mock
-    RoomRepository roomRepository;
-
-
-
     @Test
     void injectedComponentsAreNotNull(){
         assertThat(hotelService).isNotNull();
-        assertThat(roomRepository).isNotNull();
+
 
         assertThat(hotelRepository).isNotNull();
     }
@@ -49,43 +50,44 @@ class HotelServiceTest {
     @Test
     void getAllHotels() {
         // given
-        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        List<Hotel> hotelList = Arrays.asList(new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR),
-                new Hotel(2L, "Pokoje na wsi", address, contact, Grade.TWOSTARS),
-                new Hotel(3L, "Pokoje nad morzem", address, contact, Grade.THREESTARS),
-                new Hotel(4L, "Hotel", address, contact, Grade.FOURSTARS),
-                new Hotel(5L, "Hotel w górach", address, contact, Grade.FIVESTARS));
+        Page<Hotel> hotelList = new PageImpl<>(Arrays.asList(
+                Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build(),
+                Hotel.builder().hotelId(2L).name("Pokoje na wsi").address(address).contact(contact).grade(Grade.TWOSTARS).build(),
+                Hotel.builder().hotelId(3L).name("Pokoje nad morzem").address(address).contact(contact).grade(Grade.THREESTARS).build(),
+                Hotel.builder().hotelId(4L).name("Hotel").address(address).contact(contact).grade(Grade.FOURSTARS).build(),
+                Hotel.builder().hotelId(5L).name("Hotel w górach").address(address).contact(contact).grade(Grade.FIVESTARS).build()));
         // when
-        when(hotelRepository.findAll()).thenReturn(hotelList);
-        List<HotelDto> hotels = hotelService.getAllHotels();
+        when(hotelRepository.findAll(PageRequest.of(0, 10))).thenReturn(hotelList);
+        Page<HotelWithoutRoomsDTO> hotels = hotelService.getHotelsByCity(0 ,10);
         // then
-        assertThat(hotels.size()).isEqualTo(5);
+        assertThat(hotels.getTotalElements()).isEqualTo(5);
     }
 
     @Test
     void getAllHotelsReturnsEmptyList() {
         // when
-        when(hotelRepository.findAll()).thenReturn(Collections.emptyList());
-        List<HotelDto> hotels = hotelService.getAllHotels();
+        when(hotelRepository.findAll(PageRequest.of(0, 10))).thenReturn(new PageImpl<>(Collections.emptyList()));
+        Page<HotelWithoutRoomsDTO> hotels = hotelService.getHotelsByCity(0 ,10);
         // then
-        assertThat(hotels.size()).isEqualTo(0);
+        assertThat(hotels.getTotalElements()).isEqualTo(0);
     }
 
     @Test
     void getHotelById() {
         // given
-        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build();
         // when
         when(hotelRepository.findById(1L)).thenReturn(java.util.Optional.of(pokojeWMiescie));
-        HotelDto hotel = hotelService.getHotelById(1L);
+        HotelWithoutRoomsDTO hotel = hotelService.getHotelById(1L);
         // then
-        assertThat(hotel.getHotel_id()).isEqualTo(pokojeWMiescie.getHotel_id());
+        assertThat(hotel.getHotelId()).isEqualTo(pokojeWMiescie.getHotelId());
         assertThat(hotel.getName()).isEqualTo(pokojeWMiescie.getName());
-//        assertThat(hotel.getAddress()).isEqualTo(pokojeWMiescie.getAddress());
-//        assertThat(hotel.getContact()).isEqualTo(pokojeWMiescie.getContact());
+        assertThat(hotel.getAddress()).isEqualTo(pokojeWMiescie.getAddress());
+        assertThat(hotel.getContact()).isEqualTo(pokojeWMiescie.getContact());
         assertThat(hotel.getGrade()).isEqualTo(pokojeWMiescie.getGrade());
     }
 
@@ -101,8 +103,9 @@ class HotelServiceTest {
     @EnumSource(Grade.class)
     void createHotel(Grade grade) {
         // given
-        HotelRequest hotelRequest = new HotelRequest("Pokoje w miescie", "Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie",
-                "Polska", "85-021", "123456789", "hotel@gmail.com", grade );
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
+        Contact contact = new Contact("123456789", "hotel@gmail.com");
+        HotelRequest hotelRequest = HotelRequest.builder().name("Pokoje w miescie").grade(Grade.FIVESTARS).contact(contact).address(address).build();
         // when
         when(hotelRepository.findByName("Pokoje w miescie")).thenReturn(Optional.empty());
         hotelService.createHotel(hotelRequest);
@@ -113,24 +116,19 @@ class HotelServiceTest {
         Hotel hotelArgumentCaptorValue = hotelArgumentCaptor.getValue();
 
         assertThat(hotelArgumentCaptorValue.getName()).isEqualTo(hotelRequest.getName());
-        assertThat(hotelArgumentCaptorValue.getStreet()).isEqualTo(hotelRequest.getStreet());
-        assertThat(hotelArgumentCaptorValue.getCity()).isEqualTo(hotelRequest.getCity());
-        assertThat(hotelArgumentCaptorValue.getState()).isEqualTo(hotelRequest.getState());
-        assertThat(hotelArgumentCaptorValue.getCountry()).isEqualTo(hotelRequest.getCountry());
-        assertThat(hotelArgumentCaptorValue.getZipcode()).isEqualTo(hotelRequest.getZipcode());
-        assertThat(hotelArgumentCaptorValue.getPhoneNumber()).isEqualTo(hotelRequest.getPhoneNumber());
-        assertThat(hotelArgumentCaptorValue.getEmail()).isEqualTo(hotelRequest.getEmail());
+        assertThat(hotelArgumentCaptorValue.getAddress()).isEqualTo(hotelRequest.getAddress());
+        assertThat(hotelArgumentCaptorValue.getContact()).isEqualTo(hotelRequest.getContact());
         assertThat(hotelArgumentCaptorValue.getGrade()).isEqualTo(hotelRequest.getGrade());
     }
 
     @Test
     void createHotelThrowsHotelAlreadyExists(){
-        HotelRequest hotelRequest = new HotelRequest("Pokoje w miescie", "Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie",
-                "Polska", "85-021", "123456789", "hotel@gmail.com", Grade.TWOSTARS);
-
-        Address address = new Address("Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        HotelRequest hotelRequest = HotelRequest.builder().name("Pokoje w miescie").grade(Grade.FIVESTARS).contact(contact).address(address).build();
+
+
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build();
 
         when(hotelRepository.findByName("Pokoje w miescie")).thenReturn(Optional.of(pokojeWMiescie));
 
@@ -140,12 +138,13 @@ class HotelServiceTest {
     @Test
     void updateHotel() {
         // given
-        HotelRequest hotelRequest = new HotelRequest("Pokoje w miescie", "Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie",
-                "Polska", "85-021", "123456789", "hotel@gmail.com", Grade.TWOSTARS);
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
+        Contact contact = new Contact("123456789", "hotel@gmail.com");
+        HotelRequest hotelRequest = HotelRequest.builder().name("Pokoje w miescie").grade(Grade.FIVESTARS).contact(contact).address(address).build();
 
-        Address address = new Address("Wilcza", "Warszawa", "Mazowieckie", "Polska", "85-021");
-        Contact contact = new Contact("987654321", "pokojenastrychu@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        Address UpdateAddress = new Address("Wilcza", "Warszawa", "Mazowieckie", "Polska", "85-021");
+        Contact UpdateContact = new Contact("987654321", "pokojenastrychu@gmail.com");
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(UpdateAddress).contact(UpdateContact).grade(Grade.ONESTAR).build();
         // when
         when(hotelRepository.findById(1L)).thenReturn(Optional.of(pokojeWMiescie));
         hotelService.updateHotel(1L, hotelRequest);
@@ -154,22 +153,19 @@ class HotelServiceTest {
         verify(hotelRepository).save(argumentCaptor.capture());
 
         Hotel hotelArgumentCaptor = argumentCaptor.getValue();
-        assertThat(hotelArgumentCaptor.getHotel_id()).isEqualTo(pokojeWMiescie.getHotel_id());
+        assertThat(hotelArgumentCaptor.getHotelId()).isEqualTo(pokojeWMiescie.getHotelId());
         assertThat(hotelArgumentCaptor.getName()).isEqualTo(hotelRequest.getName());
-        assertThat(hotelArgumentCaptor.getStreet()).isEqualTo(hotelRequest.getStreet());
-        assertThat(hotelArgumentCaptor.getCity()).isEqualTo(hotelRequest.getCity());
-        assertThat(hotelArgumentCaptor.getState()).isEqualTo(hotelRequest.getState());
-        assertThat(hotelArgumentCaptor.getCountry()).isEqualTo(hotelRequest.getCountry());
-        assertThat(hotelArgumentCaptor.getZipcode()).isEqualTo(hotelRequest.getZipcode());
-        assertThat(hotelArgumentCaptor.getPhoneNumber()).isEqualTo(hotelRequest.getPhoneNumber());
-        assertThat(hotelArgumentCaptor.getEmail()).isEqualTo(hotelRequest.getEmail());
+        assertThat(hotelArgumentCaptor.getContact()).isEqualTo(hotelRequest.getContact());
+        assertThat(hotelArgumentCaptor.getAddress()).isEqualTo(hotelRequest.getAddress());
         assertThat(hotelArgumentCaptor.getGrade()).isEqualTo(hotelRequest.getGrade());
     }
 
     @Test
     void updateHotelReturnsNotFound(){
-        HotelRequest hotelRequest = new HotelRequest("Pokoje w miescie", "Gdańska", "Bydgoszcz", "Kujawsko-Pomorskie",
-                "Polska", "85-021", "123456789", "hotel@gmail.com", Grade.TWOSTARS);
+        Address address = Address.builder().street("Gdańska").city("Bydgoszcz").state("Kujawsko-Pomorskie").country("Polska").zipCode("85-021").build();
+        Contact contact = new Contact("123456789", "hotel@gmail.com");
+        HotelRequest hotelRequest = HotelRequest.builder().name("Pokoje w miescie").grade(Grade.FIVESTARS).contact(contact).address(address).build();
+
         when(hotelRepository.findById(1L)).thenThrow(NotFoundException.class);
 
         assertThrows(NotFoundException.class, ()-> hotelService.updateHotel(1L, hotelRequest));
@@ -180,7 +176,7 @@ class HotelServiceTest {
         // given
         Address address = new Address("Kujawska", "Bydgoszcz", "Kujawsko-Pomorskie", "Polska", "85-021");
         Contact contact = new Contact("123456789", "hotel@gmail.com");
-        Hotel pokojeWMiescie = new Hotel(1L, "Pokoje w miescie", address, contact, Grade.ONESTAR);
+        Hotel pokojeWMiescie = Hotel.builder().hotelId(1L).name("Pokoje w miescie").address(address).contact(contact).grade(Grade.ONESTAR).build();
         // when
         when(hotelRepository.findById(1L)).thenReturn(Optional.of(pokojeWMiescie));
         hotelService.deleteHotel(1L);
@@ -189,15 +185,10 @@ class HotelServiceTest {
         verify(hotelRepository).delete(argumentCaptor.capture());
 
         Hotel hotelArgumentCaptor = argumentCaptor.getValue();
-        assertThat(hotelArgumentCaptor.getHotel_id()).isEqualTo(pokojeWMiescie.getHotel_id());
+        assertThat(hotelArgumentCaptor.getHotelId()).isEqualTo(pokojeWMiescie.getHotelId());
         assertThat(hotelArgumentCaptor.getName()).isEqualTo(pokojeWMiescie.getName());
-        assertThat(hotelArgumentCaptor.getStreet()).isEqualTo(pokojeWMiescie.getStreet());
-        assertThat(hotelArgumentCaptor.getCity()).isEqualTo(pokojeWMiescie.getCity());
-        assertThat(hotelArgumentCaptor.getState()).isEqualTo(pokojeWMiescie.getState());
-        assertThat(hotelArgumentCaptor.getCountry()).isEqualTo(pokojeWMiescie.getCountry());
-        assertThat(hotelArgumentCaptor.getZipcode()).isEqualTo(pokojeWMiescie.getZipcode());
-        assertThat(hotelArgumentCaptor.getPhoneNumber()).isEqualTo(pokojeWMiescie.getPhoneNumber());
-        assertThat(hotelArgumentCaptor.getEmail()).isEqualTo(pokojeWMiescie.getEmail());
+        assertThat(hotelArgumentCaptor.getAddress()).isEqualTo(pokojeWMiescie.getAddress());
+        assertThat(hotelArgumentCaptor.getContact()).isEqualTo(pokojeWMiescie.getContact());
         assertThat(hotelArgumentCaptor.getGrade()).isEqualTo(pokojeWMiescie.getGrade());
     }
 

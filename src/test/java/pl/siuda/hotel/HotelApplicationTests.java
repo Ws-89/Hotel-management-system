@@ -1,31 +1,15 @@
 package pl.siuda.hotel;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.siuda.hotel.admin.AdminRepository;
-import pl.siuda.hotel.guest.GuestService;
-import pl.siuda.hotel.hotel.HotelRepository;
-import pl.siuda.hotel.reservation.AvailabilityRequest;
-import pl.siuda.hotel.reservation.ReservationService;
-import pl.siuda.hotel.room.RoomRepository;
-import pl.siuda.hotel.embeddedClasses.Address;
-import pl.siuda.hotel.embeddedClasses.Contact;
-import pl.siuda.hotel.enums.Grade;
-import pl.siuda.hotel.exception.NotFoundException;
-import pl.siuda.hotel.guest.Guest;
-import pl.siuda.hotel.guest.GuestRepository;
-import pl.siuda.hotel.hotel.Hotel;
-import pl.siuda.hotel.hotel.HotelService;
-import pl.siuda.hotel.reservation.Reservation;
-import pl.siuda.hotel.reservation.ReservationRepository;
-import pl.siuda.hotel.room.Room;
-import pl.siuda.hotel.enums.RoomType;
-import pl.siuda.hotel.room.RoomRequest;
-import pl.siuda.hotel.room.RoomService;
-
-import java.time.LocalDateTime;
+import pl.siuda.hotel.repositories.AdminRepository;
+import pl.siuda.hotel.services.GuestService;
+import pl.siuda.hotel.repositories.HotelRepository;
+import pl.siuda.hotel.services.ReservationService;
+import pl.siuda.hotel.repositories.GuestRepository;
+import pl.siuda.hotel.services.HotelService;
+//import pl.siuda.hotel.repositories.ReservationRepository;
 
 
 @SpringBootTest
@@ -38,14 +22,8 @@ class HotelApplicationTests {
 	@Autowired
     HotelService hotelService;
 
-	@Autowired
-	RoomRepository roomRepository;
-
-	@Autowired
-	RoomService roomService;
-
-	@Autowired
-	ReservationRepository reservationRepository;
+//	@Autowired
+//	ReservationRepository reservationRepository;
 
 	@Autowired
     GuestRepository guestRepository;

@@ -1,1 +1,0 @@
-ALTER TABLE reservation RENAME COLUMN email TO EMAIL;

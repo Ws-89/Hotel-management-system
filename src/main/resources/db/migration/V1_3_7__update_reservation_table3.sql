@@ -1,1 +1,0 @@
-ALTER TABLE reservation ADD ROOM_ID BIGINT;

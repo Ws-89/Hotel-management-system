@@ -2,11 +2,10 @@ package pl.siuda.hotel.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.siuda.hotel.admin.Admin;
-import pl.siuda.hotel.guest.Guest;
+import pl.siuda.hotel.models.Admin;
+import pl.siuda.hotel.models.Guest;
 
 import java.util.Collection;
-import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -31,7 +30,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public Long getId() {
-        return admin != null ? admin.getAdmin_id() : guest.getGuest_id();
+        return admin != null ? admin.getAdminId() : guest.getGuestId();
     }
 
     @Override
