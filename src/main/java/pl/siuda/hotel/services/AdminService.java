@@ -54,6 +54,8 @@ public class AdminService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(encodedPassword)
+                .enabled(true)
+                .locked(false)
                 .applicationUserRole(ApplicationUserRole.ADMIN).build();
 
         adminRepository.save(admin);

@@ -17,15 +17,14 @@ import pl.siuda.hotel.requests.ReservationRequest;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.Collections.emptyList;
 
 @Service
 public class BookingService {
 
     private final HotelRepository hotelRepository;
-    private final AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm;
+    private AvailabilityCheckProcessingAlgorithm availabilityCheckProcessingAlgorithm;
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
     private final GuestRepository guestRepository;
@@ -54,20 +53,16 @@ public class BookingService {
         reservation.setReservationStatus(ReservationStatus.Initialized);
         reservation.setPrice(room.getPrice());
 
-        Guest guest = getPrincipal();
-        if(guest != null){
-            guest.addReservation(reservation);
-        }
+        getPrincipal().ifPresent(theGuest -> theGuest.addReservation(reservation));
 
         room.addReservation(reservation);
         reservationRepository.save(reservation);
     }
-    public Guest getPrincipal(){
+    public Optional<Guest> getPrincipal(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
 
-        return guestRepository.getPrincipal(currentPrincipalName)
-                .orElseThrow(() -> new NotFoundException(String.format("User with email %s not found", currentPrincipalName)));
+        return guestRepository.getPrincipal(currentPrincipalName);
     }
 
     public AvailabilityResponse getAvailableRooms(AvailabilityRequest request){
@@ -89,14 +84,12 @@ public class BookingService {
 
     private List<Hotel> filterAvailableRooms(AvailabilityRequest request, List<Hotel> hotels) {
         hotels.forEach(hotel -> hotel.getRooms()
-                .stream().filter(x -> x.getEnabled() == true));
-
-        hotels.forEach(hotel -> hotel.getRooms()
-                .removeIf(room -> room.getReservations().stream()
-                        .anyMatch(reservation -> availabilityCheckProcessingAlgorithm.isOverlapping(reservation, request))));
+                .stream()
+                .filter(room -> room.getEnabled() == true &&
+                        !room.getReservations().stream()
+                                .anyMatch(reservation -> availabilityCheckProcessingAlgorithm.isOverlapping(reservation, request))));
 
         hotels.removeIf(hotel -> hotel.getRooms().size() == 0);
-
         return hotels;
     }
 
