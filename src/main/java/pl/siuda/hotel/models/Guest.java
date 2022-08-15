@@ -37,10 +37,9 @@ import java.util.*;
 public class Guest implements UserDetails, Serializable {
 
     @Id
-    @SequenceGenerator(name = "tbl_guest_sequence", sequenceName = "tbl_guest_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_guest_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "guest_id")
-    private Long guestId;
+    private UUID guestId;
     private String firstName;
     private String lastName;
     private String email;
@@ -56,7 +55,7 @@ public class Guest implements UserDetails, Serializable {
     private Address guestAddress;
     private String phoneNumber;
 
-    public Guest(Long guestId, String firstName, String lastName, String email, String password, List<Reservation> reservations, boolean locked, boolean enabled, ApplicationUserRole applicationUserRole, Address guestAddress, String phoneNumber) {
+    public Guest(UUID guestId, String firstName, String lastName, String email, String password, List<Reservation> reservations, boolean locked, boolean enabled, ApplicationUserRole applicationUserRole, Address guestAddress, String phoneNumber) {
         this.guestId = guestId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -101,11 +100,11 @@ public class Guest implements UserDetails, Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getGuestId() {
+    public UUID getGuestId() {
         return guestId;
     }
 
-    public void setGuestId(Long guestId) {
+    public void setGuestId(UUID guestId) {
         this.guestId = guestId;
     }
 

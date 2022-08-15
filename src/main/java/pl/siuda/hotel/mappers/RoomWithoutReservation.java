@@ -12,6 +12,7 @@ public interface RoomWithoutReservation {
     RoomWithoutReservation INSTANCE = Mappers.getMapper(RoomWithoutReservation.class);
 
     @Mapping(source = "roomId", target = "roomId")
+    @Mapping(source = "roomNumber", target = "roomNumber")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "roomType", target = "roomType")
     @Mapping(source = "price", target = "price")

@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_room")
@@ -27,14 +28,10 @@ import java.util.Set;
 public class Room implements Serializable {
 
     @Id
-    @SequenceGenerator(
-            name = "tbl_room_sequence", sequenceName = "tbl_room_sequence", allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE, generator = "tbl_room_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "room_id")
-    private Long roomId;
+    private UUID roomId;
+    private Long roomNumber;
     private String description;
     @Enumerated
     private RoomType roomType;
@@ -48,8 +45,9 @@ public class Room implements Serializable {
     private BigDecimal price;
     private Boolean enabled;
 
-    public Room(Long roomId, String description, RoomType roomType, Hotel hotel, Set<Reservation> reservations, BigDecimal price, Boolean enabled) {
+    public Room(UUID roomId, Long roomNumber, String description, RoomType roomType, Hotel hotel, Set<Reservation> reservations, BigDecimal price, Boolean enabled) {
         this.roomId = roomId;
+        this.roomNumber = roomNumber;
         this.description = description;
         this.roomType = roomType;
         this.hotel = hotel;
@@ -69,6 +67,14 @@ public class Room implements Serializable {
         this.hotel = hotel;
     }
 
+    public Long getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumer(Long roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     public Set<Reservation> getReservations() {
         return reservations;
     }
@@ -85,11 +91,11 @@ public class Room implements Serializable {
         this.price = price;
     }
 
-    public Long getRoomId() {
+    public UUID getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(UUID roomId) {
         this.roomId = roomId;
     }
 

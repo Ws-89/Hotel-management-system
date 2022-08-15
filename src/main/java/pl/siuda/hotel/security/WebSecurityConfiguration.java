@@ -1,4 +1,4 @@
-package pl.siuda.hotel.security.jwt;
+package pl.siuda.hotel.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.siuda.hotel.security.jwt.JwtAuthenticationEntryPoint;
+import pl.siuda.hotel.security.jwt.JwtRequestFilter;
 
 import static pl.siuda.hotel.security.ApplicationUserPermission.*;
 
@@ -46,7 +48,12 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
 
-        http.csrf().disable()
+        http
+                .requiresChannel()
+                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure()
+                .and()
+                .csrf().disable()
                 .cors()
                 .and()
                 .authorizeRequests().antMatchers("/", "/stripe/events", "/api/v1/authenticate", "/api/v1/registration", "/api/v1/reservations/available-rooms", "/api/v1/reservations/place-a-booking", "/api/v1/user-management/users/**", "/images/**").permitAll()

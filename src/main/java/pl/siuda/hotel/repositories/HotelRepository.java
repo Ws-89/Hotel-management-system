@@ -9,11 +9,12 @@ import pl.siuda.hotel.models.Hotel;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.*;
 
 @Repository
-public interface HotelRepository extends PagingAndSortingRepository<Hotel, Long> {
+public interface HotelRepository extends PagingAndSortingRepository<Hotel, UUID> {
 
     Page<Hotel> findAll(Pageable page);
 
@@ -22,7 +23,7 @@ public interface HotelRepository extends PagingAndSortingRepository<Hotel, Long>
     List<Hotel> findByAddressCityAndEnabled(String city, boolean enabled);
 
     @EntityGraph(value = "graph.availableHotels", type = FETCH)
-    Optional<Hotel> findById(Long id);
+    Optional<Hotel> findById(UUID id);
 
     Optional<Hotel> findByName(String name);
 }

@@ -9,6 +9,7 @@ import pl.siuda.hotel.services.RoomService;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -26,7 +27,7 @@ public class RoomController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<HttpResponse> getById(@PathVariable("id")Long id){
+    public ResponseEntity<HttpResponse> getById(@PathVariable("id") UUID id){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("object", roomService.getRoomById(id)))
@@ -38,7 +39,7 @@ public class RoomController {
     }
 
     @GetMapping("/by-hotel/{id}")
-    public ResponseEntity<HttpResponse> findRoomsByHotelId(@PathVariable("id")Long id, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size){
+    public ResponseEntity<HttpResponse> findRoomsByHotelId(@PathVariable("id")UUID id, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("page", roomService.findRoomsByHotelId(id, page.orElse(0), size.orElse(10))))
@@ -50,7 +51,7 @@ public class RoomController {
     }
 
     @PostMapping("/by-hotel/{id}")
-    public ResponseEntity<HttpResponse> createRoom(@PathVariable("id")Long id, @RequestBody RoomRequest request) {
+    public ResponseEntity<HttpResponse> createRoom(@PathVariable("id")UUID id, @RequestBody RoomRequest request) {
         this.roomService.createRoom(id, request);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
@@ -63,7 +64,7 @@ public class RoomController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<HttpResponse> deleteGroup(@PathVariable("id")Long id){
+    public ResponseEntity<HttpResponse> deleteGroup(@PathVariable("id")UUID id){
         this.roomService.deleteRoom(id);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
@@ -75,7 +76,7 @@ public class RoomController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<HttpResponse> updateRoom(@PathVariable("id")Long id, @RequestBody Room request){
+    public ResponseEntity<HttpResponse> updateRoom(@PathVariable("id")UUID id, @RequestBody Room request){
         this.roomService.updateRoom(id, request);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
@@ -87,7 +88,7 @@ public class RoomController {
     }
 
     @GetMapping("/switch-room-state/{id}")
-    public ResponseEntity<HttpResponse> switchRoomActivation(@PathVariable("id")Long id, @RequestParam Boolean state){
+    public ResponseEntity<HttpResponse> switchRoomActivation(@PathVariable("id")UUID id, @RequestParam Boolean state){
         this.roomService.switchRoomActivation(id, state);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())

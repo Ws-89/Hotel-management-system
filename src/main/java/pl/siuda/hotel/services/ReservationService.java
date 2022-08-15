@@ -19,6 +19,7 @@ import pl.siuda.hotel.repositories.ReservationRepository;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ReservationService{
@@ -34,19 +35,19 @@ public class ReservationService{
         this.guestRepository = guestRepository;
     }
 
-    public void deleteReservation(Long id){
+    public void deleteReservation(UUID id){
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Reservation with id %d not found", id)));
         reservationRepository.delete(reservation);
     }
 
-    public ReservationDTO findById(Long id){
+    public ReservationDTO findById(UUID id){
         return reservationRepository.findById(id)
                 .map(r -> ReservationMapper.INSTANCE.entityToDTO(r))
                 .orElseThrow(() -> new NotFoundException(String.format("Reservation with id %d not found", id)));
     }
 
     @Transactional
-    public Reservation updateReservation(Long id, Reservation request){
+    public Reservation updateReservation(UUID id, Reservation request){
         return reservationRepository.findById(id)
                 .map(r -> {
                   Reservation reservationUpdate = r;
@@ -63,7 +64,7 @@ public class ReservationService{
                 .orElseThrow(() -> new NotFoundException(String.format("Reservation with id %d not found", id)));
     }
 
-    public Page<ReservationDTO> findAllByGuest_GuestId(ReservationStatus status, Long guestId, int page, int size){
+    public Page<ReservationDTO> findAllByGuest_GuestId(ReservationStatus status, UUID guestId, int page, int size){
         return reservationRepository.findByReservationStatusAndGuest_GuestId(status, guestId, PageRequest.of(page, size)).map(r -> ReservationMapper.INSTANCE.entityToDTO(r));
     }
 
@@ -74,16 +75,16 @@ public class ReservationService{
         return reservationRepository.findByReservationStatusAndGuest_Email(status, currentPrincipalName, PageRequest.of(page, size)).map(r -> ReservationMapper.INSTANCE.entityToDTO(r));
     }
 
-    public Page<ReservationWithRoomDTO> findAllByRoom_Hotel_HotelId(ReservationStatus status, Long hotelId, int page, int size){
+    public Page<ReservationWithRoomDTO> findAllByRoom_Hotel_HotelId(ReservationStatus status, UUID hotelId, int page, int size){
         return reservationRepository.findByReservationStatusAndRoom_Hotel_HotelId(status, hotelId,  PageRequest.of(page, size))
                 .map(r -> ReservationWithRoomMapper.INSTANCE.entityToDTO(r));
     }
 
-    public Page<ReservationDTO> findAllByReservationStatusAndRoom_RoomId(ReservationStatus status, Long roomId, int page, int size){
+    public Page<ReservationDTO> findAllByReservationStatusAndRoom_RoomId(ReservationStatus status, UUID roomId, int page, int size){
         return reservationRepository.findByReservationStatusAndRoom_RoomId(status, roomId, PageRequest.of(page, size)).map(r -> ReservationMapper.INSTANCE.entityToDTO(r));
     }
 
-    public Page<ReservationDTO> findAllByReservationStatusAndHotelIdAndGuestLastName(ReservationStatus status, String lastName, Long hotelId, int page, int size){
+    public Page<ReservationDTO> findAllByReservationStatusAndHotelIdAndGuestLastName(ReservationStatus status, String lastName, UUID hotelId, int page, int size){
         return reservationRepository.findByReservationStatusAndRoom_Hotel_HotelIdAndGuestLastNameContaining(
                 status, hotelId, lastName, PageRequest.of(page, size)).map(r -> ReservationMapper.INSTANCE.entityToDTO(r));
     }

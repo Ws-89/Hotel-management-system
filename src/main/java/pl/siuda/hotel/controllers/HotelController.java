@@ -9,6 +9,7 @@ import pl.siuda.hotel.services.HotelService;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.time.LocalDateTime.*;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -38,7 +39,7 @@ public class HotelController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<HttpResponse> getHotelById(@PathVariable("id")Long id){
+    public ResponseEntity<HttpResponse> getHotelById(@PathVariable("id")UUID id){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("object", hotelService.getHotelById(id)))
@@ -62,7 +63,7 @@ public class HotelController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<HttpResponse> updateHotel(@PathVariable("id")Long id, @RequestBody HotelRequest hotelRequest){
+    public ResponseEntity<HttpResponse> updateHotel(@PathVariable("id")UUID id, @RequestBody HotelRequest hotelRequest){
         hotelService.updateHotel(id, hotelRequest);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
@@ -74,7 +75,7 @@ public class HotelController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<HttpResponse> deleteHotel(@PathVariable("id")Long id){
+    public ResponseEntity<HttpResponse> deleteHotel(@PathVariable("id")UUID id){
         hotelService.deleteHotel(id);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
@@ -86,7 +87,7 @@ public class HotelController {
     }
 
     @PostMapping("{id}/images/upload")
-    public ResponseEntity<HttpResponse> uploadImage(@PathVariable("id")Long id, @RequestParam("file") MultipartFile file){
+    public ResponseEntity<HttpResponse> uploadImage(@PathVariable("id")UUID id, @RequestParam("file") MultipartFile file){
         hotelService.uploadImage(id, file);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
@@ -97,7 +98,7 @@ public class HotelController {
         );
     }
     @GetMapping("/switch-hotel-state/{id}")
-    public ResponseEntity<HttpResponse> updateHotel(@PathVariable("id")Long id, @RequestParam Boolean state){
+    public ResponseEntity<HttpResponse> updateHotel(@PathVariable("id")UUID id, @RequestParam Boolean state){
         hotelService.switchHotelActivation(id, state);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())

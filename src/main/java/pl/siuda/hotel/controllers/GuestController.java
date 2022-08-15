@@ -11,6 +11,7 @@ import pl.siuda.hotel.models.Guest;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.time.LocalTime.now;
 import static org.springframework.http.HttpStatus.OK;
@@ -50,7 +51,7 @@ public class GuestController {
     }
 
     @GetMapping("/get-by-id/{guestId}")
-    public ResponseEntity<HttpResponse> getGuestById(@PathVariable("guestId") Long id){
+    public ResponseEntity<HttpResponse> getGuestById(@PathVariable("guestId") UUID id){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("object", guestService.getGuestById(id)))
@@ -74,7 +75,7 @@ public class GuestController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<HttpResponse> updateGuest(@PathVariable("id") Long id, @RequestBody Guest guest){
+    public ResponseEntity<HttpResponse> updateGuest(@PathVariable("id") UUID id, @RequestBody Guest guest){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("object", guestService.update(id, guest)))
@@ -86,7 +87,7 @@ public class GuestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpResponse> updateGuest(@PathVariable("id") Long id){
+    public ResponseEntity<HttpResponse> updateGuest(@PathVariable("id") UUID id){
         guestService.deleteGuest(id);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
@@ -98,14 +99,14 @@ public class GuestController {
     }
 
     @GetMapping("/by-hotel-id/{hotelId}")
-    public ResponseEntity<HttpResponse> findAllByRoom_Hotel_HotelId(@PathVariable("hotelId") Long hotelId,
+    public ResponseEntity<HttpResponse> findAllByRoom_Hotel_HotelId(@PathVariable("hotelId") UUID hotelId,
                                                                     @RequestParam Optional<ReservationStatus> status,
                                                                     @RequestParam Optional<Integer> page,
                                                                     @RequestParam Optional<Integer> size){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("page", guestService.guestListByHotel(hotelId, status.orElse(ReservationStatus.Initialized),  page.orElse(0), size.orElse(10))))
-                        .message(String.format("Guests of hotel with id %d retrieved", hotelId))
+                        .message(String.format("Guests of hotel with id %s retrieved", hotelId))
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

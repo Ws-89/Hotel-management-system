@@ -11,6 +11,7 @@ import pl.siuda.hotel.security.ApplicationUserRole;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_admin")
@@ -21,13 +22,8 @@ import java.util.Collection;
 public class Admin implements UserDetails {
 
     @Id
-    @SequenceGenerator(
-            name = "tbl_admin_sequence", sequenceName = "tbl_admin_sequence", allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE, generator = "tbl_admin_sequence"
-    )
-    private Long adminId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID adminId;
     private String firstName;
     private String lastName;
     private String email;
@@ -50,7 +46,7 @@ public class Admin implements UserDetails {
         return applicationUserRole.getGrantedAuthorities();
     }
 
-    public Long getAdminId() {
+    public UUID getAdminId() {
         return adminId;
     }
 
@@ -96,7 +92,7 @@ public class Admin implements UserDetails {
         return enabled;
     }
 
-    public void setAdminId(Long adminId) {
+    public void setAdminId(UUID adminId) {
         this.adminId = adminId;
     }
 

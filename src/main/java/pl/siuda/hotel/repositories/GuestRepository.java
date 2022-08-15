@@ -10,9 +10,10 @@ import pl.siuda.hotel.models.Guest;
 import pl.siuda.hotel.models.ReservationStatus;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface GuestRepository extends JpaRepository<Guest, Long> {
+public interface GuestRepository extends JpaRepository<Guest, UUID> {
 
     Guest findByEmail(String email);
 
@@ -21,14 +22,14 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
     Optional<Guest> getPrincipal(String email);
 
     @EntityGraph(value = "graph.guestProfile")
-    Optional<Guest> findById(Long id);
+    Optional<Guest> findById(UUID id);
 
     @EntityGraph(value = "graph.guestProfile")
     Page<Guest> findAll(Pageable page);
 
     @EntityGraph(value = "graph.userReservationsRooms")
     @Query("SELECT g FROM Guest g JOIN g.reservations gr JOIN gr.room grr JOIN grr.hotel grrh WHERE grrh.hotelId = ?1 AND gr.reservationStatus = ?2")
-    Page<Guest> getCurrentHotelGuests(Long hotelId, ReservationStatus status, Pageable page);
+    Page<Guest> getCurrentHotelGuests(UUID hotelId, ReservationStatus status, Pageable page);
 
     Page<Guest> findAllByFirstNameContainingAndLastNameContainingAndReservations_ReservationStatusAndReservations_Room_Hotel_HotelId(String firstName, String lastName, ReservationStatus status, Long hotelId, Pageable page);
 }

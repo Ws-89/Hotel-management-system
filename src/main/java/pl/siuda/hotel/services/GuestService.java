@@ -19,6 +19,7 @@ import pl.siuda.hotel.repositories.GuestRepository;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 
 @Service
@@ -43,12 +44,12 @@ public class GuestService {
     }
 
 
-    public Page<GuestDTO> guestListByHotel(Long hotelId, ReservationStatus status, int page, int size){
+    public Page<GuestDTO> guestListByHotel(UUID hotelId, ReservationStatus status, int page, int size){
         return guestRepository.getCurrentHotelGuests(hotelId, status, PageRequest.of(page, size))
                 .map(g -> GuestMapper.INSTANCE.entityToDTO(g));
     }
 
-    public GuestDTO getGuestById(Long id){
+    public GuestDTO getGuestById(UUID id){
         return guestRepository.findById(id).map(g -> GuestMapper.INSTANCE.entityToDTO(g))
                 .orElseThrow(()-> new NotFoundException(String.format("Guest with id %s not found")));
     }
@@ -74,7 +75,7 @@ public class GuestService {
     }
 
     @Transactional
-    public GuestDTO update(Long id, Guest guest){
+    public GuestDTO update(UUID id, Guest guest){
         return guestRepository.findById(id)
                 .map(g -> {
                     Guest guestToUpdate = g;
@@ -87,7 +88,7 @@ public class GuestService {
                 })
                 .orElseThrow(() -> new NotFoundException(String.format("Guest with id %d not found", id)));
     }
-    public Page<ReservationDTO> findAllByGuest_GuestId(Long guestId, ReservationStatus status, int page, int size) throws IllegalAccessException {
+    public Page<ReservationDTO> findAllByGuest_GuestId(UUID guestId, ReservationStatus status, int page, int size) throws IllegalAccessException {
         checkAccesToGuestInformation(guestId);
         return reservationRepository.findByReservationStatusAndGuest_GuestId(status, guestId, PageRequest.of(page, size)).map(r -> ReservationMapper.INSTANCE.entityToDTO(r));
     }
@@ -101,12 +102,12 @@ public class GuestService {
         return GuestMapper.INSTANCE.entityToDTO(guest);
     }
 
-    public void deleteGuest(Long id){
+    public void deleteGuest(UUID id){
         Guest guest = guestRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Guest with id %s not found")));
         guestRepository.delete(guest);
     }
 
-    private void checkAccesToGuestInformation(Long guestId) throws IllegalAccessException {
+    private void checkAccesToGuestInformation(UUID guestId) throws IllegalAccessException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Guest principal = guestRepository.getPrincipal(currentPrincipalName).orElseThrow(() -> new NotFoundException(String.format("User not found")));

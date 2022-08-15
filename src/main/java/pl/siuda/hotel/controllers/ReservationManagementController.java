@@ -9,6 +9,7 @@ import pl.siuda.hotel.services.ReservationService;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.time.LocalTime.now;
 import static org.springframework.http.HttpStatus.OK;
@@ -24,11 +25,11 @@ public class ReservationManagementController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpResponse> deleteReservation(@PathVariable("id") Long id){
+    public ResponseEntity<HttpResponse> deleteReservation(@PathVariable("id") UUID id){
         reservationService.deleteReservation(id);
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
-                        .message(String.format("Reservation with id %d deleted", id))
+                        .message(String.format("Reservation with id %s deleted", id))
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
@@ -36,7 +37,7 @@ public class ReservationManagementController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<HttpResponse> updateReservation(@PathVariable("id") Long id, @RequestBody Reservation reservation){
+    public ResponseEntity<HttpResponse> updateReservation(@PathVariable("id") UUID id, @RequestBody Reservation reservation){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("object", reservationService.updateReservation(id, reservation)))
@@ -48,14 +49,14 @@ public class ReservationManagementController {
     }
 
     @GetMapping("/by-guest-id/{guestId}")
-    public ResponseEntity<HttpResponse> findAllByGuestId(@PathVariable("guestId") Long guestId,
+    public ResponseEntity<HttpResponse> findAllByGuestId(@PathVariable("guestId") UUID guestId,
                                                          @RequestParam Optional<ReservationStatus> status,
                                                          @RequestParam Optional<Integer> page,
                                                          @RequestParam Optional<Integer> size){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("page", reservationService.findAllByGuest_GuestId(status.orElse(ReservationStatus.Initialized), guestId,  page.orElse(0), size.orElse(10))))
-                        .message(String.format("Reservations of guest with id %d retrieved", guestId))
+                        .message(String.format("Reservations of guest with id %s retrieved", guestId))
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
@@ -78,14 +79,14 @@ public class ReservationManagementController {
     }
 
     @GetMapping("/by-hotel-id/{hotelId}")
-    public ResponseEntity<HttpResponse> findAllByRoom_Hotel_HotelId(@PathVariable("hotelId") Long hotelId,
+    public ResponseEntity<HttpResponse> findAllByRoom_Hotel_HotelId(@PathVariable("hotelId") UUID hotelId,
                                                                     @RequestParam Optional<ReservationStatus> status,
                                                                     @RequestParam Optional<Integer> page,
                                                                     @RequestParam Optional<Integer> size){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("page", reservationService.findAllByRoom_Hotel_HotelId(status.orElse(ReservationStatus.Initialized), hotelId, page.orElse(0), size.orElse(10))))
-                        .message(String.format("Reservations of hotel with id %d retrieved", hotelId))
+                        .message(String.format("Reservations of hotel with id %s retrieved", hotelId))
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
@@ -97,11 +98,11 @@ public class ReservationManagementController {
     public ResponseEntity<HttpResponse> findAllByRoom_RoomId(
                                                              @RequestParam Optional<ReservationStatus> status,
                                                              @RequestParam Optional<Integer> page,
-                                                             @RequestParam Optional<Integer> size, @PathVariable("roomId") Long roomId){
+                                                             @RequestParam Optional<Integer> size, @PathVariable("roomId") UUID roomId){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("page", reservationService.findAllByReservationStatusAndRoom_RoomId(status.orElse(ReservationStatus.Initialized), roomId, page.orElse(0), size.orElse(10))))
-                        .message(String.format("Reservations of room with id %d retrieved", roomId))
+                        .message(String.format("Reservations of room with id %s retrieved", roomId))
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
@@ -109,7 +110,7 @@ public class ReservationManagementController {
     }
 
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<HttpResponse> findById(@PathVariable("id") Long id){
+    public ResponseEntity<HttpResponse> findById(@PathVariable("id") UUID id){
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("object", reservationService.findById(id)))
@@ -121,7 +122,7 @@ public class ReservationManagementController {
     }
 
     @GetMapping("/search-by-hotel-id/{hotelId}")
-    public ResponseEntity<HttpResponse> findAllByNameStatusAndHotelId(@PathVariable("hotelId") Long hotelId,
+    public ResponseEntity<HttpResponse> findAllByNameStatusAndHotelId(@PathVariable("hotelId") UUID hotelId,
                                                                     @RequestParam Optional<ReservationStatus> status,
                                                                     @RequestParam Optional<String> lastName,
                                                                     @RequestParam Optional<Integer> page,
@@ -129,7 +130,7 @@ public class ReservationManagementController {
         return ResponseEntity.ok().body(
                 HttpResponse.builder().timeStamp(now().toString())
                         .data(Map.of("page", reservationService.findAllByReservationStatusAndHotelIdAndGuestLastName(status.orElse(ReservationStatus.Initialized), lastName.orElse(""), hotelId, page.orElse(0), size.orElse(10))))
-                        .message(String.format("Reservations of hotel with id %d retrieved", hotelId))
+                        .message(String.format("Reservations of hotel with id %s retrieved", hotelId))
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

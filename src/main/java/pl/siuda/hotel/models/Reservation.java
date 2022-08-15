@@ -9,6 +9,7 @@ import pl.siuda.hotel.models.embeddedClasses.Address;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_reservation")
@@ -27,14 +28,9 @@ import java.time.LocalDateTime;
 public class Reservation {
 
     @Id
-    @SequenceGenerator(
-            name = "tbl_reservation_sequence", sequenceName = "tbl_reservation_sequence", allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE, generator = "tbl_reservation_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "reservation_id")
-    private Long reservationId;
+    private UUID reservationId;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", referencedColumnName = "room_id")
@@ -59,7 +55,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Long reservationId, Room room, LocalDateTime startDate, LocalDateTime endDate, String guestName, String guestLastName, String email, String requestMessage, Address guestAddress, BigDecimal price, ReservationStatus reservationStatus, Guest guest) {
+    public Reservation(UUID reservationId, Room room, LocalDateTime startDate, LocalDateTime endDate, String guestName, String guestLastName, String email, String requestMessage, Address guestAddress, BigDecimal price, ReservationStatus reservationStatus, Guest guest) {
         this.reservationId = reservationId;
         this.room = room;
         this.startDate = startDate;
@@ -74,11 +70,11 @@ public class Reservation {
         this.guest = guest;
     }
 
-    public Long getReservationId() {
+    public UUID getReservationId() {
         return reservationId;
     }
 
-    public void setReservationId(Long reservationId) {
+    public void setReservationId(UUID reservationId) {
         this.reservationId = reservationId;
     }
 

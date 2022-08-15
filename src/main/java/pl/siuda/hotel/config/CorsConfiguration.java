@@ -1,14 +1,14 @@
-package pl.siuda.hotel.security;
+package pl.siuda.hotel.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@EnableCaching
 @Configuration
-@ConfigurationProperties(prefix = "app")
-public class Config {
+public class CorsConfiguration {
 
     private static final String GET = "GET";
     private static final String POST = "POST";

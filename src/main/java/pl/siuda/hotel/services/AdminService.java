@@ -13,6 +13,7 @@ import pl.siuda.hotel.security.ApplicationUserRole;
 import pl.siuda.hotel.security.CustomUserDetailsService;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -31,7 +32,7 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    public AdminDto getAdminById(Long id){
+    public AdminDto getAdminById(UUID id){
         return adminRepository.findById(id)
                 .map(admin -> AdminDto.adminToDto(admin))
                 .orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found", id)));
@@ -61,14 +62,14 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-    public void updateAdmin(Long id, AdminRequest adminRequest){
+    public void updateAdmin(UUID id, AdminRequest adminRequest){
             Admin admin = adminRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException(String.format("Admin with id %s not found", id)));
             adminRequest.copyDtoToEntity(admin);
             adminRepository.save(admin);
     }
 
-    public void deleteAdmin(Long id){
+    public void deleteAdmin(UUID id){
         Admin admin = adminRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Admin with id %s not found")));
         adminRepository.delete(admin);
     }

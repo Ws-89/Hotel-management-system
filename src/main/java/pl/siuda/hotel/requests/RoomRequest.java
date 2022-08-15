@@ -17,6 +17,7 @@ import java.util.Set;
 public class RoomRequest {
     private Long roomId;
     private String description;
+    private Long roomNumber;
     private RoomType roomType;
     private Set<ReservationDTO> reservations;
     private BigDecimal price;

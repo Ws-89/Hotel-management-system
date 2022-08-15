@@ -4,10 +4,11 @@ import pl.siuda.hotel.models.Admin;
 import pl.siuda.hotel.security.ApplicationUserRole;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class AdminDto implements Serializable {
 
-    private Long adminId;
+    private UUID adminId;
     private String firstName;
     private String lastName;
     private String email;
@@ -23,7 +24,7 @@ public class AdminDto implements Serializable {
         return adminDto;
     }
 
-    public Long getAdminId() {
+    public UUID getAdminId() {
         return adminId;
     }
 

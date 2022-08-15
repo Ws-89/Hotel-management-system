@@ -30,7 +30,7 @@ public class HotelService {
         return hotelRepository.findAll(PageRequest.of(page, size)).map(h -> HotelsWithoutRoomsMapper.INSTANCE.entityToDTO(h));
     }
 
-    public HotelWithoutRoomsDTO getHotelById(Long hotel_id) {
+    public HotelWithoutRoomsDTO getHotelById(UUID hotel_id) {
         return hotelRepository.findById(hotel_id)
                 .map(h -> HotelsWithoutRoomsMapper.INSTANCE.entityToDTO(h))
                 .orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotel_id)));
@@ -51,7 +51,7 @@ public class HotelService {
         );
     }
 
-    public void updateHotel(Long id, HotelRequest request){
+    public void updateHotel(UUID id, HotelRequest request){
         Hotel hotel = hotelRepository.findById(id)
                 .map(h -> {
                     Hotel newHotel = h;
@@ -66,18 +66,18 @@ public class HotelService {
         hotelRepository.save(hotel);
     }
 
-    public void switchHotelActivation(Long hotelId, boolean status){
+    public void switchHotelActivation(UUID hotelId, boolean status){
         Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", hotelId)));
         hotel.setEnabled(status);
         hotelRepository.save(hotel);
     }
 
-    public void deleteHotel(Long id){
+    public void deleteHotel(UUID id){
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
         hotelRepository.delete(hotel);
     }
 
-    public void uploadImage(Long id, MultipartFile file){
+    public void uploadImage(UUID id, MultipartFile file){
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
         hotel.setImage(imageService.uploadFile(file));
         hotelRepository.save(hotel);

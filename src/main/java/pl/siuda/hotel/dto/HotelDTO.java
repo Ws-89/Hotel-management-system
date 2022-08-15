@@ -8,13 +8,14 @@ import pl.siuda.hotel.models.embeddedClasses.Contact;
 import pl.siuda.hotel.models.enums.Grade;
 
 import java.util.Set;
+import java.util.UUID;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class HotelDTO {
-    private Long hotelId;
+    private UUID hotelId;
     private String name;
     private Address address;
     private Contact contact;

@@ -12,6 +12,8 @@ import pl.siuda.hotel.repositories.HotelRepository;
 import pl.siuda.hotel.repositories.RoomRepository;
 import pl.siuda.hotel.requests.RoomRequest;
 
+import java.util.UUID;
+
 @Service
 public class RoomService {
 
@@ -22,11 +24,11 @@ public class RoomService {
         this.roomRepository = roomRepository;
         this.hotelRepository = hotelRepository;
     }
-    public Page<RoomWithoutReservationsDTO> findRoomsByHotelId(Long id, int page, int size){
+    public Page<RoomWithoutReservationsDTO> findRoomsByHotelId(UUID id, int page, int size){
         return this.roomRepository.findByHotelHotelId(id, PageRequest.of(page, size)).map(r -> RoomWithoutReservation.INSTANCE.entityToDTO(r));
     }
 
-    public void createRoom(Long id, RoomRequest roomRequest){
+    public void createRoom(UUID id, RoomRequest roomRequest){
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Hotel with id %s not found", id)));
 
         Room room = new Room();
@@ -39,26 +41,27 @@ public class RoomService {
     }
 
 
-    public void deleteRoom(Long id){
+    public void deleteRoom(UUID id){
         Room room = roomRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
         roomRepository.delete(room);
     }
 
-    public void updateRoom(Long id, Room roomRequest){
+    public void updateRoom(UUID id, Room roomRequest){
         Room room = roomRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
         room.setRoomType(roomRequest.getRoomType());
+        room.setRoomNumer(roomRequest.getRoomNumber());
         room.setDescription(roomRequest.getDescription());
         room.setPrice(roomRequest.getPrice());
         roomRepository.save(room);
     }
 
-    public void switchRoomActivation(Long id, Boolean state){
+    public void switchRoomActivation(UUID id, Boolean state){
         Room room = roomRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id %s not found", id)));
         room.setEnabled(state);
         roomRepository.save(room);
     }
 
-    public RoomWithoutReservationsDTO getRoomById(Long id){
+    public RoomWithoutReservationsDTO getRoomById(UUID id){
         return roomRepository.findById(id)
                 .map(r -> RoomWithoutReservation.INSTANCE.entityToDTO(r))
                 .orElseThrow(() -> new NotFoundException(String.format("RoomGroup with id % not found", id)));

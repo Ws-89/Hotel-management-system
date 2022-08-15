@@ -10,12 +10,13 @@ import pl.siuda.hotel.models.embeddedClasses.Address;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReservationDTO {
-    private Long reservationId;
+    private UUID reservationId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private BigDecimal price;

@@ -6,6 +6,7 @@ import pl.siuda.hotel.models.Admin;
 import pl.siuda.hotel.models.Guest;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -29,7 +30,7 @@ public class CustomUserDetails implements UserDetails {
         return admin != null ? admin.getPassword() : guest.getPassword();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return admin != null ? admin.getAdminId() : guest.getGuestId();
     }
 

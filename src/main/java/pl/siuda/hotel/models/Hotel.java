@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_hotel")
@@ -26,14 +27,9 @@ import java.util.Set;
 public class Hotel implements Serializable {
 
     @Id
-    @SequenceGenerator(
-            name = "tbl_hotel_sequence", sequenceName = "tbl_hotel_sequence", allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE, generator = "tbl_hotel_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "hotel_id")
-    private Long hotelId;
+    private UUID hotelId;
     private String name;
     @Embedded
     private Address address;
@@ -49,7 +45,7 @@ public class Hotel implements Serializable {
     public Hotel() {
     }
 
-    public Hotel(Long hotelId, String name, Address address, Contact contact, Grade grade, Set<Room> rooms, String image, Boolean enabled) {
+    public Hotel(UUID hotelId, String name, Address address, Contact contact, Grade grade, Set<Room> rooms, String image, Boolean enabled) {
         this.hotelId = hotelId;
         this.name = name;
         this.address = address;
@@ -80,11 +76,11 @@ public class Hotel implements Serializable {
         room.setHotel(null);
     }
 
-    public Long getHotelId() {
+    public UUID getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(Long hotelId) {
+    public void setHotelId(UUID hotelId) {
         this.hotelId = hotelId;
     }
 
